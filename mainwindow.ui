@@ -27,41 +27,6 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QPushButton" name="btnVideo">
-    <property name="geometry">
-     <rect>
-      <x>20</x>
-      <y>30</y>
-      <width>94</width>
-      <height>24</height>
-     </rect>
-    </property>
-    <property name="text">
-     <string>PushButton</string>
-    </property>
-   </widget>
-   <widget class="QSlider" name="verticalSlider">
-    <property name="geometry">
-     <rect>
-      <x>570</x>
-      <y>60</y>
-      <width>23</width>
-      <height>160</height>
-     </rect>
-    </property>
-    <property name="maximum">
-     <number>1048576</number>
-    </property>
-    <property name="singleStep">
-     <number>256</number>
-    </property>
-    <property name="pageStep">
-     <number>2048</number>
-    </property>
-    <property name="orientation">
-     <enum>Qt::Vertical</enum>
-    </property>
-   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">

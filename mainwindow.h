@@ -5,6 +5,10 @@
 
 #include "webcam.h"
 
+#define VIDEO_DEVICE "/dev/video0"
+#define TRESHOLD 16
+#define RATIO 24
+
 namespace Ui {
     class MainWindow;
 }
@@ -19,11 +23,12 @@ class MainWindow : public QMainWindow
     QList<int> formatList;
 
     QImage processImage(const QImage &img);
+protected:
+    void showEvent(QShowEvent *);
 
 public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
-
 
 private:
     Ui::MainWindow *ui;
