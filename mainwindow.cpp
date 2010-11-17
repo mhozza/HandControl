@@ -1,3 +1,21 @@
+/*
+ *    HandControl - Hand gesture recognition
+ *    Copyright (C) 2010  Michal Hozza (mhozza@gmail.com)
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
 #include <iostream>
@@ -9,39 +27,64 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    camera = new Webcam();
-
-    camera->open("/dev/video0");
-    formatList = camera->getFormatList(formatName);
-    camera->setFormat(640, 480, formatList.at(0));
-    oldImage = new QImage(640,480,QImage::Format_RGB32);
-
-    for (int i = 0; i < formatName.size(); i++)
-    {
-           cout << formatList.at(i) << endl;
-    }
-
-
-    /*QList<QSize> sizes = camera->getSizesList();
-    for (int i = 0; i < sizes.size(); i++)
-    {
-            sprintf(formatString, "%dx%d", sizes.at(i).width(), sizes.at(i).height() );
-            if (sizes.at(i).width() == 320 && sizes.at(i).height() == 240)
-            {
-                    camera->setFormat(320, 240, formatList.at());
-            }
-    }*/
+    camera = new Webcam();    
+    setupCamera();
 
     connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));    
 }
 
+void MainWindow::setupCamera()
+{
+    if (!camera->isOpened())
+    {
+        camera->open(VIDEO_DEVICE);
+        formatList = camera->getFormatList(formatName);
+        camera->setFormat(VIDEO_WIDTH, VIDEO_HEIGHT, formatList.at(0));
+        oldImage = new QImage(VIDEO_WIDTH, VIDEO_HEIGHT,QImage::Format_RGB32);
+
+        for (int i = 0; i < formatName.size(); i++)
+        {
+               cout << formatList.at(i) << endl;
+        }
+
+
+        /*QList<QSize> sizes = camera->getSizesList();
+        for (int i = 0; i < sizes.size(); i++)
+        {
+                sprintf(formatString, "%dx%d", sizes.at(i).width(), sizes.at(i).height() );
+                if (sizes.at(i).width() == 320 && sizes.at(i).height() == 240)
+                {
+                        camera->setFormat(320, 240, formatList.at());
+                }
+        }*/
+    }
+}
+
 void MainWindow::showEvent(QShowEvent * e)
 {
-    startStopVideo();
+    if(!camera->streaming())
+    {
+        setupCamera();
+
+        ret = camera->startStreaming();
+        if (ret == EXIT_FAILURE)
+        {
+                ui->label->setText("An error occured while restarting the camera.");
+                //qDebug("***Unable to start streaming. Ret = %d\n", ret);
+        }
+    }
 }
 
 MainWindow::~MainWindow()
 {
+    disconnect(this,SLOT(getImage()));
+
+    if(camera->isStreaming())
+            camera->stopStreaming();
+    camera->close();
+
+    delete camera;
+
     delete ui;
 }
 
@@ -92,17 +135,15 @@ void MainWindow::getImage()
         QPixmap pixmap;
 
         if (camera->getFrame(imageFromCamera) == EXIT_FAILURE)
-        {
-                //startStopVideo();
+        {                
                 camera->close();
-                //fctExecuted = 0;
-                //ui.comboBoxSize->disconnect(SIGNAL( currentIndexChanged(const QString &) ), this, SLOT(changeFormat(const QString &) ));
-                //waitCamera.start(2000);
+                throw new CameraGetImageFailureException();
                 return;
         }
 
         if(!imageFromCamera.isNull())
         {
+                //processImage(imageFromCamera);
                 pixmap = QPixmap::fromImage(processImage(imageFromCamera));
         }
 

@@ -16,14 +16,13 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include <QtGui/QApplication>
-#include "mainwindow.h"
+#ifndef EXCEPTIONS_H
+#define EXCEPTIONS_H
 
-int main(int argc, char *argv[])
+class CameraGetImageFailureException : public Exception
 {
-    QApplication a(argc, argv);
-    MainWindow w;
-    w.show();
+public:
+    CameraGetImageFailureException();
+};
 
-    return a.exec();
-}
+#endif // EXCEPTIONS_H

@@ -14,12 +14,14 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     webcam.cpp \
     merror.cpp \
-    imageconvert.cpp
+    imageconvert.cpp \
+    exceptions.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
     imageconvert.h \
-    merror.h
+    merror.h \
+    exceptions.h
 
 FORMS    += mainwindow.ui
 
