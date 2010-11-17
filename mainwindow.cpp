@@ -62,11 +62,11 @@ void MainWindow::setupCamera()
 
 void MainWindow::showEvent(QShowEvent * e)
 {
-    if(!camera->streaming())
+    if(!camera->isStreaming())
     {
         setupCamera();
 
-        ret = camera->startStreaming();
+        int ret = camera->startStreaming();
         if (ret == EXIT_FAILURE)
         {
                 ui->label->setText("An error occured while restarting the camera.");

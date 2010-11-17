@@ -18,6 +18,8 @@
 
 #include "exceptions.h"
 
-CameraGetImageFailureException::CameraGetImageFailureException()
+namespace handcontrol
 {
+
+
 }

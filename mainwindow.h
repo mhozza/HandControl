@@ -35,6 +35,8 @@ namespace Ui {
     class MainWindow;
 }
 
+using namespace handcontrol;
+
 class MainWindow : public QMainWindow
 {
     Q_OBJECT

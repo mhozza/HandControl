@@ -19,10 +19,19 @@
 #ifndef EXCEPTIONS_H
 #define EXCEPTIONS_H
 
-class CameraGetImageFailureException : public Exception
+#include <exception>
+
+namespace handcontrol
 {
-public:
-    CameraGetImageFailureException();
-};
+    class Exception : public std::exception
+    {
+
+    };
+
+    class CameraGetImageFailureException : public Exception
+    {
+
+    };
+}
 
 #endif // EXCEPTIONS_H
