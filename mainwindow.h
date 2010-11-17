@@ -57,8 +57,7 @@ private:
     Ui::MainWindow *ui;
 
 public slots:
-    void getImage();
-    void startStopVideo();
+    void getImage();    
 };
 
 #endif // MAINWINDOW_H

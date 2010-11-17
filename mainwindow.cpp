@@ -153,30 +153,3 @@ void MainWindow::getImage()
         }
 }
 
-void MainWindow::startStopVideo()
-{
-        int ret = 0;
-        if(camera->isStreaming())
-        {
-                if (camera->stopStreaming() == EXIT_SUCCESS)
-                {
-                        //ui->btnVideo->setText("Start video");
-                }
-        }
-        else
-        {
-                if (!camera->isOpened())
-                        camera->open(VIDEO_DEVICE);
-
-                ret = camera->startStreaming();
-                if (ret == EXIT_FAILURE)
-                {
-                        ui->label->setText("An error occured while restarting the camera.");
-                        //qDebug("***Unable to start streaming. Ret = %d\n", ret);
-                }
-                else
-                {
-                        //ui->btnVideo->setText("Stop video");
-                }
-        }
-}
