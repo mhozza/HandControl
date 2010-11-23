@@ -22,14 +22,15 @@
 #include <QImage>
 #include <QColor>
 
-#define TRESHOLD 16
+#define TRESHOLD 20
 #define RATIO 24
 
 
 class ImageProcessor
 {
     const QImage *oldImage;
-    const QImage *avgImage;
+    QImage *avgImage;
+    int images;
 public:
     ImageProcessor(int width, int height);
     ~ImageProcessor();

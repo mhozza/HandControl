@@ -17,9 +17,12 @@
  */
 
 #include "imageprocessor.h"
+#include <iostream>
+using namespace std;
 
 ImageProcessor::ImageProcessor(int width, int height)
 {
+    images = 0;
     oldImage = new QImage(width,height,QImage::Format_RGB32);
     avgImage = new QImage(width,height,QImage::Format_RGB32);
 }
@@ -33,20 +36,38 @@ QImage ImageProcessor::processImage(const QImage &image)
     {
         for(int y = 0;y<img.height();y++)
         {
-            QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y));
+            QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y)),c3(avgImage->pixel(x,y));
 
             //greyscale difference
-            uint g = abs((4*c1.red()+3*c1.green()+3*c1.blue()) - (4*c2.red()+3*c2.green()+3*c2.blue()))/10;
+            //uint g = abs((4*c1.red()+3*c1.green()+3*c1.blue()) - (4*c2.red()+3*c2.green()+3*c2.blue()))/10;
+            uint g = abs((4*c1.red()+3*c1.green()+3*c1.blue())/10 - (c3.blue()));
+
 
             //count pixels with difference> treshold
             if (g>TRESHOLD) sum++;
+            else g = 0;
 
-            QColor c(g,g,g);
+            {
+                QColor c(g,g,g);
+                img.setPixel(x,y,c.rgb());
+            }
 
-            img.setPixel(x,y,c.rgb());
+            //average image(assume avg image is greyscale)
+
+            uint gsavg = (((4*c1.red()+3*c1.green()+3*c1.blue())/10)+(images)*c3.blue())/(images+1);
+
+
+
+
+
+            {
+                QColor c(gsavg,gsavg,gsavg);
+                avgImage->setPixel(x,y,c.rgb());
+            }
 
         }
     }
+    images++;
 
     //redscale image if big difference
     if(sum>img.width()*img.height()/RATIO)
@@ -65,6 +86,8 @@ QImage ImageProcessor::processImage(const QImage &image)
     oldImage = new QImage(image);
 
     return img;
+    //return *avgImage;
+    //return image;
 }
 
 ImageProcessor::~ImageProcessor()
