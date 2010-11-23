@@ -21,16 +21,38 @@
 
 #include <exception>
 
+
 namespace handcontrol
 {
     class Exception : public std::exception
     {
+    protected:
+        const char* message;
+    public:
+        Exception(const char* message = "General exception.\0") : message(message){}
+        inline const char* what() const throw(){return message;}
 
     };
 
     class CameraGetImageFailureException : public Exception
     {
 
+    };
+
+    class CameraStartStreamingFailureException : public Exception
+    {
+    protected:
+        const char* message;
+    public:
+        CameraStartStreamingFailureException(const char* message = "Could not start streaming.\0") : message(message){}
+    };
+
+    class CameraOpenException : public Exception
+    {
+    protected:
+        const char* message;
+    public:
+        CameraOpenException(const char* message = "Could not open device.\0") : message(message){}
     };
 }
 

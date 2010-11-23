@@ -27,7 +27,7 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    camera = new Webcam();    
+    camera = new Webcam();        
     setupCamera();
 
     connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));    
@@ -37,16 +37,16 @@ void MainWindow::setupCamera()
 {
     if (!camera->isOpened())
     {
-        camera->open(VIDEO_DEVICE);
+        if(camera->open(VIDEO_DEVICE)==-1) throw new CameraOpenException();
+
         formatList = camera->getFormatList(formatName);
         camera->setFormat(VIDEO_WIDTH, VIDEO_HEIGHT, formatList.at(0));
-        oldImage = new QImage(VIDEO_WIDTH, VIDEO_HEIGHT,QImage::Format_RGB32);
+        imageProcessor = new ImageProcessor(VIDEO_WIDTH, VIDEO_HEIGHT);
 
         for (int i = 0; i < formatName.size(); i++)
         {
                cout << formatList.at(i) << endl;
         }
-
 
         /*QList<QSize> sizes = camera->getSizesList();
         for (int i = 0; i < sizes.size(); i++)
@@ -62,16 +62,24 @@ void MainWindow::setupCamera()
 
 void MainWindow::showEvent(QShowEvent * e)
 {
-    if(!camera->isStreaming())
+    try
     {
-        setupCamera();
-
-        int ret = camera->startStreaming();
-        if (ret == EXIT_FAILURE)
+        if(!camera->isStreaming())
         {
-                ui->label->setText("An error occured while restarting the camera.");
-                //qDebug("***Unable to start streaming. Ret = %d\n", ret);
+            setupCamera();
+
+            int ret = camera->startStreaming();
+            if (ret == EXIT_FAILURE)
+            {
+                    ui->label->setText("An error occured while restarting the camera.");
+                    throw new CameraStartStreamingFailureException();
+                    //qDebug("***Unable to start streaming. Ret = %d\n", ret);
+            }
         }
+    }
+    catch(Exception &e)
+    {
+        cout << e.what() << endl;
     }
 }
 
@@ -84,51 +92,11 @@ MainWindow::~MainWindow()
     camera->close();
 
     delete camera;
+    delete imageProcessor;
 
     delete ui;
 }
 
-QImage MainWindow::processImage(const QImage &image)
-{
-    QImage img(image);    
-
-    unsigned sum = 0;
-    for(int x = 0;x<img.width();x++)
-    {
-        for(int y = 0;y<img.height();y++)
-        {
-            QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y));
-
-            //greyscale difference
-            uint g = abs((4*c1.red()+3*c1.green()+3*c1.blue()) - (4*c2.red()+3*c2.green()+3*c2.blue()))/10;
-
-            //count pixels with difference> treshold
-            if (g>TRESHOLD) sum++;
-
-            QColor c(g,g,g);
-
-            img.setPixel(x,y,c.rgb());
-
-        }
-    }
-
-    //redscale image if big difference
-    if(sum>img.width()*img.height()/RATIO)
-    {
-        for(int x = 0;x<img.width();x++)
-        {
-            for(int y = 0;y<img.height();y++)
-            {
-                img.setPixel(x,y,img.pixel(x,y)%256*256*256);
-            }
-        }
-    }
-
-    delete oldImage;
-    oldImage = new QImage(image);
-
-    return img;
-}
 
 void MainWindow::getImage()
 {
@@ -144,7 +112,7 @@ void MainWindow::getImage()
         if(!imageFromCamera.isNull())
         {
                 //processImage(imageFromCamera);
-                pixmap = QPixmap::fromImage(processImage(imageFromCamera));
+                pixmap = QPixmap::fromImage(imageProcessor->processImage(imageFromCamera));
         }
 
         if(!pixmap.isNull())

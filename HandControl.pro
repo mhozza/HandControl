@@ -15,13 +15,15 @@ SOURCES += main.cpp\
     webcam.cpp \
     merror.cpp \
     imageconvert.cpp \
-    exceptions.cpp
+    exceptions.cpp \
+    imageprocessor.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
     imageconvert.h \
     merror.h \
-    exceptions.h
+    exceptions.h \
+    imageprocessor.h
 
 FORMS    += mainwindow.ui
 

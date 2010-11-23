@@ -16,50 +16,24 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef MAINWINDOW_H
-#define MAINWINDOW_H
+#ifndef IMAGEPROCESSOR_H
+#define IMAGEPROCESSOR_H
 
-#include <QMainWindow>
+#include <QImage>
+#include <QColor>
 
-#include "webcam.h"
-#include "exceptions.h"
-#include "imageprocessor.h"
-
-#define VIDEO_DEVICE "/dev/video0"
-#define VIDEO_WIDTH 320
-#define VIDEO_HEIGHT 240
+#define TRESHOLD 16
+#define RATIO 24
 
 
-namespace Ui {
-    class MainWindow;
-}
-
-using namespace handcontrol;
-
-class MainWindow : public QMainWindow
+class ImageProcessor
 {
-    Q_OBJECT
-    Webcam *camera;
-    QImage imageFromCamera;
-
-    QList<QString> formatName;
-    QList<int> formatList;
-    ImageProcessor *imageProcessor;
-
-
-    void setupCamera();
-protected:
-    void showEvent(QShowEvent *);
-
+    const QImage *oldImage;
+    const QImage *avgImage;
 public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
-
-private:
-    Ui::MainWindow *ui;
-
-public slots:
-    void getImage();    
+    ImageProcessor(int width, int height);
+    ~ImageProcessor();
+    QImage processImage(const QImage &img);
 };
 
-#endif // MAINWINDOW_H
+#endif // IMAGEPROCESSOR_H
