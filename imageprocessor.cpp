@@ -67,7 +67,8 @@ QImage ImageProcessor::processImage(const QImage &image)
 
         }
     }
-    images++;
+    //if (images<NUM_PICS)
+        images++;
 
     //redscale image if big difference
     if(sum>img.width()*img.height()/RATIO)

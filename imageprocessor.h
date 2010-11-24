@@ -24,6 +24,7 @@
 
 #define TRESHOLD 20
 #define RATIO 24
+#define NUM_PICS 300
 
 
 class ImageProcessor
