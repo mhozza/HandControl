@@ -25,6 +25,6 @@ HEADERS  += mainwindow.h \
     exceptions.h \
     imageprocessor.h
 
-FORMS    += mainwindow.ui
+FORMS += mainwindow.ui
 
 LIBS += -lv4l2

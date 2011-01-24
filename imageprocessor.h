@@ -24,18 +24,28 @@
 
 #define TRESHOLD 20
 #define RATIO 24
-#define NUM_PICS 300
+#define MAX_FRAMES 40
 
 
 class ImageProcessor
 {
     const QImage *oldImage;
-    QImage *avgImage;
-    int images;
+    QImage *avgImage, *avgImage2;
+    int images,images2;
+    bool firstAvg, avgCmp, imgChanged;
 public:
     ImageProcessor(int width, int height);
     ~ImageProcessor();
     QImage processImage(const QImage &img);
+    inline QImage getAvgImage()
+    {
+        if(firstAvg)
+            return *avgImage;
+        else
+            return *avgImage2;
+    }
+    inline void setAvgCmp(bool b){avgCmp = b;}
+    inline bool imageChanged(){return imgChanged;}
 };
 
 #endif // IMAGEPROCESSOR_H

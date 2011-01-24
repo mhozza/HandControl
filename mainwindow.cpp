@@ -30,7 +30,8 @@ MainWindow::MainWindow(QWidget *parent) :
     camera = new Webcam();        
     setupCamera();
 
-    connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));    
+    connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));
+    connect(ui->checkBox,SIGNAL(stateChanged(int)),this,SLOT(setAvg(int)));
 }
 
 void MainWindow::setupCamera()
@@ -100,7 +101,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::getImage()
 {
-        QPixmap pixmap;
+        QPixmap pixmap, pixmap2, pixmap3;
 
         if (camera->getFrame(imageFromCamera) == EXIT_FAILURE)
         {                
@@ -113,11 +114,21 @@ void MainWindow::getImage()
         {
                 //processImage(imageFromCamera);
                 pixmap = QPixmap::fromImage(imageProcessor->processImage(imageFromCamera));
+                pixmap2 = QPixmap::fromImage(imageProcessor->getAvgImage());
+                pixmap3 = QPixmap::fromImage(imageFromCamera);
         }
 
         if(!pixmap.isNull())
         {
                 ui->label->setPixmap(pixmap);
+                ui->label_2->setPixmap(pixmap2);
+                ui->label_3->setPixmap(pixmap3);
+                ui->radioButton->setChecked(imageProcessor->imageChanged());
         }
+}
+
+void MainWindow::setAvg(int state)
+{
+    imageProcessor->setAvgCmp(state);
 }
 

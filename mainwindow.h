@@ -26,8 +26,8 @@
 #include "imageprocessor.h"
 
 #define VIDEO_DEVICE "/dev/video0"
-#define VIDEO_WIDTH 640
-#define VIDEO_HEIGHT 480
+#define VIDEO_WIDTH 320
+#define VIDEO_HEIGHT 240
 
 
 namespace Ui {
@@ -60,6 +60,7 @@ private:
 
 public slots:
     void getImage();    
+    void setAvg(int);
 };
 
 #endif // MAINWINDOW_H

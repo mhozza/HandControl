@@ -19,12 +19,73 @@
      <rect>
       <x>0</x>
       <y>0</y>
-      <width>640</width>
-      <height>480</height>
+      <width>320</width>
+      <height>240</height>
      </rect>
     </property>
     <property name="text">
      <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_2">
+    <property name="geometry">
+     <rect>
+      <x>320</x>
+      <y>0</y>
+      <width>320</width>
+      <height>240</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_3">
+    <property name="geometry">
+     <rect>
+      <x>0</x>
+      <y>240</y>
+      <width>320</width>
+      <height>240</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>TextLabel</string>
+    </property>
+   </widget>
+   <widget class="QCheckBox" name="checkBox">
+    <property name="geometry">
+     <rect>
+      <x>400</x>
+      <y>340</y>
+      <width>82</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>AvgImage</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="radioButton">
+    <property name="enabled">
+     <bool>false</bool>
+    </property>
+    <property name="geometry">
+     <rect>
+      <x>390</x>
+      <y>260</y>
+      <width>131</width>
+      <height>21</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Image changed</string>
+    </property>
+    <property name="checkable">
+     <bool>true</bool>
+    </property>
+    <property name="checked">
+     <bool>false</bool>
     </property>
    </widget>
   </widget>
