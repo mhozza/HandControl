@@ -21,30 +21,32 @@
 
 #include <QImage>
 #include <QColor>
+#include <QThread>
+#include <QFuture>
+#include <QtConcurrentRun>
+#include <QMutex>
 
-#define TRESHOLD 20
+
+#define TRESHOLD 17
 #define RATIO 24
 #define MAX_FRAMES 40
+#define PIXEL_RADIUS 3
 
 
 class ImageProcessor
 {
-    const QImage *oldImage;
-    QImage *avgImage, *avgImage2;
+    QImage *oldImage, img, *expandedImgX, *expandedImg;
     int images,images2;
-    bool firstAvg, avgCmp, imgChanged;
+    bool imgChanged;
+    unsigned sum;
+    QMutex imgLock;
+    void prepareImg(const QImage &, int  ,int  ,int ,int );    
+    void expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut);
+    void expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut);
 public:
     ImageProcessor(int width, int height);
     ~ImageProcessor();
-    QImage processImage(const QImage &img);
-    inline QImage getAvgImage()
-    {
-        if(firstAvg)
-            return *avgImage;
-        else
-            return *avgImage2;
-    }
-    inline void setAvgCmp(bool b){avgCmp = b;}
+    QImage processImage(const QImage &img);    
     inline bool imageChanged(){return imgChanged;}
 };
 

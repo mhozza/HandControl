@@ -18,7 +18,7 @@
 #include <QImage>
 #include <QSocketNotifier>
 
-#include <linux/videodev.h>
+#include <linux/videodev2.h>
 
 class Webcam : public QObject
 {

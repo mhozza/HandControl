@@ -16,14 +16,16 @@ SOURCES += main.cpp\
     merror.cpp \
     imageconvert.cpp \
     exceptions.cpp \
-    imageprocessor.cpp
+    imageprocessor.cpp \
+    handdetector.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
     imageconvert.h \
     merror.h \
     exceptions.h \
-    imageprocessor.h
+    imageprocessor.h \
+    handdetector.h
 
 FORMS += mainwindow.ui
 

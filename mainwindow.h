@@ -24,6 +24,7 @@
 #include "webcam.h"
 #include "exceptions.h"
 #include "imageprocessor.h"
+#include "handdetector.h"
 
 #define VIDEO_DEVICE "/dev/video0"
 #define VIDEO_WIDTH 320
@@ -59,8 +60,7 @@ private:
     Ui::MainWindow *ui;
 
 public slots:
-    void getImage();    
-    void setAvg(int);
+    void getImage();        
 };
 
 #endif // MAINWINDOW_H

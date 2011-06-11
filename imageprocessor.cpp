@@ -18,128 +18,188 @@
 
 #include "imageprocessor.h"
 #include <iostream>
+
 using namespace std;
 
+void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut)
+{
+  int sx = 0;
+  for(int y = sy;y<ey;y++)
+  {
+    int endblack = 0;
+    for(int x = sx;x<sx+PIXEL_RADIUS && x<ex;x++)
+    {
+      QColor c(imgIn->pixel(x,y));
+      if(c!=Qt::black)
+      {
+        endblack = x+PIXEL_RADIUS;
+      }
+    }
+    for(int x = sx;x<ex;x++)
+    {
+      int xx = x+PIXEL_RADIUS;
+      if(xx<ex)
+      {
+        QColor c(imgIn->pixel(xx,y));
+        if(c!=Qt::black)
+        {
+          endblack = xx+PIXEL_RADIUS;
+        }
+      }
+      if(x<endblack)
+      {
+         imgLock.lock();
+         imgOut->setPixel(x,y,0xFF000000);
+         imgLock.unlock();
+      }
+      else
+      {
+         imgLock.lock();
+         imgOut->setPixel(x,y,0xFFFFFFFF);
+         imgLock.unlock();
+      }
+    }
+  }
+}
+
+void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut)
+{
+  int sy = 0;
+  for(int x = sx;x<ex;x++)
+  {
+    int endblack = 0;
+    for(int y = sy;y<sy+PIXEL_RADIUS && y<ey;y++)
+    {
+      QColor c(imgIn->pixel(x,y));
+      if(c==Qt::black)
+      {
+        endblack = y+PIXEL_RADIUS;
+      }
+    }
+    for(int y = sy;y<ey;y++)
+    {
+      int yy = y+PIXEL_RADIUS;
+      if(yy<ey)
+      {
+        QColor c(imgIn->pixel(x,yy));
+        if(c==Qt::black)
+        {
+          endblack = yy+PIXEL_RADIUS;
+        }
+      }
+      if(y<endblack)
+      {
+         imgLock.lock();
+         imgOut->setPixel(x,y,0xFF000000);
+          imgLock.unlock();
+      }
+      else
+      {
+         imgLock.lock();
+         imgOut->setPixel(x,y,0xFFFFFFFF);
+         imgLock.unlock();
+      }
+    }
+  }
+}
 
 
-ImageProcessor::ImageProcessor(int width, int height): images(0), images2(MAX_FRAMES/2), firstAvg(true), avgCmp(false)
+void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int ey)
+{
+  for(int x = sx;x<ex;x++)
+  {
+    for(int y = sy;y<ey;y++)
+    {
+      QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y));
+      //QColor c3(avgImage->pixel(x,y)),c4(avgImage2->pixel(x,y));
+
+      uint gsc1 = (3*c1.red()+3*c1.green()+4*c1.blue())/10;
+      uint gsc2 = (3*c2.red()+3*c2.green()+4*c2.blue())/10;
+      //uint gsca = firstAvg ? c3.blue() : c4.blue();
+
+      //greyscale difference
+      uint g = abs(gsc1 - gsc2);
+      //if(avgCmp) g = abs(gsc1 - gsca);
+
+      //count pixels with difference> treshold
+      if (g>TRESHOLD) sum++;
+      else g = 0;
+
+      imgLock.lock();
+      {
+        QColor c(g,g,g);
+        img.setPixel(x,y,c.rgb());
+      }
+      imgLock.unlock();
+
+
+
+    }
+  }
+}
+
+ImageProcessor::ImageProcessor(int width, int height): images(0), images2(MAX_FRAMES/2)
 {    
-    oldImage = new QImage(width,height,QImage::Format_RGB32);
-    avgImage = new QImage(width,height,QImage::Format_RGB32);
-    avgImage2 = NULL;
+  oldImage = new QImage(width,height,QImage::Format_RGB32);  
+  expandedImg = new QImage(width,height,QImage::Format_RGB32);
+  expandedImgX = new QImage(width,height,QImage::Format_RGB32);
 }
 
 QImage ImageProcessor::processImage(const QImage &image)
 {
-    QImage img(image);
-    bool firstRender = false;
-    if(avgImage2==NULL)
-    {
-        avgImage2 = new QImage(*avgImage);
-        firstRender = true;
-    }
+  img = image;
 
-    unsigned sum = 0;
-    for(int x = 0;x<img.width();x++)
-    {
-        for(int y = 0;y<img.height();y++)
-        {
-            QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y)),c3(avgImage->pixel(x,y)),c4(avgImage2->pixel(x,y));
+  sum = 0;  
+  //prepare
+  vector<QFuture<void> > threads;
+  int n = QThread::idealThreadCount();
+  for(int i=0;i<n;i++)
+  {
+    threads.push_back(QtConcurrent::run(this,&ImageProcessor::prepareImg, image, (img.width()*i)/n,0,((i+1)*img.width())/n,img.height()));
+  }
+  for(int i=0;i<n;i++)
+  {
+    threads[i].waitForFinished();
+  }
+  threads.clear();
+  //expand X
+  for(int i=0;i<n;i++)
+  {
+    threads.push_back(QtConcurrent::run(this,&ImageProcessor::expandPixelsX, (img.height()*i)/n,img.width(),((i+1)*img.height())/n,&img,expandedImgX));
+  }
+  for(int i=0;i<n;i++)
+  {
+    threads[i].waitForFinished();
+  }
+  threads.clear();
+  //expand Y
+  for(int i=0;i<n;i++)
+  {
+    threads.push_back(QtConcurrent::run(this,&ImageProcessor::expandPixelsY, (img.width()*i)/n,((i+1)*img.width())/n,img.height(),expandedImgX,expandedImg));
+  }
+  for(int i=0;i<n;i++)
+  {
+    threads[i].waitForFinished();
+  }
 
-            uint gsc1 = (4*c1.red()+3*c1.green()+3*c1.blue())/10;
-            uint gsc2 = (4*c2.red()+3*c2.green()+3*c2.blue())/10;
-            uint gsca = firstAvg ? c3.blue() : c4.blue();
+  imgChanged = false;
 
-            //greyscale difference                        
-            uint g = abs(gsc1 - gsc2);
-            if(avgCmp) g = abs(gsc1 - gsca);
+  //big difference
+  if(sum>img.width()*img.height()/RATIO)
+  {
+    imgChanged = true;    
+  }
 
+  delete oldImage;
+  oldImage = new QImage(image);
 
-            //count pixels with difference> treshold
-            if (g>TRESHOLD) sum++;
-            else g = 0;
-            {
-                QColor c(g,g,g);
-                img.setPixel(x,y,c.rgb());
-            }
-
-            //average image(assume avg image is greyscale)
-            uint gsavg = 0, gsavg2 = 0;
-            if(images<MAX_FRAMES || images2)
-            {
-                gsavg = (gsc1+images*c3.blue())/(images+1);
-                gsavg2 = (gsc1+images2*c4.blue())/(images2+1);
-
-            }
-            else
-            {
-                if(firstAvg)
-                {
-                    gsavg = gsc1;
-
-                }
-                else
-                {
-                    gsavg2 = gsc1;
-                }
-            }
-
-            /*if(gsavg==0)
-                cout << firstAvg << " " << images << endl;*/
-            if(firstRender) gsavg2 = gsc1;
-
-            QColor cavg(gsavg,gsavg,gsavg), cavg2(gsavg2,gsavg2,gsavg2);
-            avgImage->setPixel(x,y,cavg.rgb());
-            avgImage2->setPixel(x,y,cavg2.rgb());
-
-        }
-    }
-    if(images==MAX_FRAMES || images2==MAX_FRAMES)
-    {
-        if(firstAvg)
-        {
-            qDebug("Reset 1");
-            images = 0;
-        }
-        else
-        {
-            qDebug("Reset 2");
-            images2 = 0;
-        }
-        firstAvg = !firstAvg;
-
-    }
-    //if (images<NUM_PICS)
-        images++;
-        images2++;
-    imgChanged = false;
-
-    //big difference
-    if(sum>img.width()*img.height()/RATIO)
-    {            
-        imgChanged = true;
-        //redscale image
-       /* for(int x = 0;x<img.width();x++)
-        {
-            for(int y = 0;y<img.height();y++)
-            {
-                img.setPixel(x,y,img.pixel(x,y)%256*256*256);
-            }
-        }*/
-    }
-
-    //delete avgImage;
-    delete oldImage;
-    oldImage = new QImage(image);
-
-    return img;
-    //return *avgImage;
-    //return image;
+  //return img;
+  return *expandedImg;
 }
 
 ImageProcessor::~ImageProcessor()
 {
-    delete oldImage;
-    delete avgImage;
-    delete avgImage2;
+  delete oldImage;  
+  delete expandedImg;
+  delete expandedImgX;
 }
