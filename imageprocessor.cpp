@@ -19,6 +19,7 @@
 #include "imageprocessor.h"
 #include <iostream>
 
+
 using namespace std;
 
 void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut)
@@ -30,7 +31,7 @@ void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImag
     for(int x = sx;x<sx+PIXEL_RADIUS && x<ex;x++)
     {
       QColor c(imgIn->pixel(x,y));
-      if(c!=Qt::black)
+      if(c!=Qt::white)
       {
         endblack = x+PIXEL_RADIUS;
       }
@@ -41,7 +42,7 @@ void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImag
       if(xx<ex)
       {
         QColor c(imgIn->pixel(xx,y));
-        if(c!=Qt::black)
+        if(c!=Qt::white)
         {
           endblack = xx+PIXEL_RADIUS;
         }
@@ -71,7 +72,7 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImag
     for(int y = sy;y<sy+PIXEL_RADIUS && y<ey;y++)
     {
       QColor c(imgIn->pixel(x,y));
-      if(c==Qt::black)
+      if(c!=Qt::white)
       {
         endblack = y+PIXEL_RADIUS;
       }
@@ -82,7 +83,7 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImag
       if(yy<ey)
       {
         QColor c(imgIn->pixel(x,yy));
-        if(c==Qt::black)
+        if(c!=Qt::white)
         {
           endblack = yy+PIXEL_RADIUS;
         }
@@ -103,6 +104,22 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImag
   }
 }
 
+QRect ImageProcessor::segment(int x, int y, uint color, QImage * image, QRect rect)
+{
+  if(x<0 ||  x>=image->width()) return rect;
+  if(y<0 ||  y>=image->height()) return rect;
+  if(image->pixel(x,y)!=0xff000000) return rect;
+  image->setPixel(x,y,color);
+  if(x<rect.left()) rect.setLeft(x);
+  if(x>rect.right()) rect.setRight(x);
+  if(y<rect.top()) rect.setTop(y);
+  if(y>rect.bottom()) rect.setBottom(y);
+  rect = segment(x+1,y,color,image,rect);
+  rect = segment(x-1,y,color,image,rect);
+  rect = segment(x,y+1,color,image,rect);
+  rect = segment(x,y-1,color,image,rect);
+  return rect;
+}
 
 void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int ey)
 {
@@ -125,6 +142,8 @@ void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int
       if (g>TRESHOLD) sum++;
       else g = 0;
 
+      g=0xFF - g;
+
       imgLock.lock();
       {
         QColor c(g,g,g);
@@ -139,7 +158,7 @@ void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int
 }
 
 ImageProcessor::ImageProcessor(int width, int height): images(0), images2(MAX_FRAMES/2)
-{    
+{
   oldImage = new QImage(width,height,QImage::Format_RGB32);  
   expandedImg = new QImage(width,height,QImage::Format_RGB32);
   expandedImgX = new QImage(width,height,QImage::Format_RGB32);
@@ -181,6 +200,43 @@ QImage ImageProcessor::processImage(const QImage &image)
   {
     threads[i].waitForFinished();
   }
+  threads.clear();
+  uint color = 0xff000000;
+
+  while(!rectQueue.empty()) rectQueue.pop(); //empty the queue
+
+  for(int i=0;i<n-1 || i<1;i++)
+  {
+    threads.push_back(QtConcurrent::run(&handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, &img));
+  }
+
+  for(int y = 0;y<expandedImg->height();y++)
+  {
+    for(int x = 0;x<expandedImg->width();x++)
+    {
+      if(expandedImg->pixel(x,y)==0xff000000)
+      {
+        //color++;
+        color = 0xFF000001+rand()%0xFFFFFF;
+        QRect r(x,y,0,0);
+        r = segment(x,y,color,expandedImg,r);
+        cout << "Q:" << rectQueue.size() << endl;
+        if(r.width()>=MIN_RECT_SIZE && r.height()>=MIN_RECT_SIZE && r.width()<=MAX_RECT_SIZE && r.height() <= MAX_RECT_SIZE)
+        {
+          rectQueue.push(make_pair(r,color));
+        }
+      }
+    }
+  }
+
+  QRect tmprect;
+  rectQueue.push(make_pair(tmprect,0));
+
+  for(int i=0;i<n-1 || i<1;i++)
+  {
+    threads[i].waitForFinished();
+  }
+  threads.clear();
 
   imgChanged = false;
 
@@ -188,7 +244,7 @@ QImage ImageProcessor::processImage(const QImage &image)
   if(sum>img.width()*img.height()/RATIO)
   {
     imgChanged = true;    
-  }
+  }  
 
   delete oldImage;
   oldImage = new QImage(image);

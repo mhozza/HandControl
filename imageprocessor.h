@@ -26,12 +26,18 @@
 #include <QtConcurrentRun>
 #include <QMutex>
 
+#include <queue>
+
+#include "handrecognizer.h"
+
+using namespace std;
 
 #define TRESHOLD 17
 #define RATIO 24
 #define MAX_FRAMES 40
-#define PIXEL_RADIUS 3
-
+#define PIXEL_RADIUS 4
+#define MIN_RECT_SIZE 40
+#define MAX_RECT_SIZE 200
 
 class ImageProcessor
 {
@@ -40,9 +46,13 @@ class ImageProcessor
     bool imgChanged;
     unsigned sum;
     QMutex imgLock;
+    HandRecognizer handRecognizer;
+    queue<pair<QRect,uint> > rectQueue;
     void prepareImg(const QImage &, int  ,int  ,int ,int );    
     void expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut);
     void expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut);
+    QRect segment(int x, int y, uint color, QImage * image, QRect rect);
+
 public:
     ImageProcessor(int width, int height);
     ~ImageProcessor();

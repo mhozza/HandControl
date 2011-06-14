@@ -17,7 +17,8 @@ SOURCES += main.cpp\
     imageconvert.cpp \
     exceptions.cpp \
     imageprocessor.cpp \
-    handdetector.cpp
+    handdetector.cpp \
+    handrecognizer.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -25,7 +26,8 @@ HEADERS  += mainwindow.h \
     merror.h \
     exceptions.h \
     imageprocessor.h \
-    handdetector.h
+    handdetector.h \
+    handrecognizer.h
 
 FORMS += mainwindow.ui
 
