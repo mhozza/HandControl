@@ -113,19 +113,30 @@ void MainWindow::getImage()
 
         if(!imageFromCamera.isNull())
         {                
-                QImage img = imageProcessor->processImage(imageFromCamera);
-                /*HandDetector d;
-                img.setPixel(d.getHand(&img),0xFFFF0000);*/
+                QImage img =
+                imageProcessor->processImage(imageFromCamera);
+                //QImage img(VIDEO_WIDTH,VIDEO_HEIGHT,QImage::Format_RGB32);
+                QPainter p;
+                p.begin(&img);
+                /*p.setPen(QPen(QColor(Qt::white)));
+                p.setBrush(QBrush(QColor(Qt::white)));
+                p.drawRect(0,0,VIDEO_WIDTH,VIDEO_HEIGHT);*/
                 if(handRecognizer->isHand())
                 {
-                  QPainter p;
-                  p.begin(&img);
+
+                  p.setPen(QPen(QColor(Qt::blue)));
+                  p.setBrush(QBrush(QColor(Qt::red)));
+                  QRect r = handRecognizer->getHandRect();
+                  p.drawRect(r.x()+r.width()/2-2,r.y()+r.height()/2-2,4,4);
+
                   p.setPen(QPen(QColor(Qt::red)));
                   p.setBrush(QBrush(QColor(Qt::color0), Qt::NoBrush));
                   p.drawRect(handRecognizer->getHandRect());
-                  p.end();
+
                   ui->label_2->setText(QString::number(handRecognizer->getHandP()));
                 }
+                p.end();
+
 
                 pixmap = QPixmap::fromImage(img);                                
         }

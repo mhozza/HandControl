@@ -30,6 +30,7 @@
 #define VIDEO_DEVICE "/dev/video0"
 #define VIDEO_WIDTH 320
 #define VIDEO_HEIGHT 240
+#define MAX_EMPTY_SPAN 10
 
 
 namespace Ui {

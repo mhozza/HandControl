@@ -76,7 +76,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
     }
 
     //zapis do suboru
-    stringstream fname;
+    /*stringstream fname;
     //index = 0;
     fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
     index++;
@@ -105,6 +105,6 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
         }
       }
       ofs << endl;
-    }
+    }*/
   }
 }

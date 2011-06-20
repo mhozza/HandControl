@@ -2,7 +2,6 @@
 #define NEURALLAYER_H
 
 #include "continuous_perceptron.h"
-#include "binary_perceptron.h"
 
 namespace NeuralNET
 {
