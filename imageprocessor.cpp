@@ -22,6 +22,47 @@
 
 using namespace std;
 
+void ImageProcessor::medianFilterX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut)
+{
+  int sx = 0;
+  for(int y = sy;y<ey;y++)
+  {
+    for(int x = sx+1;x<ex-1;x++)
+    {
+      QColor c1(imgIn->pixel(x-1,y));
+      QColor c2(imgIn->pixel(x,y));
+      QColor c3(imgIn->pixel(x+1,y));
+
+      QColor c(median3(c1.red(),c2.red(),c3.red()), median3(c1.green(),c2.green(),c3.green()), median3(c1.blue(),c2.blue(),c3.blue()));
+
+      imgLock.lock();
+      imgOut->setPixel(x,y,c.value());
+      imgLock.unlock();
+    }
+  }
+}
+
+void ImageProcessor::medianFilterY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut)
+{
+  int sy = 0;
+  for(int x = sx;x<ex;x++)
+  {
+    for(int y = sy+1;y<ey-1;y++)
+    {
+      QColor c1(imgIn->pixel(x,y-1));
+      QColor c2(imgIn->pixel(x,y));
+      QColor c3(imgIn->pixel(x,y+1));
+
+      QColor c(median3(c1.red(),c2.red(),c3.red()), median3(c1.green(),c2.green(),c3.green()), median3(c1.blue(),c2.blue(),c3.blue()));
+
+      imgLock.lock();
+      imgOut->setPixel(x,y,c.value());
+      imgLock.unlock();
+    }
+  }
+}
+
+
 void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut)
 {
   int sx = 0;
@@ -127,51 +168,44 @@ void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int
   {
     for(int y = sy;y<ey;y++)
     {
-      QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y));
-      //QColor c3(avgImage->pixel(x,y)),c4(avgImage2->pixel(x,y));
+      QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y));      
 
-      uint gsc1 = (3*c1.red()+3*c1.green()+4*c1.blue())/10;
-      uint gsc2 = (3*c2.red()+3*c2.green()+4*c2.blue())/10;
-      //uint gsca = firstAvg ? c3.blue() : c4.blue();
+      int gsc1 = (3*c1.red()+3*c1.green()+4*c1.blue())/10;
+      int gsc2 = (3*c2.red()+3*c2.green()+4*c2.blue())/10;
 
       //greyscale difference
       uint g = abs(gsc1 - gsc2);
-      //if(avgCmp) g = abs(gsc1 - gsca);
 
       //count pixels with difference> treshold
       if (g>TRESHOLD) sum++;
       else g = 0;
 
       g=0xFF - g;
+      QColor c(g,g,g);
 
       imgLock.lock();
-      {
-        QColor c(g,g,g);
-        img.setPixel(x,y,c.rgb());
-      }
+      img.setPixel(x,y,c.rgb());
       imgLock.unlock();
-
-
-
     }
   }
 }
 
-ImageProcessor::ImageProcessor(int width, int height): images(0), images2(MAX_FRAMES/2)
+ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer): images(0), images2(MAX_FRAMES/2)
 {
   oldImage = new QImage(width,height,QImage::Format_RGB32);  
   expandedImg = new QImage(width,height,QImage::Format_RGB32);
   expandedImgX = new QImage(width,height,QImage::Format_RGB32);
+  this->handRecognizer = handRecognizer;
 }
 
 QImage ImageProcessor::processImage(const QImage &image)
-{
+{  
   img = image;
-
   sum = 0;  
   //prepare
   vector<QFuture<void> > threads;
   int n = QThread::idealThreadCount();
+
   for(int i=0;i<n;i++)
   {
     threads.push_back(QtConcurrent::run(this,&ImageProcessor::prepareImg, image, (img.width()*i)/n,0,((i+1)*img.width())/n,img.height()));
@@ -207,7 +241,7 @@ QImage ImageProcessor::processImage(const QImage &image)
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(&handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, &img));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, &img));
   }
 
   for(int y = 0;y<expandedImg->height();y++)
@@ -249,6 +283,7 @@ QImage ImageProcessor::processImage(const QImage &image)
   delete oldImage;
   oldImage = new QImage(image);
 
+  //return image;
   //return img;
   return *expandedImg;
 }

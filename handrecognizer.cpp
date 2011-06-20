@@ -6,24 +6,26 @@
 
 using namespace std;
 
+
 HandRecognizer::HandRecognizer()
 {
-  index = 0;
+  index = 860;
+  unsigned sizes[] = {12,OUT_N};
+  net = new NeuralNetwork(2,sizes,N,ALPHA);
+  net->loadWeights("classifier.dat");
 }
 
 void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef, QImage * img)
 {
+  resetHand();
   while(true)
   {
     if(q->empty()) continue;
     QRect r = q->front().first;
-    uint c = q->front().second;
+    uint c = q->front().second;    
     if (c == 0) break;
     q->pop();
     //cout << r.left() << " " << r.top() << " " << r.right() << " " << r.bottom() << " " << c << endl;
-    stringstream fname;
-    fname << "hand_images/hand_" << index << ".pbm";
-    index++;
 
     //crop image
     QImage imgRefScaled = imgRef->copy(r);
@@ -35,17 +37,59 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
     imgRefScaled = imgRefScaled.transformed(m);
     imgScaled = imgScaled.transformed(m);
 
-    //cout << imgScaled.width() << " " << imgScaled.height() << endl;
+
+    //vygenerovanie vector<float> vstupu pre net
+    vector<float> input;
+    input.resize(N);
+    int i = -1;
+
+    for(int y = 0;y < SCALE_SIZE; y++)
+    {
+      for(int x = 0;x < SCALE_SIZE; x++)
+      {
+        i++;
+        if(x>=imgRefScaled.width() || y >=imgRefScaled.height()) {
+          input[i] = 0;
+          continue;
+        }
+        if(imgRefScaled.pixel(x,y)==c)
+        {
+          if(imgScaled.pixel(x,y)!=Qt::white)
+            input[i] = 1;
+          else
+            input[i] = 0;
+        }
+        else
+        {
+          input[i] = 0;
+        }
+      }
+    }
+
+    //rozpoznanie ruky:
+    float hand = net->classify1(input);
+
+    if(hand>hand_p)
+    {
+      hand_p = hand;
+      handRect = r;
+    }
+
+    //zapis do suboru
+    stringstream fname;
+    //index = 0;
+    fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
+    index++;
 
     ofstream ofs(fname.str().c_str());
     ofs << "P1" << endl;
     ofs << SCALE_SIZE << " " << SCALE_SIZE << endl;
-    for(int y = 0;y <= SCALE_SIZE; y++)
+    for(int y = 0;y < SCALE_SIZE; y++)
     {
-      for(int x = 0;x <= SCALE_SIZE; x++)
+      for(int x = 0;x < SCALE_SIZE; x++)
       {
         if(x>=imgRefScaled.width() || y >=imgRefScaled.height()) {
-          cout << 0 << " ";
+          ofs << 0 << " ";
           continue;
         }
         if(imgRefScaled.pixel(x,y)==c)

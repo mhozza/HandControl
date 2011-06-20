@@ -46,17 +46,37 @@ class ImageProcessor
     bool imgChanged;
     unsigned sum;
     QMutex imgLock;
-    HandRecognizer handRecognizer;
+    HandRecognizer * handRecognizer;
     queue<pair<QRect,uint> > rectQueue;
+
+    template<class T> inline void exchange(T &a, T &b)
+    {
+      T t = a;
+      a = b;
+      b = t;
+    }
+
+    template<class T> inline T median3(T a, T b, T c)
+    {
+      if(b>a) exchange(a,b);
+      if(c>a) exchange(a,c);
+      if(c>b) exchange(b,c);
+      return b;
+    }
+
     void prepareImg(const QImage &, int  ,int  ,int ,int );    
+
+    void medianFilterX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut);
+    void medianFilterY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut);
+
     void expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut);
     void expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut);
     QRect segment(int x, int y, uint color, QImage * image, QRect rect);
 
 public:
-    ImageProcessor(int width, int height);
+    ImageProcessor(int width, int height, HandRecognizer * handRecognizer);
     ~ImageProcessor();
-    QImage processImage(const QImage &img);    
+    QImage processImage(const QImage &img);
     inline bool imageChanged(){return imgChanged;}
 };
 

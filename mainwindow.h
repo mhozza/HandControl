@@ -20,11 +20,12 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QPainter>
 
 #include "webcam.h"
 #include "exceptions.h"
 #include "imageprocessor.h"
-#include "handdetector.h"
+#include "handrecognizer.h"
 
 #define VIDEO_DEVICE "/dev/video0"
 #define VIDEO_WIDTH 320
@@ -47,6 +48,7 @@ class MainWindow : public QMainWindow
     QList<int> formatList;
     ImageProcessor *imageProcessor;
 
+    HandRecognizer * handRecognizer;
 
     void setupCamera();
 protected:

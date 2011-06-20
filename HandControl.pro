@@ -17,8 +17,11 @@ SOURCES += main.cpp\
     imageconvert.cpp \
     exceptions.cpp \
     imageprocessor.cpp \
-    handdetector.cpp \
-    handrecognizer.cpp
+    handrecognizer.cpp \
+    NeuralNet/perceptron.cpp \
+    NeuralNet/neuralnetwork.cpp \
+    NeuralNet/neurallayer.cpp \
+    NeuralNet/continuous_perceptron.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -26,8 +29,11 @@ HEADERS  += mainwindow.h \
     merror.h \
     exceptions.h \
     imageprocessor.h \
-    handdetector.h \
-    handrecognizer.h
+    handrecognizer.h \
+    NeuralNet/perceptron.h \
+    NeuralNet/neuralnetwork.h \
+    NeuralNet/neurallayer.h \
+    NeuralNet/continuous_perceptron.h
 
 FORMS += mainwindow.ui
 

@@ -41,7 +41,8 @@ void MainWindow::setupCamera()
 
         formatList = camera->getFormatList(formatName);
         camera->setFormat(VIDEO_WIDTH, VIDEO_HEIGHT, formatList.at(0));
-        imageProcessor = new ImageProcessor(VIDEO_WIDTH, VIDEO_HEIGHT);
+        handRecognizer = new HandRecognizer();
+        imageProcessor = new ImageProcessor(VIDEO_WIDTH, VIDEO_HEIGHT, handRecognizer);
 
         for (int i = 0; i < formatName.size(); i++)
         {
@@ -93,6 +94,7 @@ MainWindow::~MainWindow()
 
     delete camera;
     delete imageProcessor;
+    delete handRecognizer;
 
     delete ui;
 }
@@ -100,7 +102,7 @@ MainWindow::~MainWindow()
 
 void MainWindow::getImage()
 {
-        QPixmap pixmap, pixmap3;
+        QPixmap pixmap;
 
         if (camera->getFrame(imageFromCamera) == EXIT_FAILURE)
         {                
@@ -110,22 +112,27 @@ void MainWindow::getImage()
         }
 
         if(!imageFromCamera.isNull())
-        {
-                //processImage(imageFromCamera);
+        {                
                 QImage img = imageProcessor->processImage(imageFromCamera);
-                HandDetector d;
-                img.setPixel(d.getHand(&img),0xFFFF0000);
-                pixmap = QPixmap::fromImage(img);                
-                //pixmap3 = QPixmap::fromImage(imageFromCamera);
+                /*HandDetector d;
+                img.setPixel(d.getHand(&img),0xFFFF0000);*/
+                if(handRecognizer->isHand())
+                {
+                  QPainter p;
+                  p.begin(&img);
+                  p.setPen(QPen(QColor(Qt::red)));
+                  p.setBrush(QBrush(QColor(Qt::color0), Qt::NoBrush));
+                  p.drawRect(handRecognizer->getHandRect());
+                  p.end();
+                  ui->label_2->setText(QString::number(handRecognizer->getHandP()));
+                }
+
+                pixmap = QPixmap::fromImage(img);                                
         }
 
         if(!pixmap.isNull())
         {
-                ui->label->setPixmap(pixmap);                
-                //ui->label_3->setPixmap(pixmap3);
+                ui->label->setPixmap(pixmap);
                 ui->radioButton->setChecked(imageProcessor->imageChanged());
         }
 }
-
-
-
