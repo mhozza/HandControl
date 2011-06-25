@@ -15,6 +15,7 @@ using namespace NeuralNET;
 #define FOR(i,n)      for(int i=0;i<(n);i++)
 #define N 6400
 #define N_SIDE 80
+#define HIDDEN_N 17
 #define OUT_N 1
 
 inline void print(string s)
@@ -101,7 +102,7 @@ int main(int argc, char *argv[])
    int mode = 0;
    if(argc>1) mode = atoi(argv[1]);
 
-   unsigned sizes[] = {12,OUT_N};
+   unsigned sizes[] = {HIDDEN_N,OUT_N};
    NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
    signal(SIGINT, ctrlc);
 

@@ -26,12 +26,12 @@
 #include "exceptions.h"
 #include "imageprocessor.h"
 #include "handrecognizer.h"
+#include "gesturerecognizer.h"
 
 #define VIDEO_DEVICE "/dev/video0"
 #define VIDEO_WIDTH 320
 #define VIDEO_HEIGHT 240
-#define MAX_EMPTY_SPAN 10
-
+#define NO_HAND_FRAMES 7
 
 namespace Ui {
     class MainWindow;
@@ -48,8 +48,10 @@ class MainWindow : public QMainWindow
     QList<QString> formatName;
     QList<int> formatList;
     ImageProcessor *imageProcessor;
-
     HandRecognizer * handRecognizer;
+    GestureRecognizer * gestureRecognizer;
+
+    int noHandFrames;
 
     void setupCamera();
 protected:

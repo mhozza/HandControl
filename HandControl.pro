@@ -21,7 +21,12 @@ SOURCES += main.cpp\
     NeuralNet/perceptron.cpp \
     NeuralNet/neuralnetwork.cpp \
     NeuralNet/neurallayer.cpp \
-    NeuralNet/continuous_perceptron.cpp
+    NeuralNet/continuous_perceptron.cpp \
+    gesturerecognizer.cpp \
+    gesture.cpp \
+    gesturemoveleft.cpp \
+    gesturemoveright.cpp \
+    xfunc.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -33,8 +38,13 @@ HEADERS  += mainwindow.h \
     NeuralNet/perceptron.h \
     NeuralNet/neuralnetwork.h \
     NeuralNet/neurallayer.h \
-    NeuralNet/continuous_perceptron.h
+    NeuralNet/continuous_perceptron.h \
+    gesturerecognizer.h \
+    gesture.h \
+    gesturemoveleft.h \
+    gesturemoveright.h \
+    xfunc.h
 
 FORMS += mainwindow.ui
 
-LIBS += -lv4l2
+LIBS += -lv4l2 -lXtst

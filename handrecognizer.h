@@ -14,9 +14,9 @@ using namespace NeuralNET;
 #define N SCALE_SIZE*SCALE_SIZE
 #define N_SIDE SCALE_SIZE
 #define OUT_N 1
+#define HIDDEN_N 17
 #define ALPHA 0.25
-#define TRESHOLD 0.85
-
+#define TRESHOLD 0.75
 
 class HandRecognizer
 {
@@ -24,13 +24,9 @@ class HandRecognizer
   //QMutex lock;
   int index;  
   float hand_p;
-  QRect handRect;
-  template<class T> inline T first(vector<T> v)
-  {
-    return v[0];
-  }
+  QRect handRect;  
   inline void resetHand(){hand_p = 0;}
-
+  bool isSimilarRect();
 public:
     HandRecognizer();    
     void processRects(queue<pair<QRect,uint> > * q, QImage * img_ref, QImage * img);

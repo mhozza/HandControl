@@ -1,7 +1,5 @@
 #include "neurallayer.h"
-#include <iostream>
 
-#include <cassert>
 
 using namespace std;
 using namespace NeuralNET;
@@ -9,7 +7,6 @@ using namespace NeuralNET;
 NeuralLayer::NeuralLayer(unsigned size, unsigned dimension, float alpha = 0.25)
 {
   neurons.resize(size);
-  assert(neurons.size()<10000);
   for(unsigned i = 0; i< neurons.size();i++)
   {
     //neurons[i] = new BinaryPerceptron(dimension,alpha);
@@ -41,9 +38,7 @@ void NeuralLayer::trainDelta(vector<float> input,vector<float> delta)
 
 vector<float> NeuralLayer::classify(vector<float> input)
 {
-  vector<float> outputs;
-  cout << neurons.size() << endl;
-  assert(neurons.size() < 10000);
+  vector<float> outputs;  
   outputs.resize(neurons.size());
   for(unsigned i = 0; i< neurons.size();i++)
   {

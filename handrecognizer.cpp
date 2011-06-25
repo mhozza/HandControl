@@ -10,9 +10,16 @@ using namespace std;
 HandRecognizer::HandRecognizer()
 {
   index = 860;
-  unsigned sizes[] = {12,OUT_N};
+  unsigned sizes[] = {HIDDEN_N,OUT_N};
   net = new NeuralNetwork(2,sizes,N,ALPHA);
   net->loadWeights("classifier.dat");
+}
+
+bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
+{
+  int min = 9999;
+  //abs(r1.x-r2.x)
+  return false;
 }
 
 void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef, QImage * img)
@@ -68,6 +75,8 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
 
     //rozpoznanie ruky:
     float hand = net->classify1(input);
+
+    if(isSimilarRect(r,handRect)) hand += 0.3;
 
     if(hand>hand_p)
     {

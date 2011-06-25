@@ -1,7 +1,5 @@
 #include "neuralnetwork.h"
 
-#include <assert.h>
-
 namespace NeuralNET
 {
 
@@ -14,8 +12,7 @@ namespace NeuralNET
 
     layers.resize(layerCount);
     for(unsigned i = 0; i< layers.size();i++)
-    {
-      assert(sizes[i]< 10000);
+    {      
       layers[i] = new NeuralLayer(sizes[i],i==0 ? dimension : sizes [i-1],alpha);
       //layers[i]->setW0(0.01);
       //layers[i]->setMomentum(0.3);

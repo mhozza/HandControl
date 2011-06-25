@@ -253,8 +253,7 @@ QImage ImageProcessor::processImage(const QImage &image)
         //color++;
         color = 0xFF000001+rand()%0xFFFFFF;
         QRect r(x,y,0,0);
-        r = segment(x,y,color,expandedImg,r);
-        cout << "Q:" << rectQueue.size() << endl;
+        r = segment(x,y,color,expandedImg,r);        
         if(r.width()>=MIN_RECT_SIZE && r.height()>=MIN_RECT_SIZE && r.width()<=MAX_RECT_SIZE && r.height() <= MAX_RECT_SIZE)
         {
           rectQueue.push(make_pair(r,color));

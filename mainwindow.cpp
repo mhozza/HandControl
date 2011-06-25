@@ -16,19 +16,23 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "mainwindow.h"
 #include "ui_mainwindow.h"
+#include "mainwindow.h"
 #include <iostream>
 
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui(new Ui::MainWindow),
+    noHandFrames(0)
 {
     ui->setupUi(this);
     camera = new Webcam();        
+    handRecognizer = new HandRecognizer();
+    gestureRecognizer= new GestureRecognizer();
     setupCamera();
+
 
     connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));    
 }
@@ -41,7 +45,7 @@ void MainWindow::setupCamera()
 
         formatList = camera->getFormatList(formatName);
         camera->setFormat(VIDEO_WIDTH, VIDEO_HEIGHT, formatList.at(0));
-        handRecognizer = new HandRecognizer();
+
         imageProcessor = new ImageProcessor(VIDEO_WIDTH, VIDEO_HEIGHT, handRecognizer);
 
         for (int i = 0; i < formatName.size(); i++)
@@ -95,6 +99,7 @@ MainWindow::~MainWindow()
     delete camera;
     delete imageProcessor;
     delete handRecognizer;
+    delete gestureRecognizer;
 
     delete ui;
 }
@@ -123,7 +128,7 @@ void MainWindow::getImage()
                 p.drawRect(0,0,VIDEO_WIDTH,VIDEO_HEIGHT);*/
                 if(handRecognizer->isHand())
                 {
-
+                  noHandFrames = 0;
                   p.setPen(QPen(QColor(Qt::blue)));
                   p.setBrush(QBrush(QColor(Qt::red)));
                   QRect r = handRecognizer->getHandRect();
@@ -131,14 +136,31 @@ void MainWindow::getImage()
 
                   p.setPen(QPen(QColor(Qt::red)));
                   p.setBrush(QBrush(QColor(Qt::color0), Qt::NoBrush));
-                  p.drawRect(handRecognizer->getHandRect());
+                  p.drawRect(r);
 
                   ui->label_2->setText(QString::number(handRecognizer->getHandP()));
+
+                  QPoint point(r.x()+r.width()/2,r.y()+r.height()/2);
+                  gestureRecognizer->addPoint(point);
+                  Gesture *g = gestureRecognizer->getGesture();
+                  if(g!=NULL)
+                  {
+                    g->action();
+                    gestureRecognizer->resetGesture();
+                  }
                 }
-                p.end();
+                else
+                {
+                  noHandFrames++;
+                  if(noHandFrames>=NO_HAND_FRAMES)
+                  {                    
+                    gestureRecognizer->resetGesture();
+                  }
+                }
+                gestureRecognizer->drawPoints(&p);
+                p.end();          
 
-
-                pixmap = QPixmap::fromImage(img);                                
+                pixmap = QPixmap::fromImage(img);
         }
 
         if(!pixmap.isNull())
