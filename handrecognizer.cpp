@@ -6,6 +6,12 @@
 
 using namespace std;
 
+int subtract(QPoint a, QPoint b)
+{
+  int x = abs(a.x()-b.x());
+  int y = abs(a.y()-b.y());
+  return round(sqrt(x*x+y*y));
+}
 
 HandRecognizer::HandRecognizer()
 {
@@ -17,14 +23,26 @@ HandRecognizer::HandRecognizer()
 
 bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
 {
-  int min = 9999;
-  //abs(r1.x-r2.x)
+  int min = 9999, max = 0;
+  int d = subtract(r1.topLeft(),r2.topLeft());
+  min = d<min ? d : min;
+  max = d>max ? d : max;
+  d = subtract(r1.topRight(),r2.topRight());
+  min = d<min ? d : min;
+  max = d>max ? d : max;
+  d = subtract(r1.bottomLeft(),r2.bottomLeft());
+  min = d<min ? d : min;
+  max = d>max ? d : max;
+  d = subtract(r1.bottomRight(),r2.bottomRight());
+  min = d<min ? d : min;
+  max = d>max ? d : max;
+  if (min<30 && max < 50) return true;
   return false;
 }
 
-void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef, QImage * img)
+void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef, QImage * img, QMutex *imglock)
 {
-  resetHand();
+  resetHand();  
   while(true)
   {
     if(q->empty()) continue;
@@ -34,9 +52,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
     q->pop();
     //cout << r.left() << " " << r.top() << " " << r.right() << " " << r.bottom() << " " << c << endl;
 
-    //crop image
+    //crop image    
     QImage imgRefScaled = imgRef->copy(r);
-    QImage imgScaled = img->copy(r);
+    QImage imgScaled = img->copy(r);    
 
     //scale image
     QMatrix m;
@@ -73,7 +91,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
       }
     }
 
-    //rozpoznanie ruky:
+    //rozpoznanie ruky:    
     float hand = net->classify1(input);
 
     if(isSimilarRect(r,handRect)) hand += 0.3;
@@ -115,5 +133,5 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
       }
       ofs << endl;
     }*/
-  }
+  }    
 }

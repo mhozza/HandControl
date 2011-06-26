@@ -1,12 +1,20 @@
 #include "gesturerecognizer.h"
 #include <iostream>
+#include <cmath>
 #include "gesturemoveleft.h"
 #include "gesturemoveright.h"
 
+/*int subtract(QPoint a, QPoint b)
+{
+  int x = abs(a.x()-b.x());
+  int y = abs(a.y()-b.y());
+  return round(sqrt(x*x+y*y));
+}*/
+
 GestureRecognizer::GestureRecognizer()
 {
-  gestures.resize(0);
-  points.resize(0);
+  gestures.clear();
+  points.clear();
 
   addGesture(new GestureMoveLeft());
   addGesture(new GestureMoveRight());
@@ -14,7 +22,7 @@ GestureRecognizer::GestureRecognizer()
 
 void GestureRecognizer::resetGesture()
 {
-  points.resize(0);
+  points.clear();
 }
 
 void GestureRecognizer::addPoint(QPoint p)

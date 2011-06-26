@@ -145,12 +145,41 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImag
   }
 }
 
-QRect ImageProcessor::segment(int x, int y, uint color, QImage * image, QRect rect)
+
+
+QRect ImageProcessor::segment(int sx, int sy, uint color, QImage * image, QRect rect)
+{
+  queue<pair<int,int> > f;
+  f.push(make_pair(sx,sy));
+  while(!f.empty())
+  {
+      int x = f.front().first;
+      int y = f.front().second;
+      f.pop();
+      if(x<0 ||  x>=image->width()) continue;
+      if(y<0 ||  y>=image->height()) continue;
+      if(image->pixel(x,y)!=0xff000000) continue;
+      image->setPixel(x,y,color);
+      if(x<rect.left()) rect.setLeft(x);
+      if(x>rect.right()) rect.setRight(x);
+      if(y<rect.top()) rect.setTop(y);
+      if(y>rect.bottom()) rect.setBottom(y);
+      f.push(make_pair(x+1,y));
+      f.push(make_pair(x-1,y));
+      f.push(make_pair(x,y+1));
+      f.push(make_pair(x,y-1));
+  }
+  return rect;
+}
+
+
+/*QRect ImageProcessor::segment(int x, int y, uint color, QImage * image, QRect rect)
 {
   if(x<0 ||  x>=image->width()) return rect;
   if(y<0 ||  y>=image->height()) return rect;
-  if(image->pixel(x,y)!=0xff000000) return rect;
-  image->setPixel(x,y,color);
+  //cout << x << " "<<  y << " " << image->width() << " " << image->height() << endl;
+  if(image->pixel(x,y)!=0xff000000) return rect;//!!! FIXME
+  image->setPixel(x,y,color);  
   if(x<rect.left()) rect.setLeft(x);
   if(x>rect.right()) rect.setRight(x);
   if(y<rect.top()) rect.setTop(y);
@@ -160,7 +189,7 @@ QRect ImageProcessor::segment(int x, int y, uint color, QImage * image, QRect re
   rect = segment(x,y+1,color,image,rect);
   rect = segment(x,y-1,color,image,rect);
   return rect;
-}
+}*/
 
 void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int ey)
 {
@@ -241,7 +270,7 @@ QImage ImageProcessor::processImage(const QImage &image)
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, &img));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, &img,&imgLock));
   }
 
   for(int y = 0;y<expandedImg->height();y++)
@@ -252,8 +281,8 @@ QImage ImageProcessor::processImage(const QImage &image)
       {
         //color++;
         color = 0xFF000001+rand()%0xFFFFFF;
-        QRect r(x,y,0,0);
-        r = segment(x,y,color,expandedImg,r);        
+        QRect r(x,y,0,0);        
+        r = segment(x,y,color,expandedImg,r);
         if(r.width()>=MIN_RECT_SIZE && r.height()>=MIN_RECT_SIZE && r.width()<=MAX_RECT_SIZE && r.height() <= MAX_RECT_SIZE)
         {
           rectQueue.push(make_pair(r,color));
