@@ -4,9 +4,9 @@
 #include "gesture.h"
 
 class GestureMoveLeft : public Gesture
-{
+{  
 public:
-  //GestureMoveLeft();
+  GestureMoveLeft(): Gesture("Move Left"){}
   bool check(vector<QPoint> points);
   void action();
 };

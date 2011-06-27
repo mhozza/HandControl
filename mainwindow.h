@@ -27,6 +27,7 @@
 #include "imageprocessor.h"
 #include "handrecognizer.h"
 #include "gesturerecognizer.h"
+#include "onscreendisplayform.h"
 
 #define VIDEO_DEVICE "/dev/video0"
 #define VIDEO_WIDTH 320
@@ -50,6 +51,7 @@ class MainWindow : public QMainWindow
     ImageProcessor *imageProcessor;
     HandRecognizer * handRecognizer;
     GestureRecognizer * gestureRecognizer;
+    OnScreenDisplayForm osd;
 
     int noHandFrames;
 

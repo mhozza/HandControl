@@ -2,6 +2,7 @@
 #define GESTURE_H
 
 #include <QPoint>
+#include <QString>
 
 #include <vector>
 
@@ -10,12 +11,14 @@
 using namespace std;
 
 class Gesture
-{
+{  
 protected:
-  void sendInput(int k);
+  QString txt;
+  void sendInput(unsigned long k);
 public:
   //setAction();
-  //Gesture(action);
+  Gesture(QString text) : txt(text){}
+  QString text();
   virtual bool check(vector<QPoint>) = 0;
   virtual void action() = 0;
 };

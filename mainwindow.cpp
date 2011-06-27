@@ -146,7 +146,9 @@ void MainWindow::getImage()
                   if(g!=NULL)
                   {
                     g->action();
+                    osd.setText(g->text());
                     gestureRecognizer->resetGesture();
+                    osd.show();
                   }
                 }
                 else

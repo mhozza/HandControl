@@ -26,7 +26,10 @@ SOURCES += main.cpp\
     gesture.cpp \
     gesturemoveleft.cpp \
     gesturemoveright.cpp \
-    xfunc.cpp
+    xfunc.cpp \
+    gesturemoveup.cpp \
+    gesturemovedown.cpp \
+    onscreendisplayform.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -43,8 +46,12 @@ HEADERS  += mainwindow.h \
     gesture.h \
     gesturemoveleft.h \
     gesturemoveright.h \
-    xfunc.h
+    xfunc.h \
+    gesturemoveup.h \
+    gesturemovedown.h \
+    onscreendisplayform.h
 
-FORMS += mainwindow.ui
+FORMS += mainwindow.ui \
+    onscreendisplayform.ui
 
 LIBS += -lv4l2 -lXtst

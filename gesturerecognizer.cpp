@@ -3,6 +3,8 @@
 #include <cmath>
 #include "gesturemoveleft.h"
 #include "gesturemoveright.h"
+#include "gesturemoveup.h"
+#include "gesturemovedown.h"
 
 /*int subtract(QPoint a, QPoint b)
 {
@@ -18,6 +20,8 @@ GestureRecognizer::GestureRecognizer()
 
   addGesture(new GestureMoveLeft());
   addGesture(new GestureMoveRight());
+  addGesture(new GestureMoveUp());
+  addGesture(new GestureMoveDown());
 }
 
 void GestureRecognizer::resetGesture()
@@ -57,3 +61,4 @@ GestureRecognizer::~GestureRecognizer()
 {
   for(typeof(gestures.begin()) it = gestures.begin();it!=gestures.end();it++) delete (*it);
 }
+

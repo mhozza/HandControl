@@ -49,8 +49,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
     QRect r = q->front().first;
     uint c = q->front().second;    
     if (c == 0) break;
-    q->pop();
-    //cout << r.left() << " " << r.top() << " " << r.right() << " " << r.bottom() << " " << c << endl;
+    q->pop();    
 
     //crop image    
     QImage imgRefScaled = imgRef->copy(r);
