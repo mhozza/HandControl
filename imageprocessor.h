@@ -32,12 +32,12 @@
 
 using namespace std;
 
-#define TRESHOLD 17
+#define TRESHOLD 20
 #define RATIO 24
 #define MAX_FRAMES 40
 #define PIXEL_RADIUS 4
 #define MIN_RECT_SIZE 40
-#define MAX_RECT_SIZE 200
+#define MAX_RECT_SIZE 220
 
 class ImageProcessor
 {

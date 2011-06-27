@@ -8,6 +8,10 @@
 
 #include "xfunc.h"
 
+#define MIN_POINT_COUNT 4
+#define MAX_VARIANCE 50
+#define MIN_LENGTH 65
+
 using namespace std;
 
 class Gesture

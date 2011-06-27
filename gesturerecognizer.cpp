@@ -6,12 +6,12 @@
 #include "gesturemoveup.h"
 #include "gesturemovedown.h"
 
-/*int subtract(QPoint a, QPoint b)
+int point_subtract(QPoint a, QPoint b)
 {
   int x = abs(a.x()-b.x());
   int y = abs(a.y()-b.y());
   return round(sqrt(x*x+y*y));
-}*/
+}
 
 GestureRecognizer::GestureRecognizer()
 {
@@ -47,8 +47,18 @@ Gesture * GestureRecognizer::getGesture()
 
 void GestureRecognizer::removeNoise()
 {  
-  //if(points.size()<3) return;
-  //for()
+  if(points.size()<3) return;
+  int f = 1, a = 1;
+  while(f<points.size() && a<points.size())
+  {
+    if(point_subtract(points[f-1],points[a])<MAX_POINT_DISTANCE)
+    {
+      points[f] = points[a];
+      f++;
+    }
+    a++;
+  }
+  points.resize(f);
 }
 
 void GestureRecognizer::addGesture(Gesture * g)

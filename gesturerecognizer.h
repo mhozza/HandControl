@@ -10,6 +10,8 @@
 
 #include "gesture.h"
 
+#define MAX_POINT_DISTANCE 70
+
 using namespace std;
 
 class GestureRecognizer

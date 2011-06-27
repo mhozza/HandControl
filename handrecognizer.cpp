@@ -17,7 +17,7 @@ HandRecognizer::HandRecognizer()
 {
   index = 860;
   unsigned sizes[] = {HIDDEN_N,OUT_N};
-  net = new NeuralNetwork(2,sizes,N,ALPHA);
+  net = new NeuralNetwork(2,sizes,N,0);
   net->loadWeights("classifier.dat");
 }
 
