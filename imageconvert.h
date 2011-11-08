@@ -14,4 +14,5 @@
 int mjpegToJpeg(unsigned char *inFrame, unsigned char *outFrame, unsigned int bufSize);
 //int   yuvToJpeg(unsigned char *inFrame, unsigned char *outFrame, int width, int height);
 int   yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height);
+int   yuvToBW(unsigned char *inFrame, unsigned char *image, int width, int height);
 

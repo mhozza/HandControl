@@ -34,7 +34,7 @@ namespace handcontrol
 
     };
 
-    class CameraGetImageFailureException : public Exception
+    class CameraGetImageException : public Exception
     {
 
     };

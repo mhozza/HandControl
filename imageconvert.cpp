@@ -35,6 +35,10 @@
 	g  = MAX(0, MIN(255, (g))); \
 	b  = MAX(0, MIN(255, (b)))
 
+#define STOREGS(gs) gs  = MAX(0, MIN(255, (gs)));
+
+
+
 #define MEAN(a,b)\
 	(((a) + (b)) / 2)
 
@@ -158,7 +162,7 @@ int yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height)
 	y2 = inFrame[2];
 	v = inFrame[3];
 
-	YUV2RGB(y, u, v, r, g, b);
+        YUV2RGB(y, u, v, r, g, b);
 	STORERGB(r, g, b);
 	image->setPixel(w, h, qRgb(r, g, b));
 	
@@ -202,3 +206,41 @@ int yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height)
 	return 0;
 }
 
+int yuvToBW(unsigned char *inFrame, unsigned char *image, int width, int height)
+{
+        const int size = width * height;
+        //unsigned char *image = new unsigned char(size);*/
+
+        int y, y2, gs;
+        int i = 2;
+        int j = 4;
+        int w = 1, h = 0;
+
+        y = inFrame[0];
+
+        gs = y;
+        STOREGS(gs);
+        image[w+h*width] = gs;
+
+        while(i <= size)
+        {
+                gs = y2;
+                STOREGS(gs);
+
+                if (w == width)
+                {
+                        w = 0;
+                        h++;
+                }
+                image[w+h*width] = gs;
+                w++;
+
+                y  = inFrame[j];
+
+                i++;
+                j+=2;
+        }
+        //memcpy(outFrame,image,size);
+        //delete image;
+        return 0;
+}

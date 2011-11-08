@@ -1,4 +1,7 @@
 #include "handrecognizer.h"
+#include "imageprocessor.h"
+
+#define SAVE_HAND
 
 #include <iostream>
 #include <fstream>
@@ -76,7 +79,8 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
           input[i] = 0;
           continue;
         }
-        if(imgRefScaled.pixel(x,y)==c)
+        input[i] = Utils::grayScale(imgScaled.pixel(x,y));
+        /*if(imgRefScaled.pixel(x,y)==c)
         {
           if(imgScaled.pixel(x,y)!=Qt::white)
             input[i] = 1;
@@ -86,7 +90,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
         else
         {
           input[i] = 0;
-        }
+        }*/
       }
     }
 
@@ -100,16 +104,17 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
       hand_p = hand;
       handRect = r;
     }
-
+#ifdef SAVE_HAND
     //zapis do suboru
-    /*stringstream fname;
+    stringstream fname;
     //index = 0;
     fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
     index++;
 
     ofstream ofs(fname.str().c_str());
-    ofs << "P1" << endl;
+    ofs << "P2" << endl;
     ofs << SCALE_SIZE << " " << SCALE_SIZE << endl;
+    ofs << 256 << endl;
     for(int y = 0;y < SCALE_SIZE; y++)
     {
       for(int x = 0;x < SCALE_SIZE; x++)
@@ -118,19 +123,23 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
           ofs << 0 << " ";
           continue;
         }
+
+
         if(imgRefScaled.pixel(x,y)==c)
         {
-          if(imgScaled.pixel(x,y)!=Qt::white)
+          ofs << Utils::grayScale(imgScaled.pixel(x,y)) << " ";
+        /*  if(imgScaled.pixel(x,y)!=Qt::white)
             ofs << 1 << " ";
           else
-            ofs << 0 << " ";
+            ofs << 0 << " ";*/
         }
         else
         {
-          ofs << 0 << " ";
+          ofs << 255 << " ";
         }
       }
       ofs << endl;
-    }*/
+    }
+#endif
   }    
 }

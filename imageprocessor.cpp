@@ -18,6 +18,7 @@
 
 #include "imageprocessor.h"
 #include <iostream>
+#include <sstream>
 
 
 using namespace std;
@@ -169,6 +170,8 @@ QRect ImageProcessor::segment(int sx, int sy, uint color, QImage * image, QRect 
       f.push(make_pair(x,y+1));
       f.push(make_pair(x,y-1));
   }
+  if(rect.height()>(3*rect.width())/2)
+    rect.setHeight(rect.width());
   return rect;
 }
 
@@ -191,6 +194,8 @@ QRect ImageProcessor::segment(int sx, int sy, uint color, QImage * image, QRect 
   return rect;
 }*/
 
+
+
 void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int ey)
 {
   for(int x = sx;x<ex;x++)
@@ -199,8 +204,8 @@ void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int
     {
       QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y));      
 
-      int gsc1 = (3*c1.red()+3*c1.green()+4*c1.blue())/10;
-      int gsc2 = (3*c2.red()+3*c2.green()+4*c2.blue())/10;
+      int gsc1 = Utils::grayScale(c1);// (3*c1.red()+3*c1.green()+4*c1.blue())/10;
+      int gsc2 = Utils::grayScale(c2);//(3*c2.red()+3*c2.green()+4*c2.blue())/10;
 
       //greyscale difference
       uint g = abs(gsc1 - gsc2);
@@ -219,7 +224,7 @@ void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int
   }
 }
 
-ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer): images(0), images2(MAX_FRAMES/2)
+ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer): images(0), images2(MAX_FRAMES/2), index(0)
 {
   oldImage = new QImage(width,height,QImage::Format_RGB32);  
   expandedImg = new QImage(width,height,QImage::Format_RGB32);
@@ -270,7 +275,7 @@ QImage ImageProcessor::processImage(const QImage &image)
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, &img,&imgLock));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (QImage*) &image,&imgLock));
   }
 
   for(int y = 0;y<expandedImg->height();y++)
@@ -311,9 +316,10 @@ QImage ImageProcessor::processImage(const QImage &image)
   delete oldImage;
   oldImage = new QImage(image);
 
-  //return image;
+  return image;
+  //Utils::saveImage(img,index++);
   //return img;
-  return *expandedImg;
+  //return *expandedImg;
 }
 
 ImageProcessor::~ImageProcessor()

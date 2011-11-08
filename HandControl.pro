@@ -29,7 +29,9 @@ SOURCES += main.cpp\
     xfunc.cpp \
     gesturemoveup.cpp \
     gesturemovedown.cpp \
-    onscreendisplayform.cpp
+    onscreendisplayform.cpp \
+    utils.cpp \
+    hcimage.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -49,7 +51,9 @@ HEADERS  += mainwindow.h \
     xfunc.h \
     gesturemoveup.h \
     gesturemovedown.h \
-    onscreendisplayform.h
+    onscreendisplayform.h \
+    utils.h \
+    hcimage.h
 
 FORMS += mainwindow.ui \
     onscreendisplayform.ui

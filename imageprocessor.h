@@ -28,6 +28,7 @@
 
 #include <queue>
 
+#include <utils.h>
 #include "handrecognizer.h"
 
 using namespace std;
@@ -48,6 +49,7 @@ class ImageProcessor
     QMutex imgLock;
     HandRecognizer * handRecognizer;
     queue<pair<QRect,uint> > rectQueue;
+    int index;
 
     template<class T> inline void exchange(T &a, T &b)
     {
@@ -74,6 +76,7 @@ class ImageProcessor
     QRect segment(int x, int y, uint color, QImage * image, QRect rect);
 
 public:
+
     ImageProcessor(int width, int height, HandRecognizer * handRecognizer);
     ~ImageProcessor();
     QImage processImage(const QImage &img);

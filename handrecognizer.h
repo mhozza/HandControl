@@ -16,7 +16,7 @@ using namespace NeuralNET;
 #define N_SIDE SCALE_SIZE
 #define OUT_N 1
 #define HIDDEN_N 17
-#define TRESHOLD 0.95
+#define HAND_TRESHOLD 0.95
 
 class HandRecognizer
 {
@@ -29,7 +29,7 @@ class HandRecognizer
 public:
   HandRecognizer();
   void processRects(queue<pair<QRect,uint> > * q, QImage * img_ref, QImage * img, QMutex *imglock);
-  inline bool isHand(){return hand_p>TRESHOLD;}
+  inline bool isHand(){return hand_p>HAND_TRESHOLD;}
   inline QRect getHandRect(){return handRect;}
   inline float getHandP(){return hand_p;}
 };
