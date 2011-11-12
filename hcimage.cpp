@@ -19,16 +19,122 @@
  */
 
 #include "hcimage.h"
+#include <cstring>
+#include <cmath>
 
-typedef unsigned char uchar;
-typedef unsigned int uint;
-
-HCImage::HCImage()
+void HCImage::construct(unsigned w, unsigned h)
 {
-public:
-    uchar* imageData;
-    uint w, h;
-    /*inline uint width(){return w;}
-    inline uint height(){return h;}*/
+    this->w = w;
+    this->h = h;
+    init = true;
+}
 
+HCImage::HCImage(unsigned w, unsigned h)
+{    
+    //mutex = new QMutex();
+    construct(w,h);
+    imageData.resize(w*h,0);
+}
+
+HCImage::HCImage(ImageBuffer img, unsigned w, unsigned h)
+{
+    //mutex = new QMutex();
+    setImage(img,w,h);
+}
+
+HCImage::~HCImage()
+{
+    //delete mutex;
+}
+
+void HCImage::setImage(ImageBuffer img, unsigned w, unsigned h)
+{
+
+   //ToDo: check w,h
+   construct(w,h);
+   imageData = img;
+
+}
+
+
+uchar HCImage::pixel(unsigned x, unsigned y)
+{    
+    //ToDo: check init
+    x = min(x,w-1);
+    y = min(y,h-1);
+    return imageData[x+y*w];
+}
+
+void HCImage::setPixel(unsigned x, unsigned y, uchar val)
+{    
+    //ToDo: check init
+    x = min(x,w-1);
+    y = min(y,h-1);
+    imageData[x+y*w] = val;    
+}
+
+QImage HCImage::toQImage()
+{    
+    //ToDo: check init
+    QImage img(w,h,QImage::Format_RGB888);
+
+    for(int y = 0; y<h;y++)
+    {
+        for(int x = 0; x<w;x++)
+        {
+            uint bc = pixel(x,y);
+            uint c = 0xFF000000 | (bc) | (bc << 8) | (bc << 16);
+            img.setPixel(x,y,c);
+        }
+    }    
+    return img;
+}
+
+HCImage HCImage::copy(QRect r)
+{        
+    ImageBuffer b;
+    unsigned width=r.width(), height = r.height(), sx = r.left(), sy = r.top();
+    b.resize(width*height);
+    for(int y = 0; y<height;y++)
+    {
+        for(int x = 0; x<width;x++)//todo optimize
+        {
+            b[x+y*width]=imageData[sx+x+(sy+y)*w];
+        }
+    }
+    HCImage h(b,r.width(),r.height());
+    return h;
+}
+
+void HCImage::scale(unsigned w, unsigned h)
+{    
+    //todo hodit chybu ak su 0 rozmery
+    float xScaleFactor = (float)w/this->w;
+    float yScaleFactor = (float)h/this->h;
+    ImageBuffer b;
+    b.resize(w*h);
+    for(unsigned y = 0;y<h;y++)
+    {
+        for(unsigned x = 0;x<w;x++)
+        {
+            unsigned oldX = round(x/xScaleFactor);
+            unsigned oldY = round(y/yScaleFactor);
+            b[x+y*w] = pixel(oldX,oldY);
+        }
+    }    
+    setImage(b,w,h);    
+}
+
+fftw_complex * HCImage::toComplexArray()
+{
+    fftw_complex * b = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * w * h);
+    //ToDo: check init
+    for(int y = 0; y<h;y++)
+    {
+        for(int x = 0; x<w;x++)
+        {
+            b[x+y*w][0] = pixel(x,y);
+        }
+    }
+    return b;
 }

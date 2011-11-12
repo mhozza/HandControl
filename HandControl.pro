@@ -58,4 +58,4 @@ HEADERS  += mainwindow.h \
 FORMS += mainwindow.ui \
     onscreendisplayform.ui
 
-LIBS += -lv4l2 -lXtst
+LIBS += -lv4l2 -lXtst -lfftw3

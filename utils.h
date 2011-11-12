@@ -1,6 +1,6 @@
 /*
  *    HandControl - Hand gesture recognition
- *    Copyright (C) 2010  Michal Hozza (mhozza@gmail.com)
+ *    Copyright (C) 2011  Michal Hozza (mhozza@gmail.com)
  *
  *    This program is free software: you can redistribute it and/or modify
  *    it under the terms of the GNU General Public License as published by
@@ -21,9 +21,10 @@
 
 #include <QImage>
 #include <QColor>
-
 #include <sstream>
 #include <fstream>
+
+#include "hcimage.h"
 
 using namespace std;
 
@@ -31,8 +32,9 @@ class Utils
 {
     Utils(){}
 public:    
-    inline static unsigned grayScale(QColor c) { return (3*c.red()+3*c.green()+4*c.blue())/10; }
+    //inline static unsigned grayScale(QColor c) { return (3*c.red()+3*c.green()+4*c.blue())/10; }
     static void saveImage(QImage img, int index);
+    static void saveImage(HCImage img, int index);
 };
 
 #endif // UTILS_H

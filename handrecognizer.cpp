@@ -6,6 +6,7 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <fftw3.h>
 
 using namespace std;
 
@@ -43,27 +44,44 @@ bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
   return false;
 }
 
-void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef, QImage * img, QMutex *imglock)
+void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef, HCImage * img, QMutex *imglock)
 {
   resetHand();  
   while(true)
   {
-    if(q->empty()) continue;
+    rectQueueLock.lock();
+    if(q->empty())
+    {
+        rectQueueLock.unlock();
+        continue;
+    }
     QRect r = q->front().first;
     uint c = q->front().second;    
-    if (c == 0) break;
+    if (c == 0)
+    {
+        rectQueueLock.unlock();
+        break;
+    }
     q->pop();    
+    rectQueueLock.unlock();
 
-    //crop image    
-    QImage imgRefScaled = imgRef->copy(r);
-    QImage imgScaled = img->copy(r);    
+    //crop and scale image
+    HCImage imgRefScaled = imgRef->copy(r);
+    HCImage imgScaled = img->copy(r);
+    Utils::saveImage(imgScaled,index);
+    imgRefScaled.scale(SCALE_SIZE,SCALE_SIZE);
+    imgScaled.scale(SCALE_SIZE,SCALE_SIZE);
 
-    //scale image
-    QMatrix m;
-    m.scale(SCALE_SIZE/imgRefScaled.width(),SCALE_SIZE/imgRefScaled.height());
-    imgRefScaled = imgRefScaled.transformed(m);
-    imgScaled = imgScaled.transformed(m);
-
+    //fft
+    fftw_complex *in = NULL, *out = NULL;
+    fftw_plan p;
+    in = imgScaled.toComplexArray();
+    out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
+    p = fftw_plan_dft_2d(imgScaled.width(),imgScaled.height(), in, out, FFTW_FORWARD, FFTW_ESTIMATE);
+    fftw_execute(p); // repeat as needed
+    fftw_destroy_plan(p);
+    fftw_free(in);
+    fftw_free(out);
 
     //vygenerovanie vector<float> vstupu pre net
     vector<float> input;
@@ -79,7 +97,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
           input[i] = 0;
           continue;
         }
-        input[i] = Utils::grayScale(imgScaled.pixel(x,y));
+        input[i] = imgScaled.pixel(x,y);
         /*if(imgRefScaled.pixel(x,y)==c)
         {
           if(imgScaled.pixel(x,y)!=Qt::white)
@@ -120,23 +138,18 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, QImage * imgRef,
       for(int x = 0;x < SCALE_SIZE; x++)
       {
         if(x>=imgRefScaled.width() || y >=imgRefScaled.height()) {
-          ofs << 0 << " ";
+          ofs << 255 << " ";
           continue;
         }
-
-
-        if(imgRefScaled.pixel(x,y)==c)
+        //if(imgRefScaled.pixel(x,y)==c)
         {
-          ofs << Utils::grayScale(imgScaled.pixel(x,y)) << " ";
-        /*  if(imgScaled.pixel(x,y)!=Qt::white)
-            ofs << 1 << " ";
-          else
-            ofs << 0 << " ";*/
+          //ofs << (int)imgScaled.pixel(x,y) << " ";
+            ofs << (int) << " ";
         }
-        else
+        /*else
         {
           ofs << 255 << " ";
-        }
+        }*/
       }
       ofs << endl;
     }

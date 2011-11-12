@@ -8,6 +8,8 @@
 
 #include "NeuralNet/neuralnetwork.h"
 
+#include "hcimage.h"
+
 using namespace std;
 using namespace NeuralNET;
 
@@ -25,10 +27,11 @@ class HandRecognizer
   float hand_p;
   QRect handRect;  
   inline void resetHand(){hand_p = 0;}
-  bool isSimilarRect(QRect r1, QRect r2);
+  bool isSimilarRect(QRect r1, QRect r2);  
 public:
+  QMutex rectQueueLock;
   HandRecognizer();
-  void processRects(queue<pair<QRect,uint> > * q, QImage * img_ref, QImage * img, QMutex *imglock);
+  void processRects(queue<pair<QRect,uint> > * q, HCImage * img_ref, HCImage * img, QMutex *imglock);
   inline bool isHand(){return hand_p>HAND_TRESHOLD;}
   inline QRect getHandRect(){return handRect;}
   inline float getHandP(){return hand_p;}

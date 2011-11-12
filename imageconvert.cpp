@@ -18,6 +18,12 @@
 #include <QImage>
 #include <QColor>
 
+#include <sstream>
+#include <string>
+#include <fstream>
+
+using namespace std;
+
 #include "imageconvert.h"
 
 #undef MIN
@@ -28,7 +34,13 @@
 #define YUV2RGB(y,u,v,r,g,b) \
 	(r) = ( ( (y) << 8 ) 			   + 359 * ( (v) - 128 ) ) >> 8; \
 	(g) = ( ( (y) << 8 ) -  88 * ( (u) - 128 ) - 183 * ( (v) - 128 ) ) >> 8; \
-	(b) = ( ( (y) << 8 ) + 456 * ( (u) - 128 ) 			 ) >> 8
+        (b) = ( ( (y) << 8 ) + 456 * ( (u) - 128 ) 			 ) >> 8
+
+/*#define YUV2RGB(y,u,v,r,g,b) \
+        (r) = (y);  \
+        (g) = (y); \
+        (b) = (y);*/
+
 
 #define STORERGB(r,g,b) \
 	r  = MAX(0, MIN(255, (r))); \
@@ -170,7 +182,7 @@ int yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height)
 	{
 		u2  = inFrame[j+1];
 		v2   = inFrame[j+3];
-		YUV2RGB(y2, MEAN(u, u2), MEAN(v, v2), r, g, b);
+                YUV2RGB(y2, MEAN(u, u2), MEAN(v, v2), r, g, b);
 		STORERGB(r, g, b);
 		
 		if (w == width)
@@ -206,41 +218,17 @@ int yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height)
 	return 0;
 }
 
-int yuvToBW(unsigned char *inFrame, unsigned char *image, int width, int height)
-{
-        const int size = width * height;
-        //unsigned char *image = new unsigned char(size);*/
+ImageBuffer yuvToBW(unsigned char *inFrame, int width, int height)
+{        
+        const int size = width * height;        
+        ImageBuffer image;
+        image.resize(size);
 
-        int y, y2, gs;
-        int i = 2;
-        int j = 4;
-        int w = 1, h = 0;
 
-        y = inFrame[0];
-
-        gs = y;
-        STOREGS(gs);
-        image[w+h*width] = gs;
-
-        while(i <= size)
+        for(int i = 0;i<size;i++)
         {
-                gs = y2;
-                STOREGS(gs);
-
-                if (w == width)
-                {
-                        w = 0;
-                        h++;
-                }
-                image[w+h*width] = gs;
-                w++;
-
-                y  = inFrame[j];
-
-                i++;
-                j+=2;
+            image[i]=inFrame[2*i];
         }
-        //memcpy(outFrame,image,size);
-        //delete image;
-        return 0;
+
+        return image;
 }

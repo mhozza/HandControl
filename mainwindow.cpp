@@ -110,28 +110,29 @@ void MainWindow::getImage()
         QPixmap pixmap;
 
 
-        if (camera->getFrame(imageFromCamera) == EXIT_FAILURE)
+        if (camera->getFrameBW(imageFromCamera) == EXIT_FAILURE)
         {                
                 camera->close();
                 throw new CameraGetImageException();
                 return;
         }
 
-       unsigned char* gsimg = new unsigned char[imageFromCamera.width()*imageFromCamera.height()];
+        /*HCImage gimg(VIDEO_WIDTH,VIDEO_HEIGHT);
 
-        if (camera->getFrameBW(gsimg) == EXIT_FAILURE)
+        if (camera->getFrameBW(gimg) == EXIT_FAILURE)
         {
                 camera->close();
                 throw new CameraGetImageException();
                 return;
-        }
+        }*/
 
-        delete gsimg;
+        //Utils::saveImage(gimg,0);
 
         if(!imageFromCamera.isNull())
         {                
-                //QImage img = imageProcessor->processImage(imageFromCamera);
-                QImage img = imageFromCamera;
+                QImage img = imageProcessor->processImage(imageFromCamera).toQImage();
+                //QImage img = imageFromCamera;
+                //QImage img = gimg.toQImage();
                 //QImage img(VIDEO_WIDTH,VIDEO_HEIGHT,QImage::Format_RGB32);
                 QPainter p;
                 p.begin(&img);

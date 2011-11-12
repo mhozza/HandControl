@@ -28,6 +28,7 @@
 #include "handrecognizer.h"
 #include "gesturerecognizer.h"
 #include "onscreendisplayform.h"
+#include "hcimage.h"
 
 #define VIDEO_DEVICE "/dev/video0"
 #define VIDEO_WIDTH 320
@@ -44,7 +45,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
     Webcam *camera;
-    QImage imageFromCamera;
+    HCImage imageFromCamera;
 
     QList<QString> formatName;
     QList<int> formatList;

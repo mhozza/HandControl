@@ -18,6 +18,9 @@
 #include <QImage>
 #include <QSocketNotifier>
 
+#include "imageconvert.h"
+#include "hcimage.h"
+
 #include <linux/videodev2.h>
 
 class Webcam : public QObject
@@ -38,7 +41,7 @@ public:
 	int streamOff();
 	int stopStreaming();
 	int getFrame(QImage &image);
-        int getFrameBW(unsigned char *image);
+        int getFrameBW(HCImage &image);
 	int currentWidth() const;
 	int currentHeight() const;
 	int currentPixelFormat() const;

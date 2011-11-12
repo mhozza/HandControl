@@ -32,7 +32,6 @@
 #include <QSocketNotifier>
 
 #include "webcam.h"
-#include "imageconvert.h"
 #include "merror.h"
 
 
@@ -356,7 +355,7 @@ int Webcam::getFrame(QImage &image)
 	return EXIT_SUCCESS;
 }
 
-int Webcam::getFrameBW(unsigned char *image)
+int Webcam::getFrameBW(HCImage &image)
 {
         int ret = 0;
 
@@ -369,7 +368,7 @@ int Webcam::getFrameBW(unsigned char *image)
         }
 
         // Save the image.
-        uchar jpegBuf1[buf.bytesused + 420];
+        //uchar jpegBuf1[buf.bytesused + 420];
         if (fmt.fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
         {
             /*
@@ -381,7 +380,7 @@ int Webcam::getFrameBW(unsigned char *image)
 
         if (fmt.fmt.pix.pixelformat == V4L2_PIX_FMT_YUYV)
         {
-                yuvToBW(mem[buf.index], image, currentWidth(), currentHeight());
+                image.setImage(yuvToBW(mem[buf.index], currentWidth(), currentHeight()), currentWidth(), currentHeight());
         }
 
         // Requeue the buffer.

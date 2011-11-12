@@ -20,51 +20,54 @@
 #include <iostream>
 #include <sstream>
 
+#define WHITE 0xFF
+#define BLACK 0
 
 using namespace std;
 
-void ImageProcessor::medianFilterX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut)
+void ImageProcessor::medianFilterX(int sy, int ex, int ey, HCImage * imgIn, HCImage * imgOut)
 {
   int sx = 0;
   for(int y = sy;y<ey;y++)
   {
     for(int x = sx+1;x<ex-1;x++)
     {
-      QColor c1(imgIn->pixel(x-1,y));
-      QColor c2(imgIn->pixel(x,y));
-      QColor c3(imgIn->pixel(x+1,y));
+      uchar c1 = imgIn->pixel(x-1,y);
+      uchar c2 = imgIn->pixel(x,y);
+      uchar c3 = imgIn->pixel(x+1,y);
 
-      QColor c(median3(c1.red(),c2.red(),c3.red()), median3(c1.green(),c2.green(),c3.green()), median3(c1.blue(),c2.blue(),c3.blue()));
+      uchar c = median3(c1,c2,c3);
 
       imgLock.lock();
-      imgOut->setPixel(x,y,c.value());
+      imgOut->setPixel(x,y,c);
       imgLock.unlock();
     }
   }
 }
 
-void ImageProcessor::medianFilterY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut)
+void ImageProcessor::medianFilterY(int sx, int ex, int ey, HCImage * imgIn, HCImage * imgOut)
 {
   int sy = 0;
   for(int x = sx;x<ex;x++)
   {
     for(int y = sy+1;y<ey-1;y++)
     {
-      QColor c1(imgIn->pixel(x,y-1));
-      QColor c2(imgIn->pixel(x,y));
-      QColor c3(imgIn->pixel(x,y+1));
+        uchar c1 = imgIn->pixel(x,y-1);
+        uchar c2 = imgIn->pixel(x,y);
+        uchar c3 = imgIn->pixel(x,y+1);
 
-      QColor c(median3(c1.red(),c2.red(),c3.red()), median3(c1.green(),c2.green(),c3.green()), median3(c1.blue(),c2.blue(),c3.blue()));
+        uchar c = median3(c1,c2,c3);
+
 
       imgLock.lock();
-      imgOut->setPixel(x,y,c.value());
+      imgOut->setPixel(x,y,c);
       imgLock.unlock();
     }
   }
 }
 
 
-void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut)
+void ImageProcessor::expandPixelsX(int sy, int ex, int ey, HCImage * imgIn, HCImage * imgOut)
 {
   int sx = 0;
   for(int y = sy;y<ey;y++)
@@ -72,8 +75,8 @@ void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImag
     int endblack = 0;
     for(int x = sx;x<sx+PIXEL_RADIUS && x<ex;x++)
     {
-      QColor c(imgIn->pixel(x,y));
-      if(c!=Qt::white)
+      uchar c = imgIn->pixel(x,y);
+      if(c!=WHITE)
       {
         endblack = x+PIXEL_RADIUS;
       }
@@ -83,8 +86,8 @@ void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImag
       int xx = x+PIXEL_RADIUS;
       if(xx<ex)
       {
-        QColor c(imgIn->pixel(xx,y));
-        if(c!=Qt::white)
+        uchar c = imgIn->pixel(xx,y);
+        if(c!=WHITE)
         {
           endblack = xx+PIXEL_RADIUS;
         }
@@ -92,20 +95,20 @@ void ImageProcessor::expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImag
       if(x<endblack)
       {
          imgLock.lock();
-         imgOut->setPixel(x,y,0xFF000000);
+         imgOut->setPixel(x,y,0);
          imgLock.unlock();
       }
       else
       {
          imgLock.lock();
-         imgOut->setPixel(x,y,0xFFFFFFFF);
+         imgOut->setPixel(x,y,0xFF);
          imgLock.unlock();
       }
     }
   }
 }
 
-void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut)
+void ImageProcessor::expandPixelsY(int sx, int ex, int ey, HCImage * imgIn, HCImage * imgOut)
 {
   int sy = 0;
   for(int x = sx;x<ex;x++)
@@ -113,8 +116,8 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImag
     int endblack = 0;
     for(int y = sy;y<sy+PIXEL_RADIUS && y<ey;y++)
     {
-      QColor c(imgIn->pixel(x,y));
-      if(c!=Qt::white)
+      uchar c = imgIn->pixel(x,y);
+      if(c!=WHITE)
       {
         endblack = y+PIXEL_RADIUS;
       }
@@ -124,8 +127,8 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImag
       int yy = y+PIXEL_RADIUS;
       if(yy<ey)
       {
-        QColor c(imgIn->pixel(x,yy));
-        if(c!=Qt::white)
+        uchar c = imgIn->pixel(x,yy);
+        if(c!=WHITE)
         {
           endblack = yy+PIXEL_RADIUS;
         }
@@ -133,13 +136,13 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImag
       if(y<endblack)
       {
          imgLock.lock();
-         imgOut->setPixel(x,y,0xFF000000);
-          imgLock.unlock();
+         imgOut->setPixel(x,y,0);
+         imgLock.unlock();
       }
       else
       {
          imgLock.lock();
-         imgOut->setPixel(x,y,0xFFFFFFFF);
+         imgOut->setPixel(x,y,0xFF);
          imgLock.unlock();
       }
     }
@@ -148,7 +151,7 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImag
 
 
 
-QRect ImageProcessor::segment(int sx, int sy, uint color, QImage * image, QRect rect)
+QRect ImageProcessor::segment(int sx, int sy, uchar color, HCImage * image, QRect rect)
 {
   queue<pair<int,int> > f;
   f.push(make_pair(sx,sy));
@@ -157,9 +160,9 @@ QRect ImageProcessor::segment(int sx, int sy, uint color, QImage * image, QRect 
       int x = f.front().first;
       int y = f.front().second;
       f.pop();
-      if(x<0 ||  x>=image->width()) continue;
-      if(y<0 ||  y>=image->height()) continue;
-      if(image->pixel(x,y)!=0xff000000) continue;
+      if(x<0 || x>=image->width()) continue;
+      if(y<0 || y>=image->height()) continue;
+      if(image->pixel(x,y)!=0) continue;
       image->setPixel(x,y,color);
       if(x<rect.left()) rect.setLeft(x);
       if(x>rect.right()) rect.setRight(x);
@@ -175,37 +178,14 @@ QRect ImageProcessor::segment(int sx, int sy, uint color, QImage * image, QRect 
   return rect;
 }
 
-
-/*QRect ImageProcessor::segment(int x, int y, uint color, QImage * image, QRect rect)
-{
-  if(x<0 ||  x>=image->width()) return rect;
-  if(y<0 ||  y>=image->height()) return rect;
-  //cout << x << " "<<  y << " " << image->width() << " " << image->height() << endl;
-  if(image->pixel(x,y)!=0xff000000) return rect;//!!! FIXME
-  image->setPixel(x,y,color);  
-  if(x<rect.left()) rect.setLeft(x);
-  if(x>rect.right()) rect.setRight(x);
-  if(y<rect.top()) rect.setTop(y);
-  if(y>rect.bottom()) rect.setBottom(y);
-  rect = segment(x+1,y,color,image,rect);
-  rect = segment(x-1,y,color,image,rect);
-  rect = segment(x,y+1,color,image,rect);
-  rect = segment(x,y-1,color,image,rect);
-  return rect;
-}*/
-
-
-
-void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int ey)
+void ImageProcessor::prepareImg(HCImage &image, int sx, int sy, int ex, int ey)
 {
   for(int x = sx;x<ex;x++)
   {
     for(int y = sy;y<ey;y++)
     {
-      QColor c1(image.pixel(x,y)),c2(oldImage->pixel(x,y));      
-
-      int gsc1 = Utils::grayScale(c1);// (3*c1.red()+3*c1.green()+4*c1.blue())/10;
-      int gsc2 = Utils::grayScale(c2);//(3*c2.red()+3*c2.green()+4*c2.blue())/10;
+      int gsc1 = image.pixel(x,y);
+      int gsc2 = oldImage->pixel(x,y);
 
       //greyscale difference
       uint g = abs(gsc1 - gsc2);
@@ -214,11 +194,10 @@ void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int
       if (g>TRESHOLD) sum++;
       else g = 0;
 
-      g=0xFF - g;
-      QColor c(g,g,g);
+      g=0xFF - g;      
 
       imgLock.lock();
-      img.setPixel(x,y,c.rgb());
+      img.setPixel(x,y,g);
       imgLock.unlock();
     }
   }
@@ -226,13 +205,13 @@ void ImageProcessor::prepareImg(const QImage &image, int sx, int sy, int ex, int
 
 ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer): images(0), images2(MAX_FRAMES/2), index(0)
 {
-  oldImage = new QImage(width,height,QImage::Format_RGB32);  
-  expandedImg = new QImage(width,height,QImage::Format_RGB32);
-  expandedImgX = new QImage(width,height,QImage::Format_RGB32);
+  oldImage = new HCImage(width,height);
+  expandedImg = new HCImage(width,height);
+  expandedImgX = new HCImage(width,height);
   this->handRecognizer = handRecognizer;
 }
 
-QImage ImageProcessor::processImage(const QImage &image)
+HCImage ImageProcessor::processImage(const HCImage &image)
 {  
   img = image;
   sum = 0;  
@@ -249,6 +228,8 @@ QImage ImageProcessor::processImage(const QImage &image)
     threads[i].waitForFinished();
   }
   threads.clear();
+
+
   //expand X
   for(int i=0;i<n;i++)
   {
@@ -269,28 +250,32 @@ QImage ImageProcessor::processImage(const QImage &image)
     threads[i].waitForFinished();
   }
   threads.clear();
-  uint color = 0xff000000;
+
+  //Segment and recognize
+  uint color = 1;
 
   while(!rectQueue.empty()) rectQueue.pop(); //empty the queue
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (QImage*) &image,&imgLock));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (HCImage*) &img,&imgLock));
   }
 
   for(int y = 0;y<expandedImg->height();y++)
   {
     for(int x = 0;x<expandedImg->width();x++)
     {
-      if(expandedImg->pixel(x,y)==0xff000000)
-      {
-        //color++;
-        color = 0xFF000001+rand()%0xFFFFFF;
+      if(expandedImg->pixel(x,y)==0)
+      {        
+        color = 1+rand()%254;
         QRect r(x,y,0,0);        
         r = segment(x,y,color,expandedImg,r);
+        //if(r.width()!=0) color++;
         if(r.width()>=MIN_RECT_SIZE && r.height()>=MIN_RECT_SIZE && r.width()<=MAX_RECT_SIZE && r.height() <= MAX_RECT_SIZE)
         {
+          handRecognizer->rectQueueLock.lock();
           rectQueue.push(make_pair(r,color));
+          handRecognizer->rectQueueLock.unlock();
         }
       }
     }
@@ -314,12 +299,12 @@ QImage ImageProcessor::processImage(const QImage &image)
   }  
 
   delete oldImage;
-  oldImage = new QImage(image);
+  oldImage = new HCImage(image);
 
-  return image;
+  //return image;
   //Utils::saveImage(img,index++);
   //return img;
-  //return *expandedImg;
+  return *expandedImg;
 }
 
 ImageProcessor::~ImageProcessor()

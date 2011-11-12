@@ -42,7 +42,7 @@ using namespace std;
 
 class ImageProcessor
 {
-    QImage *oldImage, img, *expandedImgX, *expandedImg;
+    HCImage *oldImage, img, *expandedImgX, *expandedImg;
     int images,images2;
     bool imgChanged;
     unsigned sum;
@@ -66,20 +66,20 @@ class ImageProcessor
       return b;
     }
 
-    void prepareImg(const QImage &, int  ,int  ,int ,int );    
+    void prepareImg(HCImage &, int  ,int  ,int ,int );
 
-    void medianFilterX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut);
-    void medianFilterY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut);
+    void medianFilterX(int sy, int ex, int ey, HCImage * imgIn, HCImage * imgOut);
+    void medianFilterY(int sx, int ex, int ey, HCImage * imgIn, HCImage * imgOut);
 
-    void expandPixelsX(int sy, int ex, int ey, QImage * imgIn, QImage * imgOut);
-    void expandPixelsY(int sx, int ex, int ey, QImage * imgIn, QImage * imgOut);
-    QRect segment(int x, int y, uint color, QImage * image, QRect rect);
+    void expandPixelsX(int sy, int ex, int ey, HCImage * imgIn, HCImage * imgOut);
+    void expandPixelsY(int sx, int ex, int ey, HCImage * imgIn, HCImage * imgOut);
+    QRect segment(int x, int y, uchar color, HCImage * image, QRect rect);
 
 public:
 
     ImageProcessor(int width, int height, HandRecognizer * handRecognizer);
     ~ImageProcessor();
-    QImage processImage(const QImage &img);
+    HCImage processImage(const HCImage &img);
     inline bool imageChanged(){return imgChanged;}
 };
 
