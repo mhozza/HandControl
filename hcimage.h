@@ -52,6 +52,7 @@ public:
         return imageData;
     }
     void setImage(ImageBuffer img, unsigned w, unsigned h);
+    void setImageFromComplexArray(fftw_complex *, unsigned w, unsigned h);
 
     inline unsigned width()
     {
@@ -74,6 +75,7 @@ public:
 
     QImage toQImage();
     fftw_complex * toComplexArray();
+    double * toDoubleArray();
 };
 
 #endif // HCIMAGE_H

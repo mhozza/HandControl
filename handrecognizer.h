@@ -13,7 +13,7 @@
 using namespace std;
 using namespace NeuralNET;
 
-#define SCALE_SIZE 80.0
+#define SCALE_SIZE 128
 #define N SCALE_SIZE*SCALE_SIZE
 #define N_SIDE SCALE_SIZE
 #define OUT_N 1

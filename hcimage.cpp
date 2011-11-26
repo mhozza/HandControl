@@ -21,6 +21,7 @@
 #include "hcimage.h"
 #include <cstring>
 #include <cmath>
+#include "utils.h"
 
 void HCImage::construct(unsigned w, unsigned h)
 {
@@ -134,7 +135,38 @@ fftw_complex * HCImage::toComplexArray()
         for(int x = 0; x<w;x++)
         {
             b[x+y*w][0] = pixel(x,y);
+            b[x+y*w][1] = 0;
         }
     }
     return b;
+}
+
+double * HCImage::toDoubleArray()
+{
+    double * b = (double*) fftw_malloc(sizeof(double) * w * h);
+    //ToDo: check init
+    for(int y = 0; y<h;y++)
+    {
+        for(int x = 0; x<w;x++)
+        {
+            b[x+y*w] = pixel(x,y);
+        }
+    }
+    return b;
+}
+
+void HCImage::setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned h)
+{
+    //ToDo: check w,h
+    construct(w,h);
+    imageData.resize(w*h,0);
+    for(int y = 0; y<h;y++)
+    {
+        for(int x = 0; x<w;x++)
+        {
+            uchar val = min((long long)round(log(Utils::cabs(b[x+y*w]))),255LL);
+            setPixel(x,y,val);
+        }
+    }
+
 }

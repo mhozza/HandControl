@@ -40,13 +40,17 @@ void Utils::saveImage(QImage img, int index = 0)
     ofs.close();
 }
 
-void Utils::saveImage(HCImage img, int index = 0)
-{
-    //zapis do suboru
-    stringstream fname;
-    fname << "hand_images/"<<  "full" << "_" << index << ".pbm";
+void Utils::saveImage(HCImage img, int index = 0, string fname = "")
+{    
+    if(fname==""){
+        //zapis do suboru
+        stringstream ssfname;
+        ssfname << "hand_images/"<<  "full" << "_" << index << ".pbm";
+        fname = ssfname.str();
+    }
 
-    ofstream ofs(fname.str().c_str());
+    ofstream ofs(fname.c_str());
+
     ofs << "P2" << endl;
     ofs << img.width() << " " << img.height() << endl;
     ofs << 256 << endl;
@@ -59,6 +63,11 @@ void Utils::saveImage(HCImage img, int index = 0)
       ofs << endl;
     }
     ofs.close();
+}
+
+double Utils::cabs(fftw_complex v)
+{
+    return sqrt(v[0]*v[0]+v[1]*v[1]);
 }
 
 
