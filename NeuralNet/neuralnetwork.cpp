@@ -62,13 +62,14 @@ namespace NeuralNET
 
   vector<float> NeuralNetwork::classify(vector<float> input)
   {
-    vector<float> in = input;
+    //vector<float> in = input;
 
-    for(unsigned i = 0;i<layers.size()-1;i++)
+    for(unsigned i = 0;i<layers.size();i++)
     {
-      in = layers[i]->classify(in);
+      input = layers[i]->classify(input);
     }
-    return layers[layers.size()-1]->classify(in);
+    //return layers[layers.size()-1]->classify(innput);
+    return input;
   }
 
   float NeuralNetwork::classify1(vector<float> input)

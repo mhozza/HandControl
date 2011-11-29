@@ -5,7 +5,7 @@ using namespace NeuralNET;
 #include <iostream>
 #include <cmath>
 
-Perceptron::Perceptron(unsigned dimension, float alpha = 0.25) : dimension(dimension+1), alpha(alpha), momentum(0), w0(0)
+Perceptron::Perceptron(unsigned dimension, float alpha = 0.25) : momentum(0),  w0(0), alpha(alpha),  dimension(dimension+1)
 {
   weights.resize(this->dimension,0);  
   deltaW.resize(this->dimension,0);
@@ -36,16 +36,16 @@ float Perceptron::classify(vector<float> input)
 
 void Perceptron::randomizeWeights()
 {
-  for(int i;i<dimension;i++)
+  for(unsigned i = 0;i<dimension;i++)
   {
-    weights[i]=(float)rand()/RAND_MAX-0.5;
+    weights[i]=(2*(float)rand()/RAND_MAX)-1;
   }    
 }
 
 void Perceptron::save(string filename)
 {
   ofstream outfile(filename.c_str());
-  for(int i;i<dimension;i++)
+  for(unsigned i = 0;i<dimension;i++)
   {
     if(i>0) outfile << " ";
     outfile << weights[i];    
@@ -57,14 +57,14 @@ void Perceptron::save(string filename)
 void Perceptron::load(string filename)
 {
   ifstream ifs ( filename.c_str() , ifstream::in );
-  int i = 0;
+  unsigned i = 0;
   while(i<dimension && ifs >> weights[i++]);
   ifs.close();
 }
     
 void Perceptron::printWeights()
 {
-  for(int i;i<dimension;i++)
+  for(unsigned i = 0;i<dimension;i++)
   {
     if(i>0) cout << " ";
     cout << weights[i];    
@@ -77,14 +77,14 @@ int Perceptron::discreteClassify(vector<float> input)
   return classify(input)>=.5;
 }
 
-float Perceptron::train(vector<float> input, int target)
+void Perceptron::train(vector<float> input, int target)
 {
   prepare(&input);
   float output = activationFunction(&input);
   trainDelta(&input,getDelta(output, target));
 }
 
-float Perceptron::trainDelta(vector<float> *input,float delta)
+void Perceptron::trainDelta(vector<float> *input,float delta)
 {
   for(unsigned j=0;j<dimension;j++)
   {    

@@ -12,10 +12,11 @@
 using namespace std;
 using namespace NeuralNET;
 
-#define FOR(i,n)      for(int i=0;i<(n);i++)
-#define N 6400
-#define N_SIDE 80
-#define HIDDEN_N 17
+#define FOR(i,n) for(int i=0;i<(n);i++)
+#define N_SIDE 128
+#define N (N_SIDE * N_SIDE)
+#define HIDDEN_N 7
+#define HIDDEN_N2 3
 #define OUT_N 1
 
 inline void print(string s)
@@ -45,7 +46,7 @@ vector<string> listDirectory(string path)
    dp = opendir(path.c_str());
    if (dp != NULL)
    {
-     while (ep = readdir (dp))
+     while ((ep = readdir (dp)))
      {
        string s = ep->d_name;
        if(s=="." || s == "..") continue;
@@ -73,23 +74,27 @@ vector<float> loadImage(string path)
   res.resize(N);
   //ppm without comments
   //head
-  string hdr;
-  ifs >> hdr;
-  if(hdr!="P1") throw 1;
+  //string hdr = "P2";
+  //ifs >> hdr;
+  //if(hdr!="P2") throw 1;
   //w, h
-  int w,h;
-  ifs >> w >> h;
-  if(w!=N_SIDE || h!=N_SIDE) throw 1;
-  int i = 0;
+  //int w = N_SIDE,h=N_SIDE;
+  //int colors = 256;
+  //ifs >> w >> h >> colors;
+  //if(w!=N_SIDE || h!=N_SIDE) throw 1;
+
+  //int i = 0;
+  FOR(i,N) ifs >> res[i];
+  /*
   FOR(y,h)
   {
     FOR(x,w)
     {
-      int t;
+      float t;
       ifs >> t;
       res[i++] = t;
     }
-  }
+  }*/
   ifs.close();
   return res;
 }
@@ -97,16 +102,18 @@ vector<float> loadImage(string path)
 int main(int argc, char *argv[])
 {
    srand (time(NULL) );
-   float alpha = 0.2;
-   int verbose = 10;
+   float alpha = 0.5;
+   int verbose = 2;
    int mode = 0;
    if(argc>1) mode = atoi(argv[1]);
 
-   unsigned sizes[] = {HIDDEN_N,OUT_N};
+   unsigned sizes[] = {HIDDEN_N, OUT_N};
    NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
    signal(SIGINT, ctrlc);
 
    vector<pair<vector<float>,vector<int > > > tests;
+
+   net->saveWeights("blabla");
 
    string hands_path, nonhands_path;
    if(mode==0)
@@ -121,16 +128,18 @@ int main(int argc, char *argv[])
     net->loadWeights("vahy");
    }
 
+
    //nacitaj
+   //net->loadWeights("vahy");
    vector<string> hands = listDirectory(hands_path);
    vector<string> nonhands = listDirectory(nonhands_path);
 
-   for(int i = 0;i<hands.size();i++)
+   for(unsigned i = 0;i<hands.size();i++)
    {
      tests.push_back(make_pair(loadImage(hands[i]),make_vector(1)));
    }
 
-   for(int i = 0;i<nonhands.size();i++)
+   for(unsigned i = 0;i<nonhands.size();i++)
    {
      tests.push_back(make_pair(loadImage(nonhands[i]),make_vector(0)));
    }
@@ -142,7 +151,8 @@ int main(int argc, char *argv[])
      epoche++;
      cerr << epoche << endl;
      E=0;
-     random_shuffle(tests.begin(),tests.end());
+     if(mode==0)
+        random_shuffle(tests.begin(),tests.end());
 
      FOR(i,tests.size())
      {

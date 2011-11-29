@@ -21,7 +21,7 @@ namespace NeuralNET
   {
     friend class NeuralLayer;
     void prepare(vector<float>*);
-    float trainDelta(vector<float>*,float);
+    void trainDelta(vector<float>*,float);
     virtual float activationFunction(const vector<float>*) = 0;
     virtual float derivativeFunction(float x) = 0;
     void trainDelta(vector<float>,float);
@@ -34,12 +34,12 @@ namespace NeuralNET
     float w0;
     vector<float> deltaW;
   protected:
-    unsigned dimension;
     float alpha;
+    unsigned dimension;
     vector<float> weights;    
   public:
     Perceptron(unsigned, float);    
-    float train(vector<float>,int);
+    void train(vector<float>,int);
     float classify(vector<float>);
     int discreteClassify(vector<float>);
     void randomizeWeights();
