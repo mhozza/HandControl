@@ -52,7 +52,8 @@ public:
         return imageData;
     }
     void setImage(ImageBuffer img, unsigned w, unsigned h);
-    void setImageFromComplexArray(fftw_complex *, unsigned w, unsigned h);
+    void setImageFromComplexArray(fftw_complex *, unsigned w, unsigned h);    
+    void mask(HCImage mask, bool invert);
 
     inline unsigned width()
     {

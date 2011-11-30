@@ -15,7 +15,7 @@ using namespace NeuralNET;
 #define FOR(i,n) for(int i=0;i<(n);i++)
 #define N_SIDE 128
 #define N (N_SIDE * N_SIDE)
-#define HIDDEN_N 7
+#define HIDDEN_N 17
 #define HIDDEN_N2 3
 #define OUT_N 1
 
@@ -71,30 +71,26 @@ vector<float> loadImage(string path)
   print(path);
   ifstream ifs(path.c_str());
   vector<float> res;
-  res.resize(N);
+  res.resize(N,0);
+/*
   //ppm without comments
   //head
-  //string hdr = "P2";
-  //ifs >> hdr;
-  //if(hdr!="P2") throw 1;
+  string hdr = "P2";
+  ifs >> hdr;
+  if(hdr!="P2") throw 1;
   //w, h
-  //int w = N_SIDE,h=N_SIDE;
-  //int colors = 256;
-  //ifs >> w >> h >> colors;
-  //if(w!=N_SIDE || h!=N_SIDE) throw 1;
+  int w = N_SIDE,h=N_SIDE;
+  int colors = 256;
+  ifs >> w >> h >> colors;
+  if(w!=N_SIDE || h!=N_SIDE) throw 1;*/
 
-  //int i = 0;
-  FOR(i,N) ifs >> res[i];
-  /*
-  FOR(y,h)
+  FOR(i,N)
   {
-    FOR(x,w)
-    {
-      float t;
-      ifs >> t;
-      res[i++] = t;
-    }
-  }*/
+      //int a;
+      //ifs >> a;
+      //res[i] = 1/(1+a);
+      ifs >> res[i];
+  }
   ifs.close();
   return res;
 }
@@ -102,8 +98,8 @@ vector<float> loadImage(string path)
 int main(int argc, char *argv[])
 {
    srand (time(NULL) );
-   float alpha = 0.5;
-   int verbose = 2;
+   float alpha = 0.25;
+   int verbose = 0;
    int mode = 0;
    if(argc>1) mode = atoi(argv[1]);
 
@@ -113,18 +109,21 @@ int main(int argc, char *argv[])
 
    vector<pair<vector<float>,vector<int > > > tests;
 
-   net->saveWeights("blabla");
+   //net->saveWeights("blabla");
 
    string hands_path, nonhands_path;
    if(mode==0)
    {
     hands_path = "../hand_images/hands";
     nonhands_path = "../hand_images/other";
+    //net->loadWeights("vahy");
    }
    else
    {
-    hands_path = "../hand_images/test/hands";
-    nonhands_path = "../hand_images/test/other";
+     hands_path = "../hand_images/hands";
+     nonhands_path = "../hand_images/other";
+    //hands_path = "../hand_images/test/hands";
+    //nonhands_path = "../hand_images/test/other";
     net->loadWeights("vahy");
    }
 
@@ -156,11 +155,15 @@ int main(int argc, char *argv[])
 
      FOR(i,tests.size())
      {
-       cout << i << ": ";
-       cout << tests[i].second[0] << " ";
-       vector<float> tc = net->classify(tests[i].first);
+        if(verbose)
+        {
+           cout << i << ": ";
+           cout << tests[i].second[0] << " ";
+        }
+        vector<float> tc = net->classify(tests[i].first);
        float c = tc[0];
-       cout << (c>0.5) << " (" << c  << ")" << endl;
+       if(verbose)
+        cout << (c>0.5) << " (" << c  << ")" << endl;
 
        float e = 0;
        if(mode==0)

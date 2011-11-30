@@ -19,7 +19,7 @@ int subtract(QPoint a, QPoint b)
 
 HandRecognizer::HandRecognizer()
 {
-  index = 1005;
+  index = 0;
   unsigned sizes[] = {HIDDEN_N,OUT_N};
   net = new NeuralNetwork(2,sizes,N,0);
   net->loadWeights("classifier.dat");
@@ -91,9 +91,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
     input.resize(N);
     int i = -1;
 
-    for(int y = 0;y < SCALE_SIZE; y++)
+    for(unsigned y = 0;y < SCALE_SIZE; y++)
     {
-      for(int x = 0;x < SCALE_SIZE; x++)
+      for(unsigned x = 0;x < SCALE_SIZE; x++)
       {
         i++;
         if(x>=imgRefScaled.width() || y >=imgRefScaled.height()) {
@@ -101,7 +101,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
           continue;
         }
         //input[i] = imgScaled.pixel(x,y);
-        input[i] = Utils::cabs(out[x+y*SCALE_SIZE]);
+        input[i] = 1/(1+Utils::cabs(out[x+y*SCALE_SIZE]));
 
         /*if(imgRefScaled.pixel(x,y)==c)
         {
@@ -130,16 +130,17 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
 
 #ifdef SAVE_HAND    
     //zapis do suboru
-    stringstream fname,fname2;
+    stringstream fname,fname2,fname3;
     //index = 0;
-    fname << "hand_images/"<< ((hand>0.5) ? "hand_" : "other") << "_" << index << ".trn";
-    fname2 << "hand_images/"<< ((hand>0.5) ? "hand_" : "other") << "_" << index << ".pbm";
+    fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn";
+    fname2 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
+    //fname3 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
     index++;
 
     ofstream ofs(fname.str().c_str());
-    for(int y = 0;y < SCALE_SIZE; y++)
+    for(unsigned y = 0;y < SCALE_SIZE; y++)
     {
-      for(int x = 0;x < SCALE_SIZE; x++)
+      for(unsigned x = 0;x < SCALE_SIZE; x++)
       {
         i++;
         if(x>=imgRefScaled.width() || y >=imgRefScaled.height()) {
@@ -147,11 +148,14 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
           continue;
         }
         //input[i] = imgScaled.pixel(x,y);
-        ofs << Utils::cabs(out[x+y*SCALE_SIZE]) << " ";
+        ofs << 1/(1+Utils::cabs(out[x+y*SCALE_SIZE])) << " ";
       }
       ofs << endl;
     }
     Utils::saveImage(imgScaled,index,fname2.str());
+    /*imgScaled.setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
+    Utils::saveImage(imgScaled,index,fname3.str());*/
+
 #endif    
     fftw_free(out);
   }    

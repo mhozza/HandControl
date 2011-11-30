@@ -26,6 +26,7 @@ namespace NeuralNET
 
   float NeuralNetwork::train(vector<float> input,vector<int> target)
   {
+    //todo: optimalizacia
     vector<vector<float> > in;
     in.resize(layers.size()+1);
     in[0] = input;

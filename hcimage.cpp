@@ -164,9 +164,25 @@ void HCImage::setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned h)
     {
         for(int x = 0; x<w;x++)
         {
-            uchar val = min((long long)round(log(Utils::cabs(b[x+y*w]))),255LL);
+            uchar val = min((long)round(log2(Utils::cabs(b[x+y*w]))),255L);
             setPixel(x,y,val);
         }
     }
 
+}
+
+void HCImage::mask(HCImage mask, bool invert = false)
+{
+    if(mask.height()!=h || mask.width()!=w) throw 1;
+
+    for(int y = 0; y<h;y++)
+    {
+        for(int x = 0; x<w;x++)
+        {
+            if(!invert)
+                setPixel(x,y,(pixel(x,y) & mask.pixel(x,y)));
+            else
+                setPixel(x,y,(pixel(x,y) & ~mask.pixel(x,y)));
+        }
+    }
 }

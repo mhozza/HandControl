@@ -31,7 +31,7 @@ public:
     inline void drawPoints(QPainter * p)
     {
       //cout << points.size() << endl;
-      for(int i = 1; i<points.size();i++)
+      for(unsigned i = 1; i<points.size();i++)
       {
         //p->drawPoint(points[i]);
         p->drawLine(points[i-1],points[i]);
