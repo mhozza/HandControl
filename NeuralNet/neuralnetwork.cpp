@@ -3,9 +3,13 @@
 namespace NeuralNET
 {
 
+  NeuralNetwork::NeuralNetwork()
+  {
+  }
+
   NeuralNetwork::NeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = .25)
   {
-    if(layerCount>sizeof(sizes))
+    if(layerCount>sizeof(sizes)/sizeof(unsigned))
     {
       throw -1;
     }

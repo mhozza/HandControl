@@ -25,6 +25,7 @@ namespace NeuralNET
   class NeuralNetwork
   {    
   protected:
+    NeuralNetwork();
     vector<NeuralLayer*> layers;
   public:
     NeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha);

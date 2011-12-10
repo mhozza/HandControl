@@ -1,5 +1,6 @@
 #include <iostream>
 #include "neuralnetwork.h"
+#include "distributedneuralnetwork.h"
 #include <cstdlib>
 #include <algorithm>
 #include <fstream>
@@ -15,8 +16,9 @@ using namespace NeuralNET;
 #define FOR(i,n) for(int i=0;i<(n);i++)
 #define N_SIDE 128
 #define N (N_SIDE * N_SIDE)
-#define HIDDEN_N 17
-#define HIDDEN_N2 3
+#define HIDDEN_N 16
+#define HIDDEN_N_W 4
+#define HIDDEN_N2 5
 #define OUT_N 1
 
 inline void print(string s)
@@ -103,8 +105,10 @@ int main(int argc, char *argv[])
    int mode = 0;
    if(argc>1) mode = atoi(argv[1]);
 
-   unsigned sizes[] = {HIDDEN_N, OUT_N};
-   NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
+   //unsigned sizes[] = {HIDDEN_N, OUT_N};
+   //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
+   unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+   NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_W,N_SIDE,N_SIDE,alpha);
    signal(SIGINT, ctrlc);
 
    vector<pair<vector<float>,vector<int > > > tests;
@@ -116,7 +120,7 @@ int main(int argc, char *argv[])
    {
     hands_path = "../hand_images/hands";
     nonhands_path = "../hand_images/other";
-    //net->loadWeights("vahy");
+    net->loadWeights("vahy");
    }
    else
    {
@@ -145,7 +149,7 @@ int main(int argc, char *argv[])
 
    float E = 100;
    int epoche = 0;
-   while(epoche<200 && (mode==0 || epoche<1))
+   while(epoche<400 && (mode==0 || epoche<1))
    {
      epoche++;
      cerr << epoche << endl;

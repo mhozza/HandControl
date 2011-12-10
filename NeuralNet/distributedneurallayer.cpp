@@ -30,11 +30,11 @@ vector<float> DistributedNeuralLayer::prepareInput(unsigned x, unsigned y, vecto
 {
   unsigned sx = x*inputWidth,sy = y*inputHeight;
   vector<float> in;
-  for(unsigned iy = sy; iy < sy+inputHeight; iy++)
+  for(unsigned y = sy; y < sy+inputHeight; y++)
   {
-    for(unsigned ix = sx; x < sx+inputWidth; ix++)
+    for(unsigned x = sx; x < sx+inputWidth; x++)
     {
-      in.push_back(input[ix+iy*inputWidth]);
+      in.push_back(input[x+y*inputWidth]);
     }
   }
   return in;
