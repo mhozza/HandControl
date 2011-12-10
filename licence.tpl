@@ -1,7 +1,4 @@
 /*
- *    HandControl - Hand gesture recognition 
- *    Version: 0.2
- * 
  *    Copyright (C) 2011-%YEAR%  Michal Hozza (mhozza@gmail.com)
  *
  *    This program is free software: you can redistribute it and/or modify

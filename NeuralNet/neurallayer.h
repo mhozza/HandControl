@@ -10,15 +10,14 @@ namespace NeuralNET
   {
     friend class NeuralNetwork;
     vector<vector<float> > getWeights();
-    void setWeights(vector<vector<float> >);
-    //vector<float> getDelta(vector<float> input,vector<int> target);
+    void setWeights(vector<vector<float> >);    
     vector<float> getDelta(vector<float> output, vector<int> target);
-    float getError(vector<float>,vector<int>);
     void trainDelta(vector<float> input,vector<float> delta);
     float derivativeFunction(float x, int i);
     void setMomentum(float);
     void setW0(float);
   protected:
+    float getError(vector<float>,vector<int>);
     vector<Perceptron*> neurons;
   public:
       NeuralLayer(unsigned size, unsigned dimension, float alpha);

@@ -13,12 +13,16 @@ SOURCES += main.cpp \
     perceptron.cpp \
     continuous_perceptron.cpp \
     neuralnetwork.cpp \
-    neurallayer.cpp
+    neurallayer.cpp \
+    distributedneurallayer.cpp
 
 HEADERS += \
     perceptron.h \
     continuous_perceptron.h \
     neuralnetwork.h \
-    neurallayer.h
+    neurallayer.h \
+    distributedneurallayer.h
 
 QMAKE_CXXFLAGS_RELEASE += -O3
+
+OTHER_FILES +=

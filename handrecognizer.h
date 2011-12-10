@@ -17,7 +17,7 @@ using namespace NeuralNET;
 #define N SCALE_SIZE*SCALE_SIZE
 #define N_SIDE SCALE_SIZE
 #define OUT_N 1
-#define HIDDEN_N 7
+#define HIDDEN_N 17
 #define HAND_TRESHOLD 0.90
 
 class HandRecognizer

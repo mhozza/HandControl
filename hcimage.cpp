@@ -164,7 +164,7 @@ void HCImage::setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned h)
     {
         for(int x = 0; x<w;x++)
         {
-            uchar val = min((long)round(log2(Utils::cabs(b[x+y*w]))),255L);
+            uchar val = min((long)round(10*log2(Utils::cabs(b[x+y*w]))),255L);
             setPixel(x,y,val);
         }
     }

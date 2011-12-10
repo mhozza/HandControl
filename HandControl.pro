@@ -31,7 +31,8 @@ SOURCES += main.cpp\
     gesturemovedown.cpp \
     onscreendisplayform.cpp \
     utils.cpp \
-    hcimage.cpp
+    hcimage.cpp \
+    NeuralNet/distributedneurallayer.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -53,7 +54,8 @@ HEADERS  += mainwindow.h \
     gesturemovedown.h \
     onscreendisplayform.h \
     utils.h \
-    hcimage.h
+    hcimage.h \
+    NeuralNet/distributedneurallayer.h
 
 FORMS += mainwindow.ui \
     onscreendisplayform.ui

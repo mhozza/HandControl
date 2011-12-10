@@ -128,13 +128,13 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
       handRect = r;
     }
 
-#ifdef SAVE_HAND    
+#ifdef SAVE_HAND
     //zapis do suboru
     stringstream fname,fname2,fname3;
     //index = 0;
     fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn";
     fname2 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
-    //fname3 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
+    fname3 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
     index++;
 
     ofstream ofs(fname.str().c_str());
@@ -153,8 +153,8 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
       ofs << endl;
     }
     Utils::saveImage(imgScaled,index,fname2.str());
-    /*imgScaled.setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    Utils::saveImage(imgScaled,index,fname3.str());*/
+    imgScaled.setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
+    Utils::saveImage(imgScaled,index,fname3.str());
 
 #endif    
     fftw_free(out);
