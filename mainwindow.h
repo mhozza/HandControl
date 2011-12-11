@@ -31,8 +31,8 @@
 #include "hcimage.h"
 
 #define VIDEO_DEVICE "/dev/video0"
-#define VIDEO_WIDTH 320
-#define VIDEO_HEIGHT 240
+#define VIDEO_WIDTH 400
+#define VIDEO_HEIGHT 300
 #define NO_HAND_FRAMES 7
 
 namespace Ui {

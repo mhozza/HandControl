@@ -64,5 +64,4 @@ FORMS += mainwindow.ui \
 
 LIBS += -lv4l2 -lXtst -lfftw3
 
-OTHER_FILES += \
-    NeuralNet/blabla
+OTHER_FILES +=

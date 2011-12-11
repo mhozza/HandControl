@@ -303,8 +303,8 @@ HCImage ImageProcessor::processImage(const HCImage &image)
 
   //return image;
   //Utils::saveImage(img,index++);
-  //return img;
-  return *expandedImg;
+  return img;
+  //return *expandedImg;
 }
 
 ImageProcessor::~ImageProcessor()

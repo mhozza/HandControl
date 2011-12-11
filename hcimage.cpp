@@ -182,7 +182,7 @@ void HCImage::mask(HCImage mask, bool invert = false)
             if(!invert)
                 setPixel(x,y,(pixel(x,y) & mask.pixel(x,y)));
             else
-                setPixel(x,y,(pixel(x,y) & ~mask.pixel(x,y)));
+                setPixel(x,y,(pixel(x,y) | mask.pixel(x,y)));
         }
     }
 }

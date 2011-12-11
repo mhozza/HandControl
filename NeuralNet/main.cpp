@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
    {
     hands_path = "../hand_images/hands";
     nonhands_path = "../hand_images/other";
-    //net->loadWeights("vahy");
+    net->loadWeights("vahy");
    }
    else
    {
