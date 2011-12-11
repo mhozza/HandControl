@@ -20,8 +20,9 @@ int subtract(QPoint a, QPoint b)
 HandRecognizer::HandRecognizer()
 {
   index = 0;
-  unsigned sizes[] = {HIDDEN_N,OUT_N};
-  net = new NeuralNetwork(2,sizes,N,0);
+  unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+  net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE, N_SIDE,0);
+  //net = new NeuralNetwork(2,sizes,N,0);
   net->loadWeights("classifier.dat");
 }
 
@@ -68,8 +69,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
     //crop and scale image
     HCImage imgRefScaled = imgRef->copy(r);
     HCImage imgScaled = img->copy(r);
+    imgScaled.mask(imgRefScaled,true);
     //Utils::saveImage(imgScaled,index);
-    imgRefScaled.scale(SCALE_SIZE,SCALE_SIZE);
+    //imgRefScaled.scale(SCALE_SIZE,SCALE_SIZE);
     imgScaled.scale(SCALE_SIZE,SCALE_SIZE);
 
     //fft

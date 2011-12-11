@@ -22,7 +22,7 @@ using namespace NeuralNET;
 #include <iostream>
 
 
-DistributedNeuralNetwork::DistributedNeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned firstLayerW, unsigned dimensionW, unsigned dimensionH, float alpha)
+DistributedNeuralNetwork::DistributedNeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned firstLayerW, unsigned firstLayerH, unsigned dimensionW, unsigned dimensionH, float alpha)
 {
   /*if(layerCount>sizeof(sizes)/sizeof(unsigned))
   {
@@ -35,7 +35,7 @@ DistributedNeuralNetwork::DistributedNeuralNetwork(unsigned layerCount, unsigned
   {
     if(i==0)
     {
-      layers[i] = new DistributedNeuralLayer(firstLayerW, sizes[i]/firstLayerW, dimensionW, dimensionH, alpha);
+      layers[i] = new DistributedNeuralLayer(sizes[i]/(firstLayerW*firstLayerH),firstLayerW,firstLayerH , dimensionW, dimensionH, alpha);
     }
     else
     {

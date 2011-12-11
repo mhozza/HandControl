@@ -7,6 +7,7 @@
 #include <QMutex>
 
 #include "NeuralNet/neuralnetwork.h"
+#include "NeuralNet/distributedneuralnetwork.h"
 
 #include "hcimage.h"
 
@@ -17,7 +18,9 @@ using namespace NeuralNET;
 #define N SCALE_SIZE*SCALE_SIZE
 #define N_SIDE SCALE_SIZE
 #define OUT_N 1
-#define HIDDEN_N 17
+#define HIDDEN_N_SIDE 4
+#define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
+#define HIDDEN_N2 11
 #define HAND_TRESHOLD 0.90
 
 class HandRecognizer

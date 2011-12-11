@@ -16,9 +16,9 @@ using namespace NeuralNET;
 #define FOR(i,n) for(int i=0;i<(n);i++)
 #define N_SIDE 128
 #define N (N_SIDE * N_SIDE)
-#define HIDDEN_N 16
-#define HIDDEN_N_W 4
-#define HIDDEN_N2 5
+#define HIDDEN_N_SIDE 4
+#define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
+#define HIDDEN_N2 11
 #define OUT_N 1
 
 inline void print(string s)
@@ -108,7 +108,7 @@ int main(int argc, char *argv[])
    //unsigned sizes[] = {HIDDEN_N, OUT_N};
    //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
    unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
-   NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_W,N_SIDE,N_SIDE,alpha);
+   NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
    signal(SIGINT, ctrlc);
 
    vector<pair<vector<float>,vector<int > > > tests;
@@ -120,7 +120,7 @@ int main(int argc, char *argv[])
    {
     hands_path = "../hand_images/hands";
     nonhands_path = "../hand_images/other";
-    net->loadWeights("vahy");
+    //net->loadWeights("vahy");
    }
    else
    {

@@ -9,10 +9,10 @@ namespace NeuralNET
 
   NeuralNetwork::NeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = .25)
   {
-    if(layerCount>sizeof(sizes)/sizeof(unsigned))
+    /*if(layerCount>sizeof(sizes))
     {
       throw -1;
-    }
+    }*/
 
     layers.resize(layerCount);
     for(unsigned i = 0; i< layers.size();i++)

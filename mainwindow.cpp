@@ -23,9 +23,9 @@
 using namespace std;
 
 MainWindow::MainWindow(QWidget *parent) :
-    QMainWindow(parent),
-    ui(new Ui::MainWindow),
-    noHandFrames(0)
+  QMainWindow(parent),
+  noHandFrames(0),
+  ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
     camera = new Webcam();        

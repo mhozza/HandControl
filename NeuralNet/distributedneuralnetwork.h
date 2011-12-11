@@ -25,7 +25,7 @@ namespace NeuralNET
   class DistributedNeuralNetwork : public NeuralNetwork
   {
   public:
-    DistributedNeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned firstLayerW, unsigned dimensionW, unsigned dimensionH, float alpha);
+    DistributedNeuralNetwork(unsigned layerCount, unsigned sizes[], unsigned firstLayerW, unsigned firstLayerH, unsigned dimensionW, unsigned dimensionH, float alpha);
   };
 }
 

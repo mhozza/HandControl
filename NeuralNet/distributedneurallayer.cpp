@@ -18,8 +18,8 @@
 #include "distributedneurallayer.h"
 using namespace NeuralNET;
 
-DistributedNeuralLayer::DistributedNeuralLayer(unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha)
-  : NeuralLayer(w*h,(dimensionW*dimensionH)/(w*h),alpha),
+DistributedNeuralLayer::DistributedNeuralLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha)
+  : NeuralLayer(w*h*neuronsPerZone,(dimensionW*dimensionH)/(w*h),alpha), neuronsPerZone(neuronsPerZone),
     width(w), height(h), dimensionWidth(dimensionW), dimensionHeight(dimensionH),
     inputWidth(dimensionWidth/width), inputHeight(dimensionHeight/height)
 {
@@ -29,11 +29,11 @@ DistributedNeuralLayer::DistributedNeuralLayer(unsigned w, unsigned h, unsigned 
 vector<float> DistributedNeuralLayer::prepareInput(unsigned x, unsigned y, vector<float> &input)
 {
   unsigned sx = x*inputWidth,sy = y*inputHeight;
-  vector<float> in;
+  vector<float> in;  
   for(unsigned y = sy; y < sy+inputHeight; y++)
   {
     for(unsigned x = sx; x < sx+inputWidth; x++)
-    {
+    {      
       in.push_back(input[x+y*inputWidth]);
     }
   }
@@ -48,7 +48,11 @@ vector<float> DistributedNeuralLayer::classify(vector<float> input)
   {
     for(unsigned x = 0; x < width; x++)
     {
-      outputs[x+y*width] = neurons[x+y*width]->classify(prepareInput(x,y,input));
+      vector<float> in = prepareInput(x,y,input);
+      for(unsigned i = 0;i<neuronsPerZone;i++)
+      {
+        outputs[x+y*width] = neurons[x+y*width]->classify(in);
+      }
     }
   }
   return outputs;
@@ -62,7 +66,11 @@ vector<int> DistributedNeuralLayer::discreteClassify(vector<float> input)
   {
     for(unsigned x = 0; x < width; x++)
     {
-      outputs[x+y*width] = neurons[x+y*width]->discreteClassify(prepareInput(x,y,input));
+      vector<float> in = prepareInput(x,y,input);
+      for(unsigned i = 0;i<neuronsPerZone;i++)
+      {
+        outputs[x+y*width] = neurons[x+y*width]->discreteClassify(in);
+      }
     }
   }
   return outputs;
@@ -79,7 +87,11 @@ float DistributedNeuralLayer::train(vector<float> input,vector<int> target)
     {
       for(unsigned x = 0; x < width; x++)
       {
-        neurons[x+y*width]->train(prepareInput(x,y,input),target[x+y*width]);
+        vector<float> in = prepareInput(x,y,input);
+        for(unsigned i = 0;i<neuronsPerZone;i++)
+        {
+          neurons[x+y*width]->train(in,target[x+y*width]);
+        }
       }
     }
   }
@@ -92,7 +104,11 @@ void DistributedNeuralLayer::trainDelta(vector<float> input,vector<float> delta)
   {
     for(unsigned x = 0; x < width; x++)
     {
-       neurons[x+y*width]->trainDelta(prepareInput(x,y,input), delta[x+y*width]);
+      vector<float> in = prepareInput(x,y,input);
+      for(unsigned i = 0;i<neuronsPerZone;i++)
+      {
+        neurons[x+y*width]->trainDelta(in, delta[x+y*width]);
+      }
     }
   }
 }

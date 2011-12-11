@@ -23,11 +23,11 @@ namespace NeuralNET
 {
   class DistributedNeuralLayer : public NeuralLayer
   {
-    unsigned width, height, dimensionWidth, dimensionHeight, inputWidth, inputHeight;
+    unsigned neuronsPerZone, width, height, dimensionWidth, dimensionHeight, inputWidth, inputHeight;
     vector<float> prepareInput(unsigned x, unsigned y, vector<float> &input);
     void trainDelta(vector<float> input,vector<float> delta);
   public:
-      DistributedNeuralLayer(unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha);
+      DistributedNeuralLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha);
       float train(vector<float>,vector<int>);
       vector<float> classify(vector<float>);
       vector<int> discreteClassify(vector<float>);

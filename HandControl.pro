@@ -32,7 +32,8 @@ SOURCES += main.cpp\
     onscreendisplayform.cpp \
     utils.cpp \
     hcimage.cpp \
-    NeuralNet/distributedneurallayer.cpp
+    NeuralNet/distributedneurallayer.cpp \
+    NeuralNet/distributedneuralnetwork.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -55,9 +56,13 @@ HEADERS  += mainwindow.h \
     onscreendisplayform.h \
     utils.h \
     hcimage.h \
-    NeuralNet/distributedneurallayer.h
+    NeuralNet/distributedneurallayer.h \
+    NeuralNet/distributedneuralnetwork.h
 
 FORMS += mainwindow.ui \
     onscreendisplayform.ui
 
 LIBS += -lv4l2 -lXtst -lfftw3
+
+OTHER_FILES += \
+    NeuralNet/blabla
