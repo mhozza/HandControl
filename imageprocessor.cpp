@@ -203,12 +203,14 @@ void ImageProcessor::prepareImg(HCImage &image, int sx, int sy, int ex, int ey)
   }
 }
 
-ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer): images(0), images2(MAX_FRAMES/2), index(0)
+ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer)
+  : images(0), images2(MAX_FRAMES/2), index(0), useKalmannFilter(true)
 {
   oldImage = new HCImage(width,height);
   expandedImg = new HCImage(width,height);
   expandedImgX = new HCImage(width,height);
   this->handRecognizer = handRecognizer;
+  kf = NULL;
 }
 
 HCImage ImageProcessor::processImage(const HCImage &image)
@@ -219,6 +221,14 @@ HCImage ImageProcessor::processImage(const HCImage &image)
   vector<QFuture<void> > threads;
   int n = QThread::idealThreadCount();
 
+  if(kf==NULL)
+  {
+    kf = new KalmannFilter((HCImage*)&image);
+  }
+
+  if(useKalmannFilter)
+    kf->filter((HCImage*)&image);
+
   for(int i=0;i<n;i++)
   {
     threads.push_back(QtConcurrent::run(this,&ImageProcessor::prepareImg, image, (img.width()*i)/n,0,((i+1)*img.width())/n,img.height()));
@@ -228,6 +238,7 @@ HCImage ImageProcessor::processImage(const HCImage &image)
     threads[i].waitForFinished();
   }
   threads.clear();
+
 
 
   //expand X
@@ -250,6 +261,8 @@ HCImage ImageProcessor::processImage(const HCImage &image)
     threads[i].waitForFinished();
   }
   threads.clear();
+
+
 
   //Segment and recognize
   uint color = 1;
@@ -303,6 +316,7 @@ HCImage ImageProcessor::processImage(const HCImage &image)
 
   //return image;
   //Utils::saveImage(img,index++);
+
   return img;
   //return *expandedImg;
 }

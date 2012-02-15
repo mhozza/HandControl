@@ -21,7 +21,7 @@ using namespace NeuralNET;
 #define HIDDEN_N_SIDE 4
 #define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
 #define HIDDEN_N2 11
-#define HAND_TRESHOLD 0.90
+#define HAND_TRESHOLD 0.80
 
 class HandRecognizer
 {

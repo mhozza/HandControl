@@ -30,6 +30,7 @@
 
 #include <utils.h>
 #include "handrecognizer.h"
+#include "kalmannfilter.h"
 
 using namespace std;
 
@@ -50,6 +51,7 @@ class ImageProcessor
     HandRecognizer * handRecognizer;
     queue<pair<QRect,uint> > rectQueue;
     int index;
+    KalmannFilter * kf;
 
     template<class T> inline void exchange(T &a, T &b)
     {
@@ -76,7 +78,7 @@ class ImageProcessor
     QRect segment(int x, int y, uchar color, HCImage * image, QRect rect);
 
 public:
-
+    bool useKalmannFilter;
     ImageProcessor(int width, int height, HandRecognizer * handRecognizer);
     ~ImageProcessor();
     HCImage processImage(const HCImage &img);

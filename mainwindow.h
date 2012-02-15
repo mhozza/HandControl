@@ -69,6 +69,7 @@ private:
 
 public slots:
     void getImage();        
+    void toggleKalmann(bool state);
 };
 
 #endif // MAINWINDOW_H

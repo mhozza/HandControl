@@ -19,7 +19,7 @@ int subtract(QPoint a, QPoint b)
 
 HandRecognizer::HandRecognizer()
 {
-  index = 1009;
+  index = 1248;
   unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
   net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE, N_SIDE,0);
   //net = new NeuralNetwork(2,sizes,N,0);

@@ -33,8 +33,9 @@ MainWindow::MainWindow(QWidget *parent) :
     gestureRecognizer= new GestureRecognizer();
     setupCamera();
 
+    connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));
+    connect(ui->cbKalmannFilter,SIGNAL(toggled(bool)),this,SLOT(toggleKalmann(bool)));
 
-    connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));    
 }
 
 void MainWindow::setupCamera()
@@ -48,10 +49,10 @@ void MainWindow::setupCamera()
 
         imageProcessor = new ImageProcessor(VIDEO_WIDTH, VIDEO_HEIGHT, handRecognizer);
 
-        for (int i = 0; i < formatName.size(); i++)
+        /*for (int i = 0; i < formatName.size(); i++)
         {
                cout << formatList.at(i) << endl;
-        }
+        }*/
 
         /*QList<QSize> sizes = camera->getSizesList();
         for (int i = 0; i < sizes.size(); i++)
@@ -184,4 +185,9 @@ void MainWindow::getImage()
                 ui->label_3->setPixmap(QPixmap::fromImage(imageFromCamera.toQImage()));
                 ui->radioButton->setChecked(imageProcessor->imageChanged());
         }
+}
+
+void MainWindow::toggleKalmann(bool state)
+{
+  imageProcessor->useKalmannFilter = state;
 }

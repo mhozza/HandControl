@@ -33,7 +33,8 @@ SOURCES += main.cpp\
     utils.cpp \
     hcimage.cpp \
     NeuralNet/distributedneurallayer.cpp \
-    NeuralNet/distributedneuralnetwork.cpp
+    NeuralNet/distributedneuralnetwork.cpp \
+    kalmannfilter.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -57,7 +58,8 @@ HEADERS  += mainwindow.h \
     utils.h \
     hcimage.h \
     NeuralNet/distributedneurallayer.h \
-    NeuralNet/distributedneuralnetwork.h
+    NeuralNet/distributedneuralnetwork.h \
+    kalmannfilter.h
 
 FORMS += mainwindow.ui \
     onscreendisplayform.ui
