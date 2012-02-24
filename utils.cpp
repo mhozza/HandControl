@@ -69,5 +69,75 @@ double Utils::cabs(fftw_complex v)
 {
     return sqrt(v[0]*v[0]+v[1]*v[1]);
 }
+/*
+//Matrix
+template <class T> vector<vector<T> > Matrix<T>::createIdentity(int w, int h)
+{
+  vector<vector<T> m;
+  m.resize(h);
+  for(unsigned i = 0;i<m.size();i++)
+  {
+    m[i].resize(w,T(0));
+    if(i<w)
+      m[i][i] = T(1);
+  }
+}
 
+template <class T> vector<vector<T> > Matrix<T>::transpone(vector<vector<T> > v)
+{
+  vector<vector<T> > v2;
+  v2.resize(v[0].size());
+  for(unsigned i = 0;i<v.size();i++)
+  {
+    for(unsigned j = 0;j<v[i].size();j++)
+    {
+      v2[j].resize(v.size());
+      v2[j][i] = v[i][j];
+    }
+  }
+  return v2;
+}
 
+//Matrix operators
+
+template <class T> vector<T> operator+(vector<T> a, vector<T> b)
+{
+  //if(a.size()!=b.size) throw -1;
+  vector<T> c;
+  c.resize(0);
+  for(unsigned i = 0;i<a.size();i++)
+  {
+    c.push_back(a[i]+b[i]);
+  }
+  return c;
+}
+
+template <class T> vector<vector<T> > operator+(vector<vector<T> > a, vector<vector<T> > b)
+{
+  //if(a.size()!=b.size) throw -1;
+  vector<vector<T> > c;
+  c.resize(0);
+  for(unsigned i = 0;i<a.size();i++)
+  {
+    c.push_back(a[i]+b[i]);
+  }
+  return c;
+}
+
+template <class T> T operator*(vector<T> a, vector<T> b) //!!skalarny sucin
+{
+  //if(a.size()!=b.size) throw -1;
+  T c = T(0);
+  for(unsigned i = 0;i<a.size();i++)
+  {
+    c+=a[i]*b[i];
+  }
+  return c;
+}
+
+template <class T> vector<vector<T> > operator+(vector<vector<T> > a, vector<vector<T> > b) //!!maticove nasobenie
+{
+  vector<vector<T> > bb = Matrix<T>::transpone(b);
+
+}
+*/

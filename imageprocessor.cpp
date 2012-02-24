@@ -204,7 +204,7 @@ void ImageProcessor::prepareImg(HCImage &image, int sx, int sy, int ex, int ey)
 }
 
 ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer)
-  : images(0), images2(MAX_FRAMES/2), index(0), useKalmannFilter(true)
+  : images(0), images2(MAX_FRAMES/2), index(0), useKalmanFilter(true)
 {
   oldImage = new HCImage(width,height);
   expandedImg = new HCImage(width,height);
@@ -221,13 +221,8 @@ HCImage ImageProcessor::processImage(const HCImage &image)
   vector<QFuture<void> > threads;
   int n = QThread::idealThreadCount();
 
-  if(kf==NULL)
-  {
-    kf = new KalmannFilter((HCImage*)&image);
-  }
 
-  if(useKalmannFilter)
-    kf->filter((HCImage*)&image);
+
 
   for(int i=0;i<n;i++)
   {
@@ -239,7 +234,12 @@ HCImage ImageProcessor::processImage(const HCImage &image)
   }
   threads.clear();
 
-
+  if(kf==NULL)
+  {
+    kf = new KalmanFilter(&img);
+  }
+  if(useKalmanFilter)
+    kf->filter(&img);
 
   //expand X
   for(int i=0;i<n;i++)

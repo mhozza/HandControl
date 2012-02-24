@@ -15,12 +15,12 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "kalmannfilter.h"
+#include "kalmanfilter.h"
 
-KalmannFilter::KalmannFilter(HCImage *img)
+KalmanFilter::KalmannFilter(HCImage *img)
   :percentvar(0.05), gain(0.8), width(img->width()), height(img->height())
 {
-  dimension = width*height;
+  /*dimension = width*height;
   noisevar.resize(dimension,percentvar);
   predicted.resize(dimension,0);
   predictedvar.resize(dimension,percentvar);
@@ -32,15 +32,15 @@ KalmannFilter::KalmannFilter(HCImage *img)
   //firstImage
   double* d = img->toDoubleArray();
   for(int i=0;i<predicted.size();++i)
-    predicted[i] = d[i];
+    predicted[i] = d[i];*/
 }
 
 
-void KalmannFilter::filter(HCImage *img)
+void KalmanFilter::filter(HCImage *img)
 {
   //observed = img->toDoubleArray();
   //observed.insert(observed.begin(),dimension,img->toDoubleArray());
-  double* d = img->toDoubleArray();
+  /*double* d = img->toDoubleArray();
   for(int i=0;i<observed.size();++i)
     observed[i] = d[i];
 
@@ -56,5 +56,5 @@ void KalmannFilter::filter(HCImage *img)
   ImageBuffer b;  b.resize(corrected.size());
   for(int i=0;i<corrected.size();++i)
     b[i] = (uchar)corrected[i];
-  img->setImage(b,width,height);
+  img->setImage(b,width,height);*/
 }

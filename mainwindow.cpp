@@ -34,7 +34,7 @@ MainWindow::MainWindow(QWidget *parent) :
     setupCamera();
 
     connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));
-    connect(ui->cbKalmannFilter,SIGNAL(toggled(bool)),this,SLOT(toggleKalmann(bool)));
+    connect(ui->cbKalmanFilter,SIGNAL(toggled(bool)),this,SLOT(toggleKalmann(bool)));
 
 }
 
@@ -189,5 +189,5 @@ void MainWindow::getImage()
 
 void MainWindow::toggleKalmann(bool state)
 {
-  imageProcessor->useKalmannFilter = state;
+  imageProcessor->useKalmanFilter = state;
 }

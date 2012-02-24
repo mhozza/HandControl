@@ -104,6 +104,7 @@ int main(int argc, char *argv[])
    int verbose = 0;
    int mode = 0;
    if(argc>1) mode = atoi(argv[1]);
+   if(argc>2) verbose = atoi(argv[2]);
 
    //unsigned sizes[] = {HIDDEN_N, OUT_N};
    //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
@@ -124,10 +125,10 @@ int main(int argc, char *argv[])
    }
    else
    {
-     hands_path = "../hand_images/hands";
-     nonhands_path = "../hand_images/other";
-    //hands_path = "../hand_images/test/hands";
-    //nonhands_path = "../hand_images/test/other";
+    // hands_path = "../hand_images/hands";
+    // nonhands_path = "../hand_images/other";
+    hands_path = "../hand_images/test/hands";
+    nonhands_path = "../hand_images/test/other";
     net->loadWeights("vahy");
    }
 
@@ -149,10 +150,11 @@ int main(int argc, char *argv[])
 
    float E = 100;
    int epoche = 0;
+   int good = 0;
    while(epoche<400 && (mode==0 || epoche<1))
    {
      epoche++;
-     cerr << epoche << endl;
+     if(mode==0) cerr << epoche << endl;
      E=0;
      if(mode==0)
         random_shuffle(tests.begin(),tests.end());
@@ -169,16 +171,23 @@ int main(int argc, char *argv[])
        if(verbose)
         cout << (c>0.5) << " (" << c  << ")" << endl;
 
+
        float e = 0;
        if(mode==0)
          e = net->train(tests[i].first,tests[i].second);
        else
+       {
+         if(abs(tests[i].second[0] - c)<=0.2) good++;
          e = getError(c,tests[i].second[0]);
+         cout << e << endl;
+       }
 
        E += e;
      }
 
-     cout << E << endl;
+     cout << "Final error:" << E << endl;
+     cout << "Good: " << good << " of " << tests.size() << " "
+          << (100.0*good)/tests.size() << "%" << endl;
      if(stop) break;
    }
    if(verbose)cout << epoche << endl;

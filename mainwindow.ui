@@ -75,7 +75,7 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QCheckBox" name="cbKalmannFilter">
+   <widget class="QCheckBox" name="cbKalmanFilter">
     <property name="geometry">
      <rect>
       <x>340</x>
@@ -85,7 +85,7 @@
      </rect>
     </property>
     <property name="text">
-     <string>KalmannFilter</string>
+     <string>KalmanFilter</string>
     </property>
     <property name="checked">
      <bool>true</bool>

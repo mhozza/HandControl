@@ -25,6 +25,7 @@
 #include <fstream>
 #include <fftw3.h>
 #include <cmath>
+#include <vector>
 
 #include "hcimage.h"
 
@@ -32,12 +33,30 @@ using namespace std;
 
 class Utils
 {
-    Utils(){}
+  Utils(){}
 public:    
-    //inline static unsigned grayScale(QColor c) { return (3*c.red()+3*c.green()+4*c.blue())/10; }
-    static void saveImage(QImage img, int index);
-    static void saveImage(HCImage img, int index, string fname);
-    static double cabs(fftw_complex v);
+  //inline static unsigned grayScale(QColor c) { return (3*c.red()+3*c.green()+4*c.blue())/10; }
+  static void saveImage(QImage img, int index);
+  static void saveImage(HCImage img, int index, string fname);
+  static double cabs(fftw_complex v);
 };
+
+/*
+template <class T> class Matrix
+{
+  Matrix();
+public:
+  static vector<vector<T> > createIdentity(int w, int h);
+  //static vector<vector<T> > vector2matrix(vector<T> v);
+  static vector<vector<T> > transpone(vector<vector<T> >);
+
+};
+
+template <class T> vector<T> operator+(vector<T> a, vector<T> b);
+template <class T> vector<vector<T> > operator+(vector<vector<T> > a, vector<vector<T> > b);
+
+template <class T> T operator*(vector<T> a, vector<T> b); //!!skalarny sucin
+template <class T> vector<vector<T> > operator+(vector<vector<T> > a, vector<vector<T> > b); //!!maticove nasobenie
+*/
 
 #endif // UTILS_H
