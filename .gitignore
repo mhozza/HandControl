@@ -1,0 +1,10 @@
+*~
+hand_images/*
+kalman/*
+ScreenShots/*
+*.o
+*.user*
+moc_*
+HandControl
+NeuralNet/NeuralNet
+ui_*
