@@ -177,17 +177,19 @@ int main(int argc, char *argv[])
          e = net->train(tests[i].first,tests[i].second);
        else
        {
-         if(abs(tests[i].second[0] - c)<=0.2) good++;
+         if(abs(tests[i].second[0] - c)<0.5) good++;
          e = getError(c,tests[i].second[0]);
          cout << e << endl;
        }
 
        E += e;
      }
-
      cout << "Final error:" << E << endl;
-     cout << "Good: " << good << " of " << tests.size() << " "
-          << (100.0*good)/tests.size() << "%" << endl;
+     if(mode>0)
+     {
+       cout << "Good: " << good << " of " << tests.size() << " "
+            << (100.0*good)/tests.size() << "%" << endl;
+     }
      if(stop) break;
    }
    if(verbose)cout << epoche << endl;

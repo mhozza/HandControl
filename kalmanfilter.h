@@ -19,18 +19,18 @@
 #define KALMANNFILTER_H
 
 #include <vector>
-#include <kalman/kfilter.hpp>
+//#include <kalman/kfilter.hpp>
 #include "hcimage.h"
 
 using namespace std;
-using namespace Kalman;
+//using namespace Kalman;
 
-class KalmanFilter : private KFilter<double,0,false,false,true>
+class KalmanFilter //: private KFilter<double,0,false,false,true>
 {
   double percentvar;
   double gain;
   int width, height, dimension;
-  //vector<double> stackslice, filteredslice, noisevar, average, predicted, predictedvar, observed, Kalman, corrected, correctedvar;
+  vector<double> stackslice, filteredslice, noisevar, average, predicted, predictedvar, observed, Kalman, corrected, correctedvar;
 
 public:
   KalmanFilter(HCImage *img);
