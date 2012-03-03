@@ -221,9 +221,6 @@ HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image)
   vector<QFuture<void> > threads;
   int n = QThread::idealThreadCount();
 
-
-
-
   for(int i=0;i<n;i++)
   {
     threads.push_back(QtConcurrent::run(this,&ImageProcessor::prepareImg, image, (img.width()*i)/n,0,((i+1)*img.width())/n,img.height()));
@@ -262,8 +259,6 @@ HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image)
   }
   threads.clear();
 
-
-
   //Segment and recognize
   uint color = 1;
 
@@ -271,7 +266,7 @@ HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image)
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (HCImage<uchar>*) &img,&imgLock));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (HCImage<uchar>*) &image, &imgLock));
   }
 
   for(int y = 0;y<expandedImg->height();y++)
@@ -282,10 +277,10 @@ HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image)
       {        
         color = 1+rand()%254;
         QRect r(x,y,0,0);        
-        r = segment(x,y,color,expandedImg,r);
+        r = segment(x,y,color,expandedImg,r);        
         //if(r.width()!=0) color++;
         if(r.width()>=MIN_RECT_SIZE && r.height()>=MIN_RECT_SIZE && r.width()<=MAX_RECT_SIZE && r.height() <= MAX_RECT_SIZE)
-        {
+        {          
           handRecognizer->rectQueueLock.lock();
           rectQueue.push(make_pair(r,color));
           handRecognizer->rectQueueLock.unlock();

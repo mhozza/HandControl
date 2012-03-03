@@ -26,6 +26,7 @@
 #include <vector>
 #include <cstring>
 #include <cmath>
+#include <queue>
 
 #include <QImage>
 #include <QMutex>
@@ -64,7 +65,7 @@ public:
     }
     void setImage(ImageBuffer img, unsigned w, unsigned h);
     void setImageFromComplexArray(fftw_complex *, unsigned w, unsigned h);    
-    void mask(HCImage mask, bool invert);
+    void mask(HCImage mask, bool invert = false);
 
     inline unsigned width()
     {
@@ -80,6 +81,7 @@ public:
     T pixel(int x, int y);
     T interpolatePixel(float x, float y);
     void setPixel(unsigned x, unsigned y, T val);
+    HCImage<T> getFullFillSelectionMask(int sx, int sy, int treshold = 5);
 
     HCImage copy(QRect r);
     void scale(unsigned w, unsigned h);
@@ -264,7 +266,7 @@ void HCImage<T>::setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned
 }
 
 template <class T>
-void HCImage<T>::mask(HCImage<T> mask, bool invert = false)
+void HCImage<T>::mask(HCImage<T> mask, bool invert)
 {
     if(mask.height()!=h || mask.width()!=w) throw 1;
 
@@ -305,5 +307,34 @@ void HCImage<T>::saveImage(int index, string fname)
     }
     ofs.close();
 }
+
+template <class T>
+HCImage<T> HCImage<T>::getFullFillSelectionMask(int sx, int sy, int treshold)
+{
+  uchar reference = pixel(sx,sy);
+  ImageBuffer b;
+  b.resize(width()*height(),0);
+  queue<pair<int,int> > f;
+  f.push(make_pair(sx,sy));
+  while(!f.empty())
+  {
+      int x = f.front().first;
+      int y = f.front().second;
+      //cout << x << " " << y << endl;
+      f.pop();
+      if(x<0 || x>=width()) continue;
+      if(y<0 || y>=height()) continue;
+      if(abs(reference-pixel(x,y)>treshold) || b[x+y*w]!=0) continue;
+      b[x+y*w]=0xff;
+      f.push(make_pair(x+1,y));
+      f.push(make_pair(x-1,y));
+      f.push(make_pair(x,y+1));
+      f.push(make_pair(x,y-1));
+
+  }
+  HCImage<T> maskImage(b,width(),height());
+  return maskImage;
+}
+
 
 #endif // HCIMAGE_H

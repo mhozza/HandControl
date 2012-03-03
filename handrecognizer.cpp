@@ -69,24 +69,19 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> *
     //crop and scale image
     HCImage<uchar> imgRefScaled = imgRef->copy(r);
     HCImage<uchar> imgScaled = img->copy(r);
-    imgScaled.mask(imgRefScaled,true);
-    //Utils::saveImage(imgScaled,index);
-    //imgRefScaled.scale(SCALE_SIZE,SCALE_SIZE);
+    //imgScaled.mask(imgRefScaled,true);
+    imgScaled.mask(imgScaled.getFullFillSelectionMask(r.width()/2,r.height()/2));
     imgScaled.scale(SCALE_SIZE,SCALE_SIZE);
 
     //fft
-//    double *in = NULL;
     fftw_complex *in = NULL;
     fftw_complex *out = NULL;
     fftw_plan p;
     in = imgScaled.toComplexArray();
-    //in = imgScaled.toDoubleArray();
     out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
     p = fftw_plan_dft_2d(imgScaled.width(), imgScaled.height(), in, out, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
-    //p = fftw_plan_dft_r2c_2d(imgScaled.width(), imgScaled.height(), in, out, FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p); // repeat as needed
-    fftw_destroy_plan(p);    
-    //fftw_free(in);
+    fftw_destroy_plan(p);       
 
     //vygenerovanie vector<float> vstupu pre net
     vector<float> input;
@@ -162,3 +157,4 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> *
     fftw_free(out);
   }    
 }
+
