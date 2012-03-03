@@ -53,7 +53,7 @@ public:
     }
     void setImage(ImageBuffer img, unsigned w, unsigned h);
     void setImageFromComplexArray(fftw_complex *, unsigned w, unsigned h);    
-    void mask(HCImage mask, bool invert);
+    void mask(HCImage mask, bool invert = false);
 
     inline unsigned width()
     {
@@ -68,6 +68,9 @@ public:
 
     uchar pixel(int x, int y);
     uchar interpolatePixel(float x, float y);
+
+    HCImage getFullFillSelectionMask(int sx, int sy, int treshold = 5);
+
     void setPixel(unsigned x, unsigned y, uchar val);
 
     HCImage copy(QRect r);

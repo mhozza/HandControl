@@ -21,7 +21,9 @@
 #include "hcimage.h"
 #include <cstring>
 #include <cmath>
+#include <queue>
 #include "utils.h"
+#include <iostream>
 
 void HCImage::construct(unsigned w, unsigned h)
 {
@@ -182,7 +184,7 @@ void HCImage::setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned h)
 
 }
 
-void HCImage::mask(HCImage mask, bool invert = false)
+void HCImage::mask(HCImage mask, bool invert)
 {
     if(mask.height()!=h || mask.width()!=w) throw 1;
 
@@ -199,3 +201,29 @@ void HCImage::mask(HCImage mask, bool invert = false)
 }
 
 
+HCImage HCImage::getFullFillSelectionMask(int sx, int sy, int treshold)
+{
+  uchar reference = pixel(sx,sy);
+  ImageBuffer b;
+  b.resize(width()*height(),0);
+  queue<pair<int,int> > f;
+  f.push(make_pair(sx,sy));
+  while(!f.empty())
+  {
+      int x = f.front().first;
+      int y = f.front().second;
+      //cout << x << " " << y << endl;
+      f.pop();
+      if(x<0 || x>=width()) continue;
+      if(y<0 || y>=height()) continue;
+      if(abs(reference-pixel(x,y)>treshold) || b[x+y*w]!=0) continue;
+      b[x+y*w]=0xff;
+      f.push(make_pair(x+1,y));
+      f.push(make_pair(x-1,y));
+      f.push(make_pair(x,y+1));
+      f.push(make_pair(x,y-1));
+
+  }
+  HCImage maskImage(b,width(),height());
+  return maskImage;
+}
