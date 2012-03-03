@@ -50,6 +50,8 @@ private:
   ImageBuffer imageData;
   //QMutex * mutex;
   void construct(unsigned w, unsigned h);
+  uint toUintColor(uchar c) {return 0xFF000000 | c | (c << 8) | (c << 16);}
+  uint toUintColor(uint c){return c;}
 public:    
     HCImage():init(false)
     {
@@ -172,8 +174,8 @@ QImage HCImage<T>::toQImage()
     {
         for(int x = 0; x<w;x++)
         {
-            uint bc = pixel(x,y);
-            uint c = 0xFF000000 | (bc) | (bc << 8) | (bc << 16);
+            T bc = pixel(x,y);
+            uint c = toUintColor(bc);
             img.setPixel(x,y,c);
         }
     }

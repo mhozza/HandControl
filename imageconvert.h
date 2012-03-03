@@ -25,5 +25,6 @@ int mjpegToJpeg(unsigned char *inFrame, unsigned char *outFrame, unsigned int bu
 int   yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height);
 //int   yuvToBW(unsigned char *inFrame, unsigned char *image, int width, int height);
 HCImage<uchar>::ImageBuffer yuvToBW(unsigned char *inFrame, int width, int height);
+HCImage<uint>::ImageBuffer  yuvToRGB(unsigned char *inFrame, int width, int height);
 
 #endif

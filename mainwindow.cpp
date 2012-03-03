@@ -118,14 +118,14 @@ void MainWindow::getImage()
                 return;
         }
 
-        /*HCImage gimg(VIDEO_WIDTH,VIDEO_HEIGHT);
+        HCImage<uint> colorimg(VIDEO_WIDTH,VIDEO_HEIGHT);
 
-        if (camera->getFrameBW(gimg) == EXIT_FAILURE)
+        if (camera->getFrame(colorimg) == EXIT_FAILURE)
         {
                 camera->close();
                 throw new CameraGetImageException();
                 return;
-        }*/
+        }
 
         //Utils::saveImage(gimg,0);
 
@@ -182,7 +182,8 @@ void MainWindow::getImage()
         if(!pixmap.isNull())
         {
                 ui->label->setPixmap(pixmap);
-                ui->label_3->setPixmap(QPixmap::fromImage(imageFromCamera.toQImage()));
+                //ui->label_3->setPixmap(QPixmap::fromImage(imageFromCamera.toQImage()));
+                ui->label_3->setPixmap(QPixmap::fromImage(colorimg.toQImage()));
                 ui->radioButton->setChecked(imageProcessor->imageChanged());
         }
 }

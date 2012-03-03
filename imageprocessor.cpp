@@ -231,12 +231,14 @@ HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image)
   }
   threads.clear();
 
+  /*
   if(kf==NULL)
   {
     kf = new KalmanFilter(&img);
   }
   if(useKalmanFilter)
     kf->filter(&img);
+  */
 
   //expand X
   for(int i=0;i<n;i++)

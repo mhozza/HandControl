@@ -174,7 +174,7 @@ int yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height)
 	y2 = inFrame[2];
 	v = inFrame[3];
 
-        YUV2RGB(y, u, v, r, g, b);
+    YUV2RGB(y, u, v, r, g, b);
 	STORERGB(r, g, b);
 	image->setPixel(w, h, qRgb(r, g, b));
 	
@@ -231,4 +231,49 @@ HCImage<uchar>::ImageBuffer yuvToBW(unsigned char *inFrame, int width, int heigh
         }
 
         return image;
+}
+
+
+HCImage<uint>::ImageBuffer yuvToRGB(unsigned char *inFrame, int width, int height)
+{
+  const int size = width * height;
+  HCImage<uint>::ImageBuffer image;
+  image.resize(size);
+    int y, u, v, y2, u2, v2, r, g, b;
+    int i = 2;
+    int j = 4;
+
+    y = inFrame[0];
+    u = inFrame[1];
+    y2 = inFrame[2];
+    v = inFrame[3];
+
+    YUV2RGB(y, u, v, r, g, b);
+    STORERGB(r, g, b);
+    image[1]=0xff000000 | (r << 16) | (g << 8) | b;
+
+    while(i < size / 2)
+    {
+        u2  = inFrame[j+1];
+        v2   = inFrame[j+3];
+        YUV2RGB(y2, MEAN(u, u2), MEAN(v, v2), r, g, b);
+        STORERGB(r, g, b);
+
+        image[2*i]=0xff000000 | (r << 16) | (g << 8) | b;
+
+        y  = inFrame[j+0];
+        y2 = inFrame[j+2];
+        u = u2;
+        v = v2;
+
+        YUV2RGB(y, u, v, r, g, b);
+        STORERGB(r, g, b);
+
+        image[2*i+1]=0xff000000 | (r << 16) | (g << 8) | b;
+
+        i++;
+        j+=4;
+    }
+
+    return image;
 }
