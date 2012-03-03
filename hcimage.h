@@ -66,7 +66,8 @@ public:
         return h;
     }
 
-    uchar pixel(unsigned x, unsigned y);
+    uchar pixel(int x, int y);
+    uchar interpolatePixel(float x, float y);
     void setPixel(unsigned x, unsigned y, uchar val);
 
     HCImage copy(QRect r);

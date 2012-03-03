@@ -58,13 +58,24 @@ void HCImage::setImage(ImageBuffer img, unsigned w, unsigned h)
 }
 
 
-uchar HCImage::pixel(unsigned x, unsigned y)
+uchar HCImage::pixel(int x, int y)
 {    
     //ToDo: check init
-    x = min(x,w-1);
-    y = min(y,h-1);
+    x = max(0,min(x,(int)w-1));
+    y = max(0,min(y,(int)h-1));
     return imageData[x+y*w];
 }
+
+uchar HCImage::interpolatePixel(float x, float y)
+{
+    //ToDo: check init
+    float dx = x-floor(x);
+    float dy = y-floor(y);
+    float p1 = (0.5+dx*0.5)*pixel(round(x),round(y))+(0.5-dx*0.5)*pixel(round(x)+1,round(y));
+    float p2 = (0.5+dx*0.5)*pixel(round(x),round(y)+1)+(0.5-dx*0.5)*pixel(round(x)+1,round(y)+1);
+    return round(((0.5+dy*0.5)*p1+(0.5-dy*0.5)*p2));
+}
+
 
 void HCImage::setPixel(unsigned x, unsigned y, uchar val)
 {    
@@ -117,10 +128,10 @@ void HCImage::scale(unsigned w, unsigned h)
     for(unsigned y = 0;y<h;y++)
     {
         for(unsigned x = 0;x<w;x++)
-        {
-            unsigned oldX = round(x/xScaleFactor);
-            unsigned oldY = round(y/yScaleFactor);
-            b[x+y*w] = pixel(oldX,oldY);
+        {            
+            float oldX = x/xScaleFactor;
+            float oldY = y/yScaleFactor;
+            b[x+y*w] = interpolatePixel(oldX,oldY);
         }
     }    
     setImage(b,w,h);    
@@ -186,3 +197,5 @@ void HCImage::mask(HCImage mask, bool invert = false)
         }
     }
 }
+
+
