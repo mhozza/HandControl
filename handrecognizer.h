@@ -34,7 +34,7 @@ class HandRecognizer
 public:
   QMutex rectQueueLock;
   HandRecognizer();
-  void processRects(queue<pair<QRect,uint> > * q, HCImage * img_ref, HCImage * img, QMutex *imglock);
+  void processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> * img_ref, HCImage<uchar> * img, QMutex *imglock);
   inline bool isHand(){return hand_p>HAND_TRESHOLD;}
   inline QRect getHandRect(){return handRect;}
   inline float getHandP(){return hand_p;}

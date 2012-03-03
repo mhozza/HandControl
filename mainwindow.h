@@ -45,7 +45,7 @@ class MainWindow : public QMainWindow
 {
     Q_OBJECT
     Webcam *camera;
-    HCImage imageFromCamera;
+    HCImage<uchar> imageFromCamera;
 
     QList<QString> formatName;
     QList<int> formatList;

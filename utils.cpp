@@ -40,7 +40,7 @@ void Utils::saveImage(QImage img, int index = 0)
     ofs.close();
 }
 
-void Utils::saveImage(HCImage img, int index = 0, string fname = "")
+/*void Utils::saveImage(HCImage<uchar> img, int index = 0, string fname = "")
 {    
     if(fname==""){
         //zapis do suboru
@@ -63,7 +63,7 @@ void Utils::saveImage(HCImage img, int index = 0, string fname = "")
       ofs << endl;
     }
     ofs.close();
-}
+}*/
 
 double Utils::cabs(fftw_complex v)
 {

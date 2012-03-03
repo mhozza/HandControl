@@ -218,10 +218,10 @@ int yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height)
 	return 0;
 }
 
-ImageBuffer yuvToBW(unsigned char *inFrame, int width, int height)
+HCImage<uchar>::ImageBuffer yuvToBW(unsigned char *inFrame, int width, int height)
 {        
         const int size = width * height;        
-        ImageBuffer image;
+        HCImage<uchar>::ImageBuffer image;
         image.resize(size);
 
 

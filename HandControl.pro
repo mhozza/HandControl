@@ -31,7 +31,6 @@ SOURCES += main.cpp\
     gesturemovedown.cpp \
     onscreendisplayform.cpp \
     utils.cpp \
-    hcimage.cpp \
     NeuralNet/distributedneurallayer.cpp \
     NeuralNet/distributedneuralnetwork.cpp \
     kalmanfilter.cpp

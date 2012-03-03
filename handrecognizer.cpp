@@ -1,7 +1,7 @@
 #include "handrecognizer.h"
 #include "imageprocessor.h"
 
-//#define SAVE_HAND
+#define SAVE_HAND
 
 #include <iostream>
 #include <fstream>
@@ -45,7 +45,7 @@ bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
   return false;
 }
 
-void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef, HCImage * img, QMutex *imglock)
+void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> * imgRef, HCImage<uchar> * img, QMutex *imglock)
 {
   resetHand();  
   while(true)
@@ -67,8 +67,8 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
     rectQueueLock.unlock();
 
     //crop and scale image
-    HCImage imgRefScaled = imgRef->copy(r);
-    HCImage imgScaled = img->copy(r);
+    HCImage<uchar> imgRefScaled = imgRef->copy(r);
+    HCImage<uchar> imgScaled = img->copy(r);
     imgScaled.mask(imgRefScaled,true);
     //Utils::saveImage(imgScaled,index);
     //imgRefScaled.scale(SCALE_SIZE,SCALE_SIZE);
@@ -154,9 +154,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage * imgRef
       }
       ofs << endl;
     }
-    Utils::saveImage(imgScaled,index,fname2.str());
+    imgScaled.saveImage(index,fname2.str());
     imgScaled.setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    Utils::saveImage(imgScaled,index,fname3.str());
+    imgScaled.saveImage(index,fname3.str());
 
 #endif    
     fftw_free(out);

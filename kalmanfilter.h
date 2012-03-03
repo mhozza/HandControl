@@ -33,8 +33,8 @@ class KalmanFilter //: private KFilter<double,0,false,false,true>
   vector<double> stackslice, filteredslice, noisevar, average, predicted, predictedvar, observed, Kalman, corrected, correctedvar;
 
 public:
-  KalmanFilter(HCImage *img);
-  void filter(HCImage *img);
+  KalmanFilter(HCImage<uchar> *img);
+  void filter(HCImage<uchar> *img);
 };
 
 #endif // KALMANNFILTER_H
