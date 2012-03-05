@@ -34,6 +34,9 @@
 #include <fftw3.h>
 #include "utils.h"
 
+#define RED(c) (c >> 16)
+#define GREEN(c) ((c >> 8) & 0xff)
+#define BLUE(c) (c & 0xff)
 
 using namespace std;
 
@@ -50,9 +53,14 @@ private:
   ImageBuffer imageData;
   //QMutex * mutex;
   void construct(unsigned w, unsigned h);
-  uint toUintColor(uchar c) {return 0xFF000000 | c | (c << 8) | (c << 16);}
-  uint toUintColor(uint c){return c;}
+  bool similar(uchar reference,uchar color, uchar treshold);
+  bool similar(uint reference,uint color, uint treshold);
+  uint toColor(uchar c) {return 0xFF000000 | c | (c << 8) | (c << 16);}
+  uint toColor(uint c){return c;}
+  uint toGrayScale(uchar c) {return c;}
+  uint toGrayScale(uint c){return (4*RED(c)+3*GREEN(c)+3*BLUE(c))/10;}
 public:    
+
     HCImage():init(false)
     {
     //    mutex = new QMutex();
@@ -94,8 +102,7 @@ public:
     fftw_complex * toComplexArray();
     double * toDoubleArray();
     void saveImage(int index = 0, string fname = "");
-    bool similar(uchar reference,uchar color, uchar treshold);
-    bool similar(uint reference,uint color, uint treshold);
+
 };
 
 template <class T>
@@ -177,7 +184,7 @@ QImage HCImage<T>::toQImage()
         for(int x = 0; x<w;x++)
         {
             T bc = pixel(x,y);
-            uint c = toUintColor(bc);
+            uint c = toColor(bc);
             img.setPixel(x,y,c);
         }
     }
@@ -349,13 +356,13 @@ bool HCImage<T>::similar(uchar reference,uchar color, uchar treshold)
 template <class T>
 bool HCImage<T>::similar(uint reference,uint color, uint treshold)
 {
-  int r = color && 0x00110000;
-  int g = color && 0x00001100;
-  int b = color && 0x00000011;
+  int r = color & 0x00ff0000;
+  int g = color & 0x0000ff00;
+  int b = color & 0x000000ff;
 
-  int rr = reference && 0x00110000;
-  int rg = reference && 0x00001100;
-  int rb = reference && 0x00000011;
+  int rr = reference & 0x00ff0000;
+  int rg = reference & 0x0000ff00;
+  int rb = reference & 0x000000ff;
 
   return abs(rr-r)<=treshold && abs(rg-g)<=treshold && abs(rb-b)<=treshold;
 }
