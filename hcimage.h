@@ -94,6 +94,8 @@ public:
     fftw_complex * toComplexArray();
     double * toDoubleArray();
     void saveImage(int index = 0, string fname = "");
+    bool similar(uchar reference,uchar color, uchar treshold);
+    bool similar(uint reference,uint color, uint treshold);
 };
 
 template <class T>
@@ -326,7 +328,7 @@ HCImage<T> HCImage<T>::getFullFillSelectionMask(int sx, int sy, int treshold)
       f.pop();
       if(x<0 || x>=width()) continue;
       if(y<0 || y>=height()) continue;
-      if(abs(reference-pixel(x,y)>treshold) || b[x+y*w]!=0) continue;
+      if(!similar(reference,pixel(x,y),treshold) || b[x+y*w]!=0) continue;
       b[x+y*w]=0xff;
       f.push(make_pair(x+1,y));
       f.push(make_pair(x-1,y));
@@ -338,5 +340,24 @@ HCImage<T> HCImage<T>::getFullFillSelectionMask(int sx, int sy, int treshold)
   return maskImage;
 }
 
+template <class T>
+bool HCImage<T>::similar(uchar reference,uchar color, uchar treshold)
+{
+  return abs(reference-color)<=treshold;
+}
+
+template <class T>
+bool HCImage<T>::similar(uint reference,uint color, uint treshold)
+{
+  int r = color && 0x00110000;
+  int g = color && 0x00001100;
+  int b = color && 0x00000011;
+
+  int rr = reference && 0x00110000;
+  int rg = reference && 0x00001100;
+  int rb = reference && 0x00000011;
+
+  return abs(rr-r)<=treshold && abs(rg-g)<=treshold && abs(rb-b)<=treshold;
+}
 
 #endif // HCIMAGE_H
