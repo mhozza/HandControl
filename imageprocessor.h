@@ -81,7 +81,7 @@ public:
     bool useKalmanFilter;
     ImageProcessor(int width, int height, HandRecognizer * handRecognizer);
     ~ImageProcessor();
-    HCImage<uchar> processImage(const HCImage<uchar> &img);
+    HCImage<uchar> processImage(const HCImage<uchar> &image, const HCImage<uint> &colorimg);
     inline bool imageChanged(){return imgChanged;}
 };
 

@@ -213,7 +213,7 @@ ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecog
   kf = NULL;
 }
 
-HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image)
+HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image, const HCImage<uint> &colorimg)
 {  
   img = image;
   sum = 0;  
