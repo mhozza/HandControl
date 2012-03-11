@@ -268,7 +268,7 @@ HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image, const H
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (HCImage<uchar>*) &image, &imgLock));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (HCImage<uchar>*) &image, (HCImage<uint>*) &colorimg));
   }
 
   for(int y = 0;y<expandedImg->height();y++)

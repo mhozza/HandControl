@@ -57,8 +57,8 @@ private:
   bool similar(uint reference,uint color, uint treshold);
   uint toColor(uchar c) {return 0xFF000000 | c | (c << 8) | (c << 16);}
   uint toColor(uint c){return c;}
-  uint toGrayScale(uchar c) {return c;}
-  uint toGrayScale(uint c){return (4*RED(c)+3*GREEN(c)+3*BLUE(c))/10;}
+  uchar _toGrayScale(uchar c) {return c;}
+  uchar _toGrayScale(uint c){return (4*RED(c)+3*GREEN(c)+3*BLUE(c))/10;}
 public:    
 
     HCImage():init(false)
@@ -102,6 +102,7 @@ public:
     fftw_complex * toComplexArray();
     double * toDoubleArray();
     void saveImage(int index = 0, string fname = "");
+    HCImage<uchar> toGrayScale();
 
 };
 
@@ -322,7 +323,7 @@ void HCImage<T>::saveImage(int index, string fname)
 template <class T>
 HCImage<T> HCImage<T>::getFullFillSelectionMask(int sx, int sy, int treshold)
 {
-  uchar reference = pixel(sx,sy);
+  T reference = pixel(sx,sy);
   ImageBuffer b;
   b.resize(width()*height(),0);
   queue<pair<int,int> > f;
@@ -365,6 +366,22 @@ bool HCImage<T>::similar(uint reference,uint color, uint treshold)
   int rb = reference & 0x000000ff;
 
   return abs(rr-r)<=treshold && abs(rg-g)<=treshold && abs(rb-b)<=treshold;
+}
+
+template <class T>
+HCImage<uchar> HCImage<T>::toGrayScale()
+{
+    HCImage<uchar>::ImageBuffer b;
+    b.resize(width()*height());
+    for(int y = 0; y<height();y++)
+    {
+      for(int x = 0; x<width();x++)//todo optimize
+      {
+        b[x+y*width()]= _toGrayScale(pixel(x,y));// imageData[sx+x+(sy+y)*w];
+      }
+    }
+    HCImage<uchar> h(b,width(),height());
+    return h;
 }
 
 #endif // HCIMAGE_H

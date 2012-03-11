@@ -45,7 +45,7 @@ bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
   return false;
 }
 
-void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> * imgRef, HCImage<uchar> * img, QMutex *imglock)
+void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> * imgRef, HCImage<uchar> * img, HCImage<uint> * imgcolor)
 {
   resetHand();  
   while(true)
@@ -69,8 +69,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> *
     //crop and scale image
     HCImage<uchar> imgRefScaled = imgRef->copy(r);
     HCImage<uchar> imgScaled = img->copy(r);
+    HCImage<uint> imgColorScaled = imgcolor->copy(r);
     //imgScaled.mask(imgRefScaled,true);
-    imgScaled.mask(imgScaled.getFullFillSelectionMask(r.width()/2,r.height()/2));
+    imgScaled.mask(imgColorScaled.getFullFillSelectionMask(r.width()/2,r.height()/2).toGrayScale());
     imgScaled.scale(SCALE_SIZE,SCALE_SIZE);
 
     //fft
