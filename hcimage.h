@@ -91,7 +91,7 @@ public:
     T pixel(int x, int y);
     T interpolatePixel(float x, float y);
     void setPixel(unsigned x, unsigned y, T val);
-    HCImage<T> getFullFillSelectionMask(int sx, int sy, int treshold = 5);
+    HCImage<T> getFloodFillSelectionMask(int sx, int sy, int treshold = 5);
 
     HCImage copy(QRect r);
     void scale(unsigned w, unsigned h);
@@ -321,7 +321,7 @@ void HCImage<T>::saveImage(int index, string fname)
 }
 
 template <class T>
-HCImage<T> HCImage<T>::getFullFillSelectionMask(int sx, int sy, int treshold)
+HCImage<T> HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
 {
   T reference = pixel(sx,sy);
   ImageBuffer b;
@@ -337,7 +337,7 @@ HCImage<T> HCImage<T>::getFullFillSelectionMask(int sx, int sy, int treshold)
       if(x<0 || x>=width()) continue;
       if(y<0 || y>=height()) continue;
       if(!similar(reference,pixel(x,y),treshold) || b[x+y*w]!=0) continue;
-      b[x+y*w]=0xff;
+      b[x+y*w]=0xffffffff;
       f.push(make_pair(x+1,y));
       f.push(make_pair(x-1,y));
       f.push(make_pair(x,y+1));
@@ -357,13 +357,13 @@ bool HCImage<T>::similar(uchar reference,uchar color, uchar treshold)
 template <class T>
 bool HCImage<T>::similar(uint reference,uint color, uint treshold)
 {
-  int r = color & 0x00ff0000;
-  int g = color & 0x0000ff00;
-  int b = color & 0x000000ff;
+  int r = (color >> 16) & 0xff;
+  int g = (color >> 8) & 0xff;
+  int b = (color) & 0xff;
 
-  int rr = reference & 0x00ff0000;
-  int rg = reference & 0x0000ff00;
-  int rb = reference & 0x000000ff;
+  int rr = (reference >> 16) & 0xff;
+  int rg = (reference >> 8) & 0xff;
+  int rb = (reference) & 0xff;
 
   return abs(rr-r)<=treshold && abs(rg-g)<=treshold && abs(rb-b)<=treshold;
 }
