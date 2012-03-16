@@ -92,6 +92,7 @@ public:
     T interpolatePixel(float x, float y);
     void setPixel(unsigned x, unsigned y, T val);
     HCImage<T> getFloodFillSelectionMask(int sx, int sy, int treshold = 5);
+    HCImage<T> getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold = 5);
 
     HCImage copy(QRect r);
     void scale(unsigned w, unsigned h);
@@ -347,6 +348,36 @@ HCImage<T> HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
   HCImage<T> maskImage(b,width(),height());
   return maskImage;
 }
+
+template <class T>
+HCImage<T> HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold)
+{
+  T reference = pixel(sx,sy);
+  ImageBuffer b;
+  b.resize(width()*height(),0);
+  queue<pair<int,int> > f;
+  f.push(make_pair(sx,sy));
+  while(!f.empty())
+  {
+      int x = f.front().first;
+      int y = f.front().second;
+      //cout << x << " " << y << endl;
+      f.pop();
+      if(x<0 || x>=width()) continue;
+      if(y<0 || y>=height()) continue;
+      if(!similar(reference,pixel(x,y),treshold) || b[x+y*w]!=0) continue;
+      b[x+y*w]=0xffffffff;
+      f.push(make_pair(x+1,y));
+      f.push(make_pair(x-1,y));
+      f.push(make_pair(x,y+1));
+      f.push(make_pair(x,y-1));
+
+  }
+  HCImage<T> maskImage(b,width(),height());
+  return maskImage;
+}
+
+
 
 template <class T>
 bool HCImage<T>::similar(uchar reference,uchar color, uchar treshold)

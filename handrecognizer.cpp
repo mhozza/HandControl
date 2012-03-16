@@ -71,7 +71,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> *
     HCImage<uchar> imgScaled = img->copy(r);
     HCImage<uint> imgColorScaled = imgcolor->copy(r);
     //imgScaled.mask(imgRefScaled,true);
-    imgScaled.mask(imgColorScaled.getFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),37).toGrayScale());
+    imgScaled.mask(imgColorScaled.getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),37).toGrayScale());
     //imgScaled.mask(imgScaled.getFloodFillSelectionMask(r.width()/2,r.height()/2));
     imgScaled.scale(SCALE_SIZE,SCALE_SIZE);
 
