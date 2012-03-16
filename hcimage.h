@@ -352,25 +352,29 @@ HCImage<T> HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
 template <class T>
 HCImage<T> HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold)
 {
+  float originalFactor = 0.5;
   T reference = pixel(sx,sy);
   ImageBuffer b;
   b.resize(width()*height(),0);
-  queue<pair<int,int> > f;
-  f.push(make_pair(sx,sy));
+  queue<pair<pair<int,int>,T> > f;
+  f.push(make_pair(make_pair(sx,sy),reference));
   while(!f.empty())
   {
-      int x = f.front().first;
-      int y = f.front().second;
-      //cout << x << " " << y << endl;
+      int x = f.front().first.first;
+      int y = f.front().first.second;
+      T refcolor = f.front().second;
       f.pop();
       if(x<0 || x>=width()) continue;
       if(y<0 || y>=height()) continue;
-      if(!similar(reference,pixel(x,y),treshold) || b[x+y*w]!=0) continue;
+
+      T color = pixel(x,y);
+      if(!similar(refcolor,color,treshold) || b[x+y*w]!=0) continue;
       b[x+y*w]=0xffffffff;
-      f.push(make_pair(x+1,y));
-      f.push(make_pair(x-1,y));
-      f.push(make_pair(x,y+1));
-      f.push(make_pair(x,y-1));
+      refcolor = reference*originalFactor + color*(1-originalFactor);
+      f.push(make_pair(make_pair(x+1,y),refcolor));
+      f.push(make_pair(make_pair(x-1,y),refcolor));
+      f.push(make_pair(make_pair(x,y+1),refcolor));
+      f.push(make_pair(make_pair(x,y-1),refcolor));
 
   }
   HCImage<T> maskImage(b,width(),height());
