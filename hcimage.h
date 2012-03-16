@@ -37,7 +37,7 @@
 #define RED(c) (c >> 16)
 #define GREEN(c) ((c >> 8) & 0xff)
 #define BLUE(c) (c & 0xff)
-
+#define RGB(r,g,b) (0xFF000000 | b | (g << 8) | (r << 16))
 using namespace std;
 
 class Utils;
@@ -55,10 +55,13 @@ private:
   void construct(unsigned w, unsigned h);
   bool similar(uchar reference,uchar color, uchar treshold);
   bool similar(uint reference,uint color, uint treshold);
-  uint toColor(uchar c) {return 0xFF000000 | c | (c << 8) | (c << 16);}
+  uint toColor(uchar c) {return RGB(c,c,c);}
   uint toColor(uint c){return c;}
   uchar _toGrayScale(uchar c) {return c;}
   uchar _toGrayScale(uint c){return (4*RED(c)+3*GREEN(c)+3*BLUE(c))/10;}
+  //T getAverageColor(int x, int y);
+  /*uint addColor(uint c1,uint c2);
+  uchar addColor(uchar c1,uchar c2);*/
 public:    
 
     HCImage():init(false)
@@ -324,6 +327,7 @@ template <class T>
 HCImage<T> HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
 {
   T reference = pixel(sx,sy);
+  //T reference = getAverageColor(sx,sy);
   ImageBuffer b;
   b.resize(width()*height(),0);
   queue<pair<int,int> > f;
@@ -357,16 +361,37 @@ bool HCImage<T>::similar(uchar reference,uchar color, uchar treshold)
 template <class T>
 bool HCImage<T>::similar(uint reference,uint color, uint treshold)
 {
-  int r = (color >> 16) & 0xff;
-  int g = (color >> 8) & 0xff;
-  int b = (color) & 0xff;
+  int r = RED(color);
+  int g = GREEN(color);
+  int b = BLUE(color);
 
-  int rr = (reference >> 16) & 0xff;
-  int rg = (reference >> 8) & 0xff;
-  int rb = (reference) & 0xff;
+  int rr = RED(reference);
+  int rg = GREEN(reference);
+  int rb = BLUE(reference);
 
   return abs(rr-r)<=treshold && abs(rg-g)<=treshold && abs(rb-b)<=treshold;
 }
+/*
+template <class T>
+uchar HCImage<T>::addColor(uchar c1, uchar c2)
+{
+  return c1+c2;
+}
+
+template <class T>
+uint HCImage<T>::addColor(uint c1, uint c2)
+{
+  int r = RED(c1);
+  int g = GREEN(c1);
+  int b = BLUE(c1);
+
+  r += RED(c2);
+  g += GREEN(c2);
+  b += BLUE(c2);
+
+  return RGB(r,g,b);
+}
+*/
 
 template <class T>
 HCImage<uchar> HCImage<T>::toGrayScale()
@@ -383,5 +408,21 @@ HCImage<uchar> HCImage<T>::toGrayScale()
     HCImage<uchar> h(b,width(),height());
     return h;
 }
+
+/*
+template <class T>
+T HCImage<T>::getAverageColor(int x, int y)
+{
+  T color = 0;
+  for(int i = x-1;i<=x+1;i++)
+  {
+    for(int j = y-1;j<=y+1;j++)
+    {
+      T p = pixel(i,j);
+      color = add(color,RGB(RED(p)/9,GREEN(p)/9,BLUE(p)/9));
+    }
+  }
+}
+*/
 
 #endif // HCIMAGE_H
