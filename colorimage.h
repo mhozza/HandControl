@@ -26,12 +26,16 @@ class ColorImage : public HCImage<Color>
 {
   bool similar(Color reference, Color color, uint treshold);
   uint toUint32Color(Color c);
-  Color getAverageColor(int x, int y);
+  string color2String(Color color);
+  HCImage<Color> * create(ImageBuffer img, unsigned w, unsigned h);
+  //Color getAverageColor(int x, int y);
 public:
   ColorImage();
+  ColorImage(unsigned w, unsigned h);
+  ColorImage(ImageBuffer img, unsigned w, unsigned h);
   Color interpolatePixel(float x, float y);
 
-  GrayScaleImage toGrayScale();
+  GrayScaleImage * toGrayScale();
   //void saveImage(int index, string fname);
 };
 

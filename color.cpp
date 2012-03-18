@@ -17,6 +17,34 @@
 
 #include "color.h"
 
-Color::Color()
+Color::Color(uchar r, uchar  g, uchar  b):QColor(r,g,b)
 {
 }
+
+Color::Color(uint color):QColor(color)
+{
+  /*r = (color >> 16);
+  g = ((color >> 8) & 0xff) ;
+  b = (color & 0xff);*/
+}
+
+uint Color::toUintColor()
+{
+  return rgb();
+  //return (0xFF000000 | b | (g << 8) | (r << 16));
+
+}
+
+uchar Color::toGrayScale()
+{
+  //return (4*r+3*g+3*b)/10;
+  qGray(rgb());
+}
+
+string Color::toString()
+{
+  stringstream ss;
+  ss << red()<< " " << green() << " " << blue() << " ";
+  return ss.str();
+}
+

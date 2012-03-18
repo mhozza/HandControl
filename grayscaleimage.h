@@ -19,14 +19,19 @@
 #define GRAYSCALEIMAGE_H
 
 #include "hcimage.h"
+#include <sstream>
 
 class GrayScaleImage : public HCImage<uchar>
 {
   uint toUint32Color(uchar c);
-  bool similar(uchar reference,uchar color, uchar treshold);
-  uchar getAverageColor(int x, int y);
+  bool similar(uchar reference,uchar color, uint treshold);
+  string color2String(uchar color);
+  HCImage<uchar> * create(ImageBuffer img, unsigned w, unsigned h);
+  //uchar getAverageColor(int x, int y);
 public:
   GrayScaleImage();
+  GrayScaleImage(unsigned w, unsigned h);
+  GrayScaleImage(ImageBuffer img, unsigned w, unsigned h);
   uchar interpolatePixel(float x, float y);
 
   fftw_complex * toComplexArray();

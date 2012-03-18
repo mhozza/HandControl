@@ -17,17 +17,31 @@
 
 #include "colorimage.h"
 
-ColorImage::ColorImage()
+
+ColorImage::ColorImage():HCImage<Color>()
 {
 }
 
-ColorImage::toUint32Color(Color c)
+ColorImage::ColorImage(unsigned w, unsigned h):HCImage<Color>(w,h)
+{
+}
+
+ColorImage::ColorImage(ImageBuffer img, unsigned w, unsigned h):HCImage<Color>(img,w,h)
+{
+}
+
+HCImage<Color> * ColorImage::create(ImageBuffer img, unsigned w, unsigned h)
+{
+  return new ColorImage(img,w,h);
+}
+
+uint ColorImage::toUint32Color(Color c)
 {
   return c.toUintColor();
 }
 
 
-GrayScaleImage ColorImage::toGrayScale()
+GrayScaleImage * ColorImage::toGrayScale()
 {
     GrayScaleImage::ImageBuffer b;
     b.resize(width()*height());
@@ -38,17 +52,16 @@ GrayScaleImage ColorImage::toGrayScale()
         b[x+y*width()]= pixel(x,y).toGrayScale();// imageData[sx+x+(sy+y)*w];
       }
     }
-    HCImage<uchar> h(b,width(),height());
+    GrayScaleImage * h = new GrayScaleImage(b,width(),height());
     return h;
 }
 
 bool ColorImage::similar(Color reference, Color color, uint treshold)
-(uint reference,uint color, uint treshold)
 {
-  return abs(reference.r-color.r)<=treshold && abs(reference.g-color.g)<=treshold && abs(reference.b-color.b)<=treshold;
+  return abs(reference.red()-color.red())<=treshold && abs(reference.green()-color.green())<=treshold && abs(reference.blue()-color.blue())<=treshold;
 }
-
-/*void ColorImage::saveImage(int index, string fname)
+/*
+void ColorImage::saveImage(int index, string fname)
 {
     if(fname==""){
         //zapis do suboru
@@ -66,18 +79,24 @@ bool ColorImage::similar(Color reference, Color color, uint treshold)
     {
       for(int x = 0;x < width(); x++)
       {
-        ofs << (int)pixel(x,y) << " ";
+        ofs << pixel(x,y) << " ";
       }
       ofs << endl;
     }
     ofs.close();
-}*/
-
-uchar GrayScaleImage::interpolatePixel(float x, float y)
+}
+*/
+Color ColorImage::interpolatePixel(float x, float y)
 {
-    float dx = x-floor(x);
+    /*float dx = x-floor(x);
     float dy = y-floor(y);
     float p1 = (0.5+dx*0.5)*pixel(round(x),round(y))+(0.5-dx*0.5)*pixel(round(x)+1,round(y));
     float p2 = (0.5+dx*0.5)*pixel(round(x),round(y)+1)+(0.5-dx*0.5)*pixel(round(x)+1,round(y)+1);
-    return round(((0.5+dy*0.5)*p1+(0.5-dy*0.5)*p2));
+    return round(((0.5+dy*0.5)*p1+(0.5-dy*0.5)*p2));*/
+  return pixel(x,y);
+}
+
+string ColorImage::color2String(Color color)
+{
+  return color.toString();
 }

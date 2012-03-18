@@ -17,13 +17,27 @@
 
 #include "grayscaleimage.h"
 
-GrayScaleImage::GrayScaleImage()
+GrayScaleImage::GrayScaleImage():HCImage<uchar>()
 {
+}
+
+GrayScaleImage::GrayScaleImage(unsigned w, unsigned h):HCImage<uchar>(w,h)
+{
+}
+
+GrayScaleImage::GrayScaleImage(ImageBuffer img, unsigned w, unsigned h):HCImage<uchar>(img,w,h)
+{
+}
+
+
+HCImage<uchar> * GrayScaleImage::create(ImageBuffer img, unsigned w, unsigned h)
+{
+  return new GrayScaleImage(img,w,h);
 }
 
 uint GrayScaleImage::toUint32Color(uchar c)
 {
-  return c;
+  return (0xFF000000 | c | (c << 8) | (c << 16));
 }
 
 uchar GrayScaleImage::interpolatePixel(float x, float y)
@@ -71,16 +85,23 @@ void GrayScaleImage::setImageFromComplexArray(fftw_complex *b , unsigned w, unsi
     {
         for(int x = 0; x<w;x++)
         {
-            T val = min((long)round(10*log2(Utils::cabs(b[x+y*w]))),255L);
-            setPixel(x,y,val);
+           uchar val = min((long)round(10*log2(Utils::cabs(b[x+y*w]))),255L);
+           setPixel(x,y,val);
         }
     }
 
 }
 
-bool GrayScaleImage::similar(uchar reference,uchar color, uchar treshold)
+bool GrayScaleImage::similar(uchar reference,uchar color, uint treshold)
 {
   return abs(reference-color)<=treshold;
+}
+
+string GrayScaleImage::color2String(uchar color)
+{
+  ostringstream ss;
+  ss << color << " ";
+  return ss.str();
 }
 
 /*

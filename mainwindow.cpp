@@ -110,7 +110,7 @@ void MainWindow::getImage()
 {
         QPixmap pixmap;
 
-        HCImage<uint> colorimg(VIDEO_WIDTH,VIDEO_HEIGHT);
+        ColorImage colorimg(VIDEO_WIDTH,VIDEO_HEIGHT);
 
         if (camera->getFrame(colorimg) == EXIT_FAILURE)
         {

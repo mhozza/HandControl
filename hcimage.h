@@ -57,9 +57,9 @@ protected:
   void construct(unsigned w, unsigned h);
   virtual bool similar(T reference,T color, uint treshold) = 0;
   virtual uint toUint32Color(T c) = 0;
-  virtual T getAverageColor(int x, int y) = 0;
-  /*
-   uchar _toGrayScale(uint c){}
+  virtual string color2String(T color) = 0;
+  virtual HCImage<T>* create(ImageBuffer img, unsigned w, unsigned h) = 0;
+  //virtual T getAverageColor(int x, int y) = 0;
   /*uint addColor(uint c1,uint c2);
   uchar addColor(uchar c1,uchar c2);*/
 public:
@@ -67,18 +67,22 @@ public:
     HCImage(unsigned w, unsigned h);
     HCImage(ImageBuffer img, unsigned w, unsigned h);
     ~HCImage();
-    ImageBuffer image();
+    ImageBuffer image()
+    {
+        return imageData;
+    }
+
     void setImage(ImageBuffer img, unsigned w, unsigned h);
 
-    void mask(HCImage mask, bool invert = false);
+    void mask(HCImage *mask, bool invert = false);
     unsigned width();
     unsigned height();
     T pixel(int x, int y);
     virtual T interpolatePixel(float x, float y) = 0;
     void setPixel(unsigned x, unsigned y, T val);
-    HCImage<T> getFloodFillSelectionMask(int sx, int sy, int treshold = 5);
-    HCImage<T> getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold = 5);
-    HCImage copy(QRect r);
+    HCImage<T>* getFloodFillSelectionMask(int sx, int sy, int treshold = 5);
+    HCImage<T>* getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold = 5);
+    HCImage * copy(QRect r);
     void scale(unsigned w, unsigned h);
     inline bool isNull(){return !init;}
     QImage toQImage();
@@ -89,12 +93,6 @@ public:
     virtual void saveImage(int index = 0, string fname = "");
     //HCImage<uchar> toGrayScale();
 };
-
-template <class T>
-ImageBuffer HCImage<T>::image()
-{
-    return imageData;
-}
 
 template <class T>
 unsigned HCImage<T>::width()
@@ -177,7 +175,7 @@ QImage HCImage<T>::toQImage()
 }
 
 template <class T>
-HCImage<T> HCImage<T>::copy(QRect r)
+HCImage<T>* HCImage<T>::copy(QRect r)
 {
     ImageBuffer b;
     unsigned width=r.width(), height = r.height(), sx = r.left(), sy = r.top();
@@ -189,7 +187,7 @@ HCImage<T> HCImage<T>::copy(QRect r)
             b[x+y*width]=imageData[sx+x+(sy+y)*w];
         }
     }
-    HCImage<T> h(b,r.width(),r.height());
+    HCImage<T> *h = create(b,r.width(),r.height());
     return h;
 }
 
@@ -260,18 +258,18 @@ void HCImage<T>::setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned
 }*/
 
 template <class T>
-void HCImage<T>::mask(HCImage<T> mask, bool invert)
+void HCImage<T>::mask(HCImage<T> *mask, bool invert)
 {
-    if(mask.height()!=h || mask.width()!=w) throw 1;
+    if(mask->height()!=h || mask->width()!=w) throw 1;
 
     for(int y = 0; y<h;y++)
     {
         for(int x = 0; x<w;x++)
         {
             if(!invert)
-                setPixel(x,y,(pixel(x,y) & mask.pixel(x,y)));
+                setPixel(x,y,(pixel(x,y) & mask->pixel(x,y)));
             else
-                setPixel(x,y,(pixel(x,y) | mask.pixel(x,y)));
+                setPixel(x,y,(pixel(x,y) | mask->pixel(x,y)));
         }
     }
 }
@@ -295,7 +293,7 @@ void HCImage<T>::saveImage(int index, string fname)
     {
       for(int x = 0;x < width(); x++)
       {
-        ofs << (int)pixel(x,y) << " ";
+        ofs << color2String(pixel(x,y)) << " ";
       }
       ofs << endl;
     }
@@ -303,7 +301,7 @@ void HCImage<T>::saveImage(int index, string fname)
 }
 
 template <class T>
-HCImage<T> HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
+HCImage<T>* HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
 {
   T reference = pixel(sx,sy);
   //T reference = getAverageColor(sx,sy);
@@ -332,7 +330,7 @@ HCImage<T> HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
 }
 
 template <class T>
-HCImage<T> HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold)
+HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold)
 {
   float originalFactor = 0.5;
   T reference = pixel(sx,sy);
@@ -350,16 +348,17 @@ HCImage<T> HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int tre
       if(y<0 || y>=height()) continue;
 
       T color = pixel(x,y);
-      if(!similar(refcolor,color,treshold) || b[x+y*w]!=0) continue;
+      if(!similar(refcolor,color,treshold) || b[x+y*w]!=T(0)) continue;
       b[x+y*w]=0xffffffff;
-      refcolor = reference*originalFactor + color*(1-originalFactor);
+      //refcolor = reference*originalFactor + color*(1-originalFactor);
+      refcolor = color;
       f.push(make_pair(make_pair(x+1,y),refcolor));
       f.push(make_pair(make_pair(x-1,y),refcolor));
       f.push(make_pair(make_pair(x,y+1),refcolor));
       f.push(make_pair(make_pair(x,y-1),refcolor));
 
   }
-  HCImage<T> maskImage(b,width(),height());
+  HCImage<T> * maskImage = create(b,width(),height());
   return maskImage;
 }
 

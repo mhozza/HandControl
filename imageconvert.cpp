@@ -218,10 +218,10 @@ int yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height)
 	return 0;
 }
 
-HCImage<uchar>::ImageBuffer yuvToBW(unsigned char *inFrame, int width, int height)
+GrayScaleImage::ImageBuffer yuvToBW(unsigned char *inFrame, int width, int height)
 {        
         const int size = width * height;        
-        HCImage<uchar>::ImageBuffer image;
+        GrayScaleImage::ImageBuffer image;
         image.resize(size);
 
 
@@ -234,10 +234,10 @@ HCImage<uchar>::ImageBuffer yuvToBW(unsigned char *inFrame, int width, int heigh
 }
 
 
-HCImage<uint>::ImageBuffer yuvToRGB(unsigned char *inFrame, int width, int height)
+ColorImage::ImageBuffer yuvToRGB(unsigned char *inFrame, int width, int height)
 {
   const int size = width * height;
-  HCImage<uint>::ImageBuffer image;
+  ColorImage::ImageBuffer image;
   image.resize(size);
     int y, u, v, y2, u2, v2, r, g, b;
     int i = 2;

@@ -18,16 +18,24 @@
 #ifndef COLOR_H
 #define COLOR_H
 
-typedef unsigned int uint;
-typedef unsigned char uchar;
+#include <sstream>
+#include <QColor>
 
-class Color{
+/*typedef unsigned int uint;
+typedef unsigned char uchar;*/
+
+using namespace std;
+
+class Color: public QColor
+{
 public:
-  uchar r,g,b;
-  Color(r,g,b);
+  Color(){}
+  Color(uchar r, uchar g, uchar b);
   Color(uint color);
   uint toUintColor();
   uchar toGrayScale();
+  string toString();
+  //operator==(Color &c);*/
 };
 
 #endif // COLOR_H

@@ -356,7 +356,7 @@ int Webcam::getFrame(QImage &image)
 }
 
 
-int Webcam::getFrame(HCImage<uint> &image)
+int Webcam::getFrame(ColorImage &image)
 {
         int ret = 0;
 
@@ -397,7 +397,7 @@ int Webcam::getFrame(HCImage<uint> &image)
         return EXIT_SUCCESS;
 }
 
-int Webcam::getFrameBW(HCImage<uchar> &image)
+int Webcam::getFrameBW(GrayScaleImage &image)
 {
         int ret = 0;
 

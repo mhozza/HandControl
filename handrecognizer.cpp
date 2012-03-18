@@ -45,7 +45,7 @@ bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
   return false;
 }
 
-void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> * imgRef, HCImage<uchar> * img, HCImage<uint> * imgcolor)
+void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, ColorImage * imgcolor)
 {
   resetHand();  
   while(true)
@@ -67,21 +67,21 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> *
     rectQueueLock.unlock();
 
     //crop and scale image
-    HCImage<uchar> imgRefScaled = imgRef->copy(r);
-    HCImage<uchar> imgScaled = img->copy(r);
-    HCImage<uint> imgColorScaled = imgcolor->copy(r);
+    GrayScaleImage* imgRefScaled = (GrayScaleImage*)imgRef->copy(r);
+    GrayScaleImage* imgScaled = (GrayScaleImage*)img->copy(r);
+    ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
     //imgScaled.mask(imgRefScaled,true);
-    imgScaled.mask(imgColorScaled.getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),7).toGrayScale());
+    imgScaled->mask(((ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),7))->toGrayScale());
     //imgScaled.mask(imgScaled.getFloodFillSelectionMask(r.width()/2,r.height()/2));
-    imgScaled.scale(SCALE_SIZE,SCALE_SIZE);
+    imgScaled->scale(SCALE_SIZE,SCALE_SIZE);
 
     //fft
     fftw_complex *in = NULL;
     fftw_complex *out = NULL;
     fftw_plan p;
-    in = imgScaled.toComplexArray();
+    in = imgScaled->toComplexArray();
     out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
-    p = fftw_plan_dft_2d(imgScaled.width(), imgScaled.height(), in, out, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
+    p = fftw_plan_dft_2d(imgScaled->width(), imgScaled->height(), in, out, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p); // repeat as needed
     fftw_destroy_plan(p);       
 
@@ -95,7 +95,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> *
       for(unsigned x = 0;x < SCALE_SIZE; x++)
       {
         i++;
-        if(x>=imgRefScaled.width() || y >=imgRefScaled.height()) {
+        if(x>=imgRefScaled->width() || y >=imgRefScaled->height()) {
           input[i] = 0;
           continue;
         }
@@ -142,7 +142,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> *
       for(unsigned x = 0;x < SCALE_SIZE; x++)
       {
         i++;
-        if(x>=imgRefScaled.width() || y >=imgRefScaled.height()) {
+        if(x>=imgRefScaled->width() || y >=imgRefScaled->height()) {
             ofs << 0 << " ";
           continue;
         }
@@ -151,12 +151,15 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> *
       }
       ofs << endl;
     }
-    imgScaled.saveImage(index,fname2.str());
-    imgScaled.setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    imgScaled.saveImage(index,fname3.str());
+    imgScaled->saveImage(index,fname2.str());
+    imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
+    imgScaled->saveImage(index,fname3.str());
 
 #endif    
     fftw_free(out);
+    delete imgRefScaled;
+    delete imgScaled;
+    delete imgColorScaled;
   }    
 }
 

@@ -40,7 +40,7 @@ void Utils::saveImage(QImage img, int index = 0)
     ofs.close();
 }
 
-/*void Utils::saveImage(HCImage<uchar> img, int index = 0, string fname = "")
+/*void Utils::saveImage(GrayScaleImage img, int index = 0, string fname = "")
 {    
     if(fname==""){
         //zapis do suboru

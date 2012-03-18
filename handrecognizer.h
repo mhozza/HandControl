@@ -9,7 +9,8 @@
 #include "NeuralNet/neuralnetwork.h"
 #include "NeuralNet/distributedneuralnetwork.h"
 
-#include "hcimage.h"
+#include "grayscaleimage.h"
+#include "colorimage.h"
 
 using namespace std;
 using namespace NeuralNET;
@@ -34,7 +35,7 @@ class HandRecognizer
 public:
   QMutex rectQueueLock;
   HandRecognizer();
-  void processRects(queue<pair<QRect,uint> > * q, HCImage<uchar> * img_ref, HCImage<uchar> * img,  HCImage<uint> * imgcolor);
+  void processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * img_ref, GrayScaleImage * img,  ColorImage * imgcolor);
   inline bool isHand(){return hand_p>HAND_TRESHOLD;}
   inline QRect getHandRect(){return handRect;}
   inline float getHandP(){return hand_p;}

@@ -25,7 +25,7 @@
 
 using namespace std;
 
-void ImageProcessor::medianFilterX(int sy, int ex, int ey, HCImage<uchar> * imgIn, HCImage<uchar> * imgOut)
+void ImageProcessor::medianFilterX(int sy, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut)
 {
   int sx = 0;
   for(int y = sy;y<ey;y++)
@@ -45,7 +45,7 @@ void ImageProcessor::medianFilterX(int sy, int ex, int ey, HCImage<uchar> * imgI
   }
 }
 
-void ImageProcessor::medianFilterY(int sx, int ex, int ey, HCImage<uchar> * imgIn, HCImage<uchar> * imgOut)
+void ImageProcessor::medianFilterY(int sx, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut)
 {
   int sy = 0;
   for(int x = sx;x<ex;x++)
@@ -67,7 +67,7 @@ void ImageProcessor::medianFilterY(int sx, int ex, int ey, HCImage<uchar> * imgI
 }
 
 
-void ImageProcessor::expandPixelsX(int sy, int ex, int ey, HCImage<uchar> * imgIn, HCImage<uchar> * imgOut)
+void ImageProcessor::expandPixelsX(int sy, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut)
 {
   int sx = 0;
   for(int y = sy;y<ey;y++)
@@ -108,7 +108,7 @@ void ImageProcessor::expandPixelsX(int sy, int ex, int ey, HCImage<uchar> * imgI
   }
 }
 
-void ImageProcessor::expandPixelsY(int sx, int ex, int ey, HCImage<uchar> * imgIn, HCImage<uchar> * imgOut)
+void ImageProcessor::expandPixelsY(int sx, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut)
 {
   int sy = 0;
   for(int x = sx;x<ex;x++)
@@ -151,7 +151,7 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, HCImage<uchar> * imgI
 
 
 
-QRect ImageProcessor::segment(int sx, int sy, uchar color, HCImage<uchar> * image, QRect rect)
+QRect ImageProcessor::segment(int sx, int sy, uchar color, GrayScaleImage * image, QRect rect)
 {
   queue<pair<int,int> > f;
   f.push(make_pair(sx,sy));
@@ -178,7 +178,7 @@ QRect ImageProcessor::segment(int sx, int sy, uchar color, HCImage<uchar> * imag
   return rect;
 }
 
-void ImageProcessor::prepareImg(HCImage<uchar> &image, int sx, int sy, int ex, int ey)
+void ImageProcessor::prepareImg(GrayScaleImage &image, int sx, int sy, int ex, int ey)
 {
   for(int x = sx;x<ex;x++)
   {
@@ -206,14 +206,14 @@ void ImageProcessor::prepareImg(HCImage<uchar> &image, int sx, int sy, int ex, i
 ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer)
   : images(0), images2(MAX_FRAMES/2), index(0), useKalmanFilter(true)
 {
-  oldImage = new HCImage<uchar>(width,height);
-  expandedImg = new HCImage<uchar>(width,height);
-  expandedImgX = new HCImage<uchar>(width,height);
+  oldImage = new GrayScaleImage(width,height);
+  expandedImg = new GrayScaleImage(width,height);
+  expandedImgX = new GrayScaleImage(width,height);
   this->handRecognizer = handRecognizer;
   kf = NULL;
 }
 
-HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image, const HCImage<uint> &colorimg)
+GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const ColorImage &colorimg)
 {  
   img = image;
   sum = 0;  
@@ -268,7 +268,7 @@ HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image, const H
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (HCImage<uchar>*) &image, (HCImage<uint>*) &colorimg));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (GrayScaleImage*) &image, (ColorImage*) &colorimg));
   }
 
   for(int y = 0;y<expandedImg->height();y++)
@@ -309,7 +309,7 @@ HCImage<uchar> ImageProcessor::processImage(const HCImage<uchar> &image, const H
   }  
 
   delete oldImage;
-  oldImage = new HCImage<uchar>(image);
+  oldImage = new GrayScaleImage(image);
 
   //return image;
   //Utils::saveImage(img,index++);

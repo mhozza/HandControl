@@ -14,7 +14,8 @@
 #define IMAGECONVERT_H
 
 #include <vector>
-#include <hcimage.h>
+#include "grayscaleimage.h"
+#include "colorimage.h"
 
 using namespace std;
 
@@ -24,7 +25,7 @@ int mjpegToJpeg(unsigned char *inFrame, unsigned char *outFrame, unsigned int bu
 //int   yuvToJpeg(unsigned char *inFrame, unsigned char *outFrame, int width, int height);
 int   yuvToJpeg(unsigned char *inFrame, QImage *outFrame, int width, int height);
 //int   yuvToBW(unsigned char *inFrame, unsigned char *image, int width, int height);
-HCImage<uchar>::ImageBuffer yuvToBW(unsigned char *inFrame, int width, int height);
-HCImage<uint>::ImageBuffer  yuvToRGB(unsigned char *inFrame, int width, int height);
+GrayScaleImage::ImageBuffer yuvToBW(unsigned char *inFrame, int width, int height);
+ColorImage::ImageBuffer  yuvToRGB(unsigned char *inFrame, int width, int height);
 
 #endif
