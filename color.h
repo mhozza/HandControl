@@ -15,24 +15,19 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COLORIMAGE_H
-#define COLORIMAGE_H
+#ifndef COLOR_H
+#define COLOR_H
 
-#include "color.h"
-#include "hcimage.h"
-#include "grayscaleimage.h"
+typedef unsigned int uint;
+typedef unsigned char uchar;
 
-class ColorImage : public HCImage<Color>
-{
-  bool similar(Color reference, Color color, uint treshold);
-  uint toUint32Color(Color c);
-  Color getAverageColor(int x, int y);
+class Color{
 public:
-  ColorImage();
-  Color interpolatePixel(float x, float y);
-
-  GrayScaleImage toGrayScale();
-  //void saveImage(int index, string fname);
+  uchar r,g,b;
+  Color(r,g,b);
+  Color(uint color);
+  uint toUintColor();
+  uchar toGrayScale();
 };
 
-#endif // COLORIMAGE_H
+#endif // COLOR_H

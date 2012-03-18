@@ -15,24 +15,8 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef COLORIMAGE_H
-#define COLORIMAGE_H
-
 #include "color.h"
-#include "hcimage.h"
-#include "grayscaleimage.h"
 
-class ColorImage : public HCImage<Color>
+Color::Color()
 {
-  bool similar(Color reference, Color color, uint treshold);
-  uint toUint32Color(Color c);
-  Color getAverageColor(int x, int y);
-public:
-  ColorImage();
-  Color interpolatePixel(float x, float y);
-
-  GrayScaleImage toGrayScale();
-  //void saveImage(int index, string fname);
-};
-
-#endif // COLORIMAGE_H
+}

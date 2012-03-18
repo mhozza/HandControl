@@ -17,29 +17,6 @@
 
 #include "colorimage.h"
 
-Color(r, g, b):r(r),g(g),b(b)
-{
-}
-
-Color(uint color)
-{
-  r = (color >> 16);
-  g = ((color >> 8) & 0xff) ;
-  b = (color & 0xff);
-}
-
-uint Color::toUintColor()
-{
-  return (0xFF000000 | b | (g << 8) | (r << 16));
-}
-
-uchar Color::toGrayScale()
-{
-  return (4*r+3*g+3*b)/10;
-}
-
-//---------------------------------------------------
-
 ColorImage::ColorImage()
 {
 }
@@ -52,7 +29,7 @@ ColorImage::toUint32Color(Color c)
 
 GrayScaleImage ColorImage::toGrayScale()
 {
-    HCImage<uchar>::ImageBuffer b;
+    GrayScaleImage::ImageBuffer b;
     b.resize(width()*height());
     for(int y = 0; y<height();y++)
     {
@@ -63,7 +40,7 @@ GrayScaleImage ColorImage::toGrayScale()
     }
     HCImage<uchar> h(b,width(),height());
     return h;
-}*/
+}
 
 bool ColorImage::similar(Color reference, Color color, uint treshold)
 (uint reference,uint color, uint treshold)
@@ -96,3 +73,11 @@ bool ColorImage::similar(Color reference, Color color, uint treshold)
     ofs.close();
 }*/
 
+uchar GrayScaleImage::interpolatePixel(float x, float y)
+{
+    float dx = x-floor(x);
+    float dy = y-floor(y);
+    float p1 = (0.5+dx*0.5)*pixel(round(x),round(y))+(0.5-dx*0.5)*pixel(round(x)+1,round(y));
+    float p2 = (0.5+dx*0.5)*pixel(round(x),round(y)+1)+(0.5-dx*0.5)*pixel(round(x)+1,round(y)+1);
+    return round(((0.5+dy*0.5)*p1+(0.5-dy*0.5)*p2));
+}

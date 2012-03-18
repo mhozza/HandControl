@@ -35,7 +35,8 @@ SOURCES += main.cpp\
     NeuralNet/distributedneuralnetwork.cpp \
     kalmanfilter.cpp \
     colorimage.cpp \
-    grayscaleimage.cpp
+    grayscaleimage.cpp \
+    color.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -62,7 +63,8 @@ HEADERS  += mainwindow.h \
     NeuralNet/distributedneuralnetwork.h \
     kalmanfilter.h \
     colorimage.h \
-    grayscaleimage.h
+    grayscaleimage.h \
+    color.h
 
 FORMS += mainwindow.ui \
     onscreendisplayform.ui
