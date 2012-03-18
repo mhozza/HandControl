@@ -19,11 +19,27 @@
 #define COLORIMAGE_H
 
 #include "hcimage.h"
+#include "grayscaleimage.h"
 
-class ColorImage : public HCImage<uint>
+class Color{
+  uchar r,g,b;
+  Color(r,g,b);
+  Color(uint color);
+  uint toUintColor();
+  uchar toGrayScale();
+};
+
+class ColorImage : public HCImage<Color>
 {
+  bool similar(Color reference, Color color, uint treshold);
+  uint toUint32Color(Color c);
+  Color getAverageColor(int x, int y);
 public:
-    ColorImage();
+  ColorImage();
+  Color interpolatePixel(float x, float y);
+
+  GrayScaleImage toGrayScale();
+  //void saveImage(int index, string fname);
 };
 
 #endif // COLORIMAGE_H

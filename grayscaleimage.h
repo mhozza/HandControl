@@ -22,12 +22,13 @@
 
 class GrayScaleImage : public HCImage<uchar>
 {
-private:
   uint toUint32Color(uchar c);
   bool similar(uchar reference,uchar color, uchar treshold);
+  uchar getAverageColor(int x, int y);
 public:
   GrayScaleImage();
   uchar interpolatePixel(float x, float y);
+
   fftw_complex * toComplexArray();
   double * toDoubleArray();
   void setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned h);

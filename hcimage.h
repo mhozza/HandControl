@@ -33,11 +33,12 @@
 
 #include <fftw3.h>
 #include "utils.h"
-
+/*
 #define RED(c) (c >> 16)
 #define GREEN(c) ((c >> 8) & 0xff)
 #define BLUE(c) (c & 0xff)
 #define RGB(r,g,b) (0xFF000000 | b | (g << 8) | (r << 16))
+*/
 using namespace std;
 
 class Utils;
@@ -58,8 +59,7 @@ protected:
   virtual uint toUint32Color(T c) = 0;
   virtual T getAverageColor(int x, int y) = 0;
   /*
-  uchar _toGrayScale(uchar c) {return c;}
-  uchar _toGrayScale(uint c){return (4*RED(c)+3*GREEN(c)+3*BLUE(c))/10;}
+   uchar _toGrayScale(uint c){}
   /*uint addColor(uint c1,uint c2);
   uchar addColor(uchar c1,uchar c2);*/
 public:
@@ -362,39 +362,5 @@ HCImage<T> HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int tre
   HCImage<T> maskImage(b,width(),height());
   return maskImage;
 }
-
-
-
-
-template <class T>
-bool HCImage<T>::similar(uint reference,uint color, uint treshold)
-{
-  int r = RED(color);
-  int g = GREEN(color);
-  int b = BLUE(color);
-
-  int rr = RED(reference);
-  int rg = GREEN(reference);
-  int rb = BLUE(reference);
-
-  return abs(rr-r)<=treshold && abs(rg-g)<=treshold && abs(rb-b)<=treshold;
-}
-/*
-template <class T>
-HCImage<uchar> HCImage<T>::toGrayScale()
-{
-    HCImage<uchar>::ImageBuffer b;
-    b.resize(width()*height());
-    for(int y = 0; y<height();y++)
-    {
-      for(int x = 0; x<width();x++)//todo optimize
-      {
-        b[x+y*width()]= _toGrayScale(pixel(x,y));// imageData[sx+x+(sy+y)*w];
-      }
-    }
-    HCImage<uchar> h(b,width(),height());
-    return h;
-}*/
-
 
 #endif // HCIMAGE_H

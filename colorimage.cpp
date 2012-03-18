@@ -17,6 +17,82 @@
 
 #include "colorimage.h"
 
+Color(r, g, b):r(r),g(g),b(b)
+{
+}
+
+Color(uint color)
+{
+  r = (color >> 16);
+  g = ((color >> 8) & 0xff) ;
+  b = (color & 0xff);
+}
+
+uint Color::toUintColor()
+{
+  return (0xFF000000 | b | (g << 8) | (r << 16));
+}
+
+uchar Color::toGrayScale()
+{
+  return (4*r+3*g+3*b)/10;
+}
+
+//---------------------------------------------------
+
 ColorImage::ColorImage()
 {
 }
+
+ColorImage::toUint32Color(Color c)
+{
+  return c.toUintColor();
+}
+
+
+GrayScaleImage ColorImage::toGrayScale()
+{
+    HCImage<uchar>::ImageBuffer b;
+    b.resize(width()*height());
+    for(int y = 0; y<height();y++)
+    {
+      for(int x = 0; x<width();x++)//todo optimize
+      {
+        b[x+y*width()]= pixel(x,y).toGrayScale();// imageData[sx+x+(sy+y)*w];
+      }
+    }
+    HCImage<uchar> h(b,width(),height());
+    return h;
+}*/
+
+bool ColorImage::similar(Color reference, Color color, uint treshold)
+(uint reference,uint color, uint treshold)
+{
+  return abs(reference.r-color.r)<=treshold && abs(reference.g-color.g)<=treshold && abs(reference.b-color.b)<=treshold;
+}
+
+/*void ColorImage::saveImage(int index, string fname)
+{
+    if(fname==""){
+        //zapis do suboru
+        stringstream ssfname;
+        ssfname << "hand_images/"<<  "full" << "_" << index << ".pbm";
+        fname = ssfname.str();
+    }
+
+    ofstream ofs(fname.c_str());
+
+    ofs << "P2" << endl;
+    ofs << width() << " " << height() << endl;
+    ofs << 256 << endl;
+    for(int y = 0;y < height(); y++)
+    {
+      for(int x = 0;x < width(); x++)
+      {
+        ofs << (int)pixel(x,y) << " ";
+      }
+      ofs << endl;
+    }
+    ofs.close();
+}*/
+
