@@ -28,7 +28,7 @@ class ColorImage : public HCImage<Color>
   uint toUint32Color(Color c);
   string color2String(Color color);
   HCImage<Color> * create(ImageBuffer img, unsigned w, unsigned h);
-  //Color getAverageColor(int x, int y);
+  Color getAverageColor(int x, int y);
 public:
   ColorImage();
   ColorImage(unsigned w, unsigned h);

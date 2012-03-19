@@ -173,8 +173,8 @@ QRect ImageProcessor::segment(int sx, int sy, uchar color, GrayScaleImage * imag
       f.push(make_pair(x,y+1));
       f.push(make_pair(x,y-1));
   }
-  if(rect.height()>(3*rect.width())/2)
-    rect.setHeight(rect.width());
+  if(rect.height()>(3 *rect.width())/2)
+    rect.setHeight(3*rect.width()/2);
   return rect;
 }
 

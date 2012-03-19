@@ -100,22 +100,20 @@ bool GrayScaleImage::similar(uchar reference,uchar color, uint treshold)
 string GrayScaleImage::color2String(uchar color)
 {
   ostringstream ss;
-  ss << color << " ";
+  ss << (int)color << " ";
   return ss.str();
 }
 
-/*
-template <class T>
-T HCImage<T>::getAverageColor(int x, int y)
+uchar GrayScaleImage::getAverageColor(int x, int y)
 {
-  T color = 0;
+  int color = 0;
   for(int i = x-1;i<=x+1;i++)
   {
     for(int j = y-1;j<=y+1;j++)
     {
-      T p = pixel(i,j);
-      color = add(color,RGB(RED(p)/9,GREEN(p)/9,BLUE(p)/9));
+      color += pixel(i,j);
     }
   }
+  return round(color/9.0);
 }
-*/
+

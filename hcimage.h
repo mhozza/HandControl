@@ -51,6 +51,7 @@ public:
 private:
   bool init;
 protected:
+  string ppmType;
   unsigned w, h;  
   ImageBuffer imageData;
 
@@ -59,11 +60,9 @@ protected:
   virtual uint toUint32Color(T c) = 0;
   virtual string color2String(T color) = 0;
   virtual HCImage<T>* create(ImageBuffer img, unsigned w, unsigned h) = 0;
-  //virtual T getAverageColor(int x, int y) = 0;
-  /*uint addColor(uint c1,uint c2);
-  uchar addColor(uchar c1,uchar c2);*/
+  virtual T getAverageColor(int x, int y) = 0;
 public:
-    HCImage():init(false),w(0),h(0) { }
+  HCImage():init(false),w(0),h(0),ppmType("P2") { }
     HCImage(unsigned w, unsigned h);
     HCImage(ImageBuffer img, unsigned w, unsigned h);
     ~HCImage();
@@ -113,6 +112,7 @@ void HCImage<T>::construct(unsigned w, unsigned h)
     this->w = w;
     this->h = h;
     init = true;
+    ppmType = "P2";
 }
 
 template <class T>
@@ -210,52 +210,6 @@ void HCImage<T>::scale(unsigned w, unsigned h)
     }
     setImage(b,w,h);
 }
-/*
-template <class T>
-fftw_complex * HCImage<T>::toComplexArray()
-{
-    fftw_complex * b = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * w * h);
-    for(int y = 0; y<h;y++)
-    {
-        for(int x = 0; x<w;x++)
-        {
-            b[x+y*w][0] = pixel(x,y);
-            b[x+y*w][1] = 0;
-        }
-    }
-    return b;
-}
-
-template <class T>
-double * HCImage<T>::toDoubleArray()
-{
-    double * b = (double*) fftw_malloc(sizeof(double) * w * h);   
-    for(int y = 0; y<h;y++)
-    {
-        for(int x = 0; x<w;x++)
-        {
-            b[x+y*w] = pixel(x,y);
-        }
-    }
-    return b;
-}
-
-template <class T>
-void HCImage<T>::setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned h)
-{
-    //ToDo: check w,h
-    construct(w,h);
-    imageData.resize(w*h,0);
-    for(int y = 0; y<h;y++)
-    {
-        for(int x = 0; x<w;x++)
-        {
-            T val = min((long)round(10*log2(Utils::cabs(b[x+y*w]))),255L);
-            setPixel(x,y,val);
-        }
-    }
-
-}*/
 
 template <class T>
 void HCImage<T>::mask(HCImage<T> *mask, bool invert)
@@ -286,7 +240,7 @@ void HCImage<T>::saveImage(int index, string fname)
 
     ofstream ofs(fname.c_str());
 
-    ofs << "P2" << endl;
+    ofs << ppmType << endl;
     ofs << width() << " " << height() << endl;
     ofs << 256 << endl;
     for(int y = 0;y < height(); y++)
@@ -303,8 +257,8 @@ void HCImage<T>::saveImage(int index, string fname)
 template <class T>
 HCImage<T>* HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
 {
-  T reference = pixel(sx,sy);
-  //T reference = getAverageColor(sx,sy);
+  //T reference = pixel(sx,sy);
+  T reference = getAverageColor(sx,sy);
   ImageBuffer b;
   b.resize(width()*height(),0);
   queue<pair<int,int> > f;
@@ -317,7 +271,7 @@ HCImage<T>* HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
       f.pop();
       if(x<0 || x>=width()) continue;
       if(y<0 || y>=height()) continue;
-      if(!similar(reference,pixel(x,y),treshold) || b[x+y*w]!=0) continue;
+      if(!similar(reference,pixel(x,y),treshold) || b[x+y*w]!=T(0)) continue;
       b[x+y*w]=0xffffffff;
       f.push(make_pair(x+1,y));
       f.push(make_pair(x-1,y));
@@ -325,7 +279,7 @@ HCImage<T>* HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
       f.push(make_pair(x,y-1));
 
   }
-  HCImage<T> maskImage(b,width(),height());
+  HCImage<T> *maskImage = create(b,width(),height());
   return maskImage;
 }
 
@@ -334,6 +288,7 @@ HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int tr
 {
   float originalFactor = 0.5;
   T reference = pixel(sx,sy);
+  //T reference = getAverageColor(sx,sy);
   ImageBuffer b;
   b.resize(width()*height(),0);
   queue<pair<pair<int,int>,T> > f;

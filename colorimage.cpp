@@ -20,14 +20,17 @@
 
 ColorImage::ColorImage():HCImage<Color>()
 {
+  ppmType = "P3";
 }
 
 ColorImage::ColorImage(unsigned w, unsigned h):HCImage<Color>(w,h)
 {
+  ppmType = "P3";
 }
 
 ColorImage::ColorImage(ImageBuffer img, unsigned w, unsigned h):HCImage<Color>(img,w,h)
 {
+  ppmType = "P3";
 }
 
 HCImage<Color> * ColorImage::create(ImageBuffer img, unsigned w, unsigned h)
@@ -93,10 +96,27 @@ Color ColorImage::interpolatePixel(float x, float y)
   Color p1 = pixel(round(x),round(y))*(0.5+dx*0.5)+pixel(round(x)+1,round(y))*(0.5-dx*0.5);
   Color p2 = pixel(round(x),round(y)+1)*(0.5+dx*0.5)+pixel(round(x)+1,round(y)+1)*(0.5-dx*0.5);
   return (p1*(0.5+dy*0.5)+p2*(0.5-dy*0.5));
-  //return pixel(x,y);
 }
 
 string ColorImage::color2String(Color color)
 {
   return color.toString();
+}
+
+
+Color ColorImage::getAverageColor(int x, int y)
+{
+  int colorR = 0;
+  int colorG = 0;
+  int colorB = 0;
+  for(int i = x-1;i<=x+1;i++)
+  {
+    for(int j = y-1;j<=y+1;j++)
+    {
+      colorR += pixel(i,j).red();
+      colorG += pixel(i,j).red();
+      colorB += pixel(i,j).red();
+    }
+  }
+  return Color(round(colorR/9.0),round(colorG/9.0),round(colorB/9.0));
 }

@@ -70,11 +70,12 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     GrayScaleImage* imgRefScaled = (GrayScaleImage*)imgRef->copy(r);
     GrayScaleImage* imgScaled = (GrayScaleImage*)img->copy(r);
     ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
-    //imgScaled.mask(imgRefScaled,true);
-    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),7);
+    //imgScaled->mask(imgRefScaled,true);
+    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),21);
     imgScaled->mask(handMask->toGrayScale());
     delete handMask;
-    //imgScaled.mask(imgScaled.getFloodFillSelectionMask(r.width()/2,r.height()/2));
+    //imgScaled->mask((GrayScaleImage*)imgScaled->getFloodFillSelectionMask(r.width()/2,r.height()/2));
+
     imgScaled->scale(SCALE_SIZE,SCALE_SIZE);
 
     //fft
@@ -156,6 +157,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     imgScaled->saveImage(index,fname2.str());
     imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
     imgScaled->saveImage(index,fname3.str());
+    //imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),20)->saveImage(index,fname2.str());
 
 #endif    
     fftw_free(out);
