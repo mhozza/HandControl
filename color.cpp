@@ -16,6 +16,7 @@
  */
 
 #include "color.h"
+#include <cmath>
 
 Color::Color(uchar r, uchar  g, uchar  b):QColor(r,g,b)
 {
@@ -38,7 +39,7 @@ uint Color::toUintColor()
 uchar Color::toGrayScale()
 {
   //return (4*r+3*g+3*b)/10;
-  qGray(rgb());
+  return qGray(rgb());
 }
 
 string Color::toString()
@@ -48,3 +49,12 @@ string Color::toString()
   return ss.str();
 }
 
+Color Color::operator+(Color c)
+{
+  return Color(red()+c.red(),green()+c.green(),blue()+c.blue());
+}
+
+Color Color::operator*(float f)
+{
+  return Color(round(red()*f),round(green()*f),round(blue()*f));
+}

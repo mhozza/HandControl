@@ -350,8 +350,8 @@ HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int tr
       T color = pixel(x,y);
       if(!similar(refcolor,color,treshold) || b[x+y*w]!=T(0)) continue;
       b[x+y*w]=0xffffffff;
-      //refcolor = reference*originalFactor + color*(1-originalFactor);
-      refcolor = color;
+      refcolor = reference*originalFactor + color*(1-originalFactor);
+      //refcolor = color;
       f.push(make_pair(make_pair(x+1,y),refcolor));
       f.push(make_pair(make_pair(x-1,y),refcolor));
       f.push(make_pair(make_pair(x,y+1),refcolor));

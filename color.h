@@ -36,6 +36,8 @@ public:
   uchar toGrayScale();
   string toString();
   //operator==(Color &c);*/
+  Color operator+(Color c);
+  Color operator*(float f);
 };
 
 #endif // COLOR_H

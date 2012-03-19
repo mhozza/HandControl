@@ -88,12 +88,12 @@ void ColorImage::saveImage(int index, string fname)
 */
 Color ColorImage::interpolatePixel(float x, float y)
 {
-    /*float dx = x-floor(x);
-    float dy = y-floor(y);
-    float p1 = (0.5+dx*0.5)*pixel(round(x),round(y))+(0.5-dx*0.5)*pixel(round(x)+1,round(y));
-    float p2 = (0.5+dx*0.5)*pixel(round(x),round(y)+1)+(0.5-dx*0.5)*pixel(round(x)+1,round(y)+1);
-    return round(((0.5+dy*0.5)*p1+(0.5-dy*0.5)*p2));*/
-  return pixel(x,y);
+  float dx = x-floor(x);
+  float dy = y-floor(y);
+  Color p1 = pixel(round(x),round(y))*(0.5+dx*0.5)+pixel(round(x)+1,round(y))*(0.5-dx*0.5);
+  Color p2 = pixel(round(x),round(y)+1)*(0.5+dx*0.5)+pixel(round(x)+1,round(y)+1)*(0.5-dx*0.5);
+  return (p1*(0.5+dy*0.5)+p2*(0.5-dy*0.5));
+  //return pixel(x,y);
 }
 
 string ColorImage::color2String(Color color)

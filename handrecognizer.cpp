@@ -1,7 +1,7 @@
 #include "handrecognizer.h"
 #include "imageprocessor.h"
 
-#define SAVE_HAND
+//#define SAVE_HAND
 
 #include <iostream>
 #include <fstream>
@@ -71,7 +71,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     GrayScaleImage* imgScaled = (GrayScaleImage*)img->copy(r);
     ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
     //imgScaled.mask(imgRefScaled,true);
-    imgScaled->mask(((ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),7))->toGrayScale());
+    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),7);
+    imgScaled->mask(handMask->toGrayScale());
+    delete handMask;
     //imgScaled.mask(imgScaled.getFloodFillSelectionMask(r.width()/2,r.height()/2));
     imgScaled->scale(SCALE_SIZE,SCALE_SIZE);
 
