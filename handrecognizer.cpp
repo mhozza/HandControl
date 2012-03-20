@@ -88,7 +88,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     p = fftw_plan_dft_2d(imgScaled->width(), imgScaled->height(), in, out, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p); // repeat as needed
     fftw_destroy_plan(p);       
-/*
+
 #ifdef SAVE_HAND
     fftw_complex *in2 = NULL;
     fftw_complex *out2 = NULL;
@@ -99,7 +99,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     fftw_execute(p2); // repeat as needed
     fftw_destroy_plan(p2);
 #endif
-*/
+
     //vygenerovanie vector<float> vstupu pre net
     vector<float> input;
     input.resize(N);
@@ -143,6 +143,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     index++;
 
     ofstream ofs(fname.str().c_str());
+    ofstream ofs2(fname4.str().c_str());
     for(unsigned y = 0;y < SCALE_SIZE; y++)
     {
       for(unsigned x = 0;x < SCALE_SIZE; x++)
@@ -150,19 +151,24 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
         i++;
         if(x>=imgRefScaled->width() || y >=imgRefScaled->height()) {
             ofs << 0 << " ";
+            ofs2 << 0 << " ";
           continue;
-        }
-        //input[i] = imgScaled.pixel(x,y);
+        }        
         ofs << 1/(1+Utils::cabs(out[x+y*SCALE_SIZE])) << " ";
+        ofs2 << 1/(1+Utils::cabs(out2[x+y*SCALE_SIZE])) << " ";
       }
       ofs << endl;
+      ofs2 << endl;
     }
+    ofs.close();
+    ofs2.close();
+
     imgScaled->saveImage(index,fname2.str());
     imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
     imgScaled->saveImage(index,fname3.str());
     imgScaled2->saveImage(index,fname5.str());
-    //imgScaled2->setImageFromComplexArray(out2,SCALE_SIZE,SCALE_SIZE);
-    //imgScaled2->saveImage(index,fname6.str());
+    imgScaled2->setImageFromComplexArray(out2,SCALE_SIZE,SCALE_SIZE);
+    imgScaled2->saveImage(index,fname6.str());
 
 #endif    
     fftw_free(out);
