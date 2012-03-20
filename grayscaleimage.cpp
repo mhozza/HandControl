@@ -29,6 +29,10 @@ GrayScaleImage::GrayScaleImage(ImageBuffer img, unsigned w, unsigned h):HCImage<
 {
 }
 
+/*GrayScaleImage::GrayScaleImage(GrayScaleImage& img):HCImage<uchar>(img.image(),img.width(),img.height())
+{
+}*/
+
 
 HCImage<uchar> * GrayScaleImage::create(ImageBuffer img, unsigned w, unsigned h)
 {

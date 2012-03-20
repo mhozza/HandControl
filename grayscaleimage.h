@@ -32,6 +32,7 @@ public:
   GrayScaleImage();
   GrayScaleImage(unsigned w, unsigned h);
   GrayScaleImage(ImageBuffer img, unsigned w, unsigned h);
+  //GrayScaleImage(GrayScaleImage& img);
   uchar interpolatePixel(float x, float y);
 
   fftw_complex * toComplexArray();

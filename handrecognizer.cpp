@@ -1,7 +1,7 @@
 #include "handrecognizer.h"
 #include "imageprocessor.h"
 
-//#define SAVE_HAND
+#define SAVE_HAND
 
 #include <iostream>
 #include <fstream>
@@ -45,7 +45,7 @@ bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
   return false;
 }
 
-void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, ColorImage * imgcolor)
+void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, GrayScaleImage * img2, ColorImage * imgcolor)
 {
   resetHand();  
   while(true)
@@ -69,8 +69,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     //crop and scale image
     GrayScaleImage* imgRefScaled = (GrayScaleImage*)imgRef->copy(r);
     GrayScaleImage* imgScaled = (GrayScaleImage*)img->copy(r);
+    GrayScaleImage* imgScaled2 = (GrayScaleImage*)img2->copy(r);
     ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
-    //imgScaled->mask(imgRefScaled,true);
+    imgScaled2->mask(imgRefScaled,true);
     ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),21);
     imgScaled->mask(handMask->toGrayScale());
     delete handMask;
@@ -87,7 +88,18 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     p = fftw_plan_dft_2d(imgScaled->width(), imgScaled->height(), in, out, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p); // repeat as needed
     fftw_destroy_plan(p);       
-
+/*
+#ifdef SAVE_HAND
+    fftw_complex *in2 = NULL;
+    fftw_complex *out2 = NULL;
+    fftw_plan p2;
+    in2 = imgScaled->toComplexArray();
+    out2 = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
+    p2 = fftw_plan_dft_2d(imgScaled->width(), imgScaled->height(), in2, out2, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
+    fftw_execute(p2); // repeat as needed
+    fftw_destroy_plan(p2);
+#endif
+*/
     //vygenerovanie vector<float> vstupu pre net
     vector<float> input;
     input.resize(N);
@@ -102,20 +114,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
           input[i] = 0;
           continue;
         }
-        //input[i] = imgScaled.pixel(x,y);
         input[i] = 1/(1+Utils::cabs(out[x+y*SCALE_SIZE]));
-
-        /*if(imgRefScaled.pixel(x,y)==c)
-        {
-          if(imgScaled.pixel(x,y)!=Qt::white)
-            input[i] = 1;
-          else
-            input[i] = 0;
-        }
-        else
-        {
-          input[i] = 0;
-        }*/
       }
     }
 
@@ -132,11 +131,15 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 
 #ifdef SAVE_HAND
     //zapis do suboru
-    stringstream fname,fname2,fname3;
+    stringstream fname,fname2,fname3,fname4,fname5,fname6;
     //index = 0;
-    fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn";
-    fname2 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
-    fname3 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
+    fname << "hand_images/new/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn";
+    fname2 << "hand_images/new/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
+    fname3 << "hand_images/new/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
+    fname4 << "hand_images/old/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn";
+    fname5 << "hand_images/old/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
+    fname6 << "hand_images/old/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
+
     index++;
 
     ofstream ofs(fname.str().c_str());
@@ -157,13 +160,16 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     imgScaled->saveImage(index,fname2.str());
     imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
     imgScaled->saveImage(index,fname3.str());
-    //imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),20)->saveImage(index,fname2.str());
+    imgScaled2->saveImage(index,fname5.str());
+    //imgScaled2->setImageFromComplexArray(out2,SCALE_SIZE,SCALE_SIZE);
+    //imgScaled2->saveImage(index,fname6.str());
 
 #endif    
     fftw_free(out);
     delete imgRefScaled;
     delete imgScaled;
-    delete imgColorScaled;
+    delete imgScaled2;
+    delete imgColorScaled;    
   }    
 }
 
