@@ -286,7 +286,8 @@ HCImage<T>* HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
 template <class T>
 HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold)
 {
-  float originalFactor = 0.5;
+  float originalFactor = 0.4;
+  float changeFactor = 0.2;
   T reference = pixel(sx,sy);
   //T reference = getAverageColor(sx,sy);
   ImageBuffer b;
@@ -305,7 +306,7 @@ HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int tr
       T color = pixel(x,y);
       if(!similar(refcolor,color,treshold) || b[x+y*w]!=T(0)) continue;
       b[x+y*w]=0xffffffff;
-      refcolor = reference*originalFactor + color*(1-originalFactor);
+      refcolor = reference*originalFactor + (refcolor*changeFactor+color*(1-changeFactor))*(1-originalFactor);
       //refcolor = color;
       f.push(make_pair(make_pair(x+1,y),refcolor));
       f.push(make_pair(make_pair(x-1,y),refcolor));

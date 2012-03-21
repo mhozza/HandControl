@@ -1,7 +1,7 @@
 #include "handrecognizer.h"
 #include "imageprocessor.h"
 
-//#define SAVE_HAND
+#define SAVE_HAND
 
 #include <iostream>
 #include <fstream>
@@ -71,7 +71,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     GrayScaleImage* imgScaled = (GrayScaleImage*)img->copy(r);
     ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
     //imgScaled->mask(imgRefScaled,true);
-    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),21);
+    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),23);
     imgScaled->mask(handMask->toGrayScale());
     delete handMask;
     //imgScaled->mask((GrayScaleImage*)imgScaled->getFloodFillSelectionMask(r.width()/2,r.height()/2));
@@ -138,7 +138,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     fname2 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
     fname3 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
     index++;
-
+/*
     ofstream ofs(fname.str().c_str());
     for(unsigned y = 0;y < SCALE_SIZE; y++)
     {
@@ -153,10 +153,10 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
         ofs << 1/(1+Utils::cabs(out[x+y*SCALE_SIZE])) << " ";
       }
       ofs << endl;
-    }
+    }*/
     imgScaled->saveImage(index,fname2.str());
-    imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    imgScaled->saveImage(index,fname3.str());
+    /*imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
+    imgScaled->saveImage(index,fname3.str());*/
     //imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),20)->saveImage(index,fname2.str());
 
 #endif    
