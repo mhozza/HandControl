@@ -72,7 +72,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     GrayScaleImage* imgScaled2 = (GrayScaleImage*)img2->copy(r);
     ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
     imgScaled2->mask(imgRefScaled,true);
-    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),21);
+    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),23);
     imgScaled->mask(handMask->toGrayScale());
     delete handMask;
     //imgScaled->mask((GrayScaleImage*)imgScaled->getFloodFillSelectionMask(r.width()/2,r.height()/2));
@@ -142,7 +142,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     fname6 << "hand_images/old/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
 
     index++;
-
+/*
     ofstream ofs(fname.str().c_str());
     ofstream ofs2(fname4.str().c_str());
     for(unsigned y = 0;y < SCALE_SIZE; y++)
@@ -159,6 +159,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
         ofs2 << 1/(1+Utils::cabs(out2[x+y*SCALE_SIZE])) << " ";
       }
       ofs << endl;
+<<<<<<< HEAD
       ofs2 << endl;
     }
     ofs.close();
@@ -170,6 +171,13 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     imgScaled2->saveImage(index,fname5.str());
     imgScaled2->setImageFromComplexArray(out2,SCALE_SIZE,SCALE_SIZE);
     imgScaled2->saveImage(index,fname6.str());
+=======
+    }*/
+    imgScaled->saveImage(index,fname2.str());
+    /*imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
+    imgScaled->saveImage(index,fname3.str());*/
+    //imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),20)->saveImage(index,fname2.str());
+>>>>>>> adaptiveFloodFill
 
 #endif    
     fftw_free(out);
