@@ -34,7 +34,7 @@
 
 using namespace std;
 
-#define TRESHOLD 15
+#define TRESHOLD 7
 #define RATIO 24
 #define MAX_FRAMES 40
 #define PIXEL_RADIUS 4
