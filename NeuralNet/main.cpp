@@ -68,23 +68,25 @@ template<class T> vector<T> make_vector(T t)
   return vt;
 }
 
-vector<float> loadImage(string path)
+vector<float> loadImage(string path, int datatype = 0)
 {
   print(path);
   ifstream ifs(path.c_str());
   vector<float> res;
   res.resize(N,0);
-/*
-  //ppm without comments
-  //head
-  string hdr = "P2";
-  ifs >> hdr;
-  if(hdr!="P2") throw 1;
-  //w, h
-  int w = N_SIDE,h=N_SIDE;
-  int colors = 256;
-  ifs >> w >> h >> colors;
-  if(w!=N_SIDE || h!=N_SIDE) throw 1;*/
+  if(datatype == 1)
+  {
+    //ppm without comments
+    //head
+    string hdr = "P2";
+    ifs >> hdr;
+    if(hdr!="P2") throw 1;
+    //w, h
+    int w = N_SIDE,h=N_SIDE;
+    int colors = 256;
+    ifs >> w >> h >> colors;
+    if(w!=N_SIDE || h!=N_SIDE) throw 1;
+  }
 
   FOR(i,N)
   {
@@ -103,8 +105,11 @@ int main(int argc, char *argv[])
    float alpha = 0.25;
    int verbose = 0;
    int mode = 0;
+   int datatype = 0;//0 - float data, 1 - image
+
    if(argc>1) mode = atoi(argv[1]);
    if(argc>2) verbose = atoi(argv[2]);
+   if(argc>3) datatype = atoi(argv[3]);
 
    //unsigned sizes[] = {HIDDEN_N, OUT_N};
    //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
