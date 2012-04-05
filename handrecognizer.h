@@ -23,6 +23,7 @@ using namespace NeuralNET;
 #define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
 #define HIDDEN_N2 11
 #define HAND_TRESHOLD 0.80
+#define SAVEIMAGE_BUFFER_SIZE 300
 
 class HandRecognizer
 {
@@ -32,6 +33,7 @@ class HandRecognizer
   QRect handRect;  
   inline void resetHand(){hand_p = 0;}
   bool isSimilarRect(QRect r1, QRect r2);  
+  vector<string> saveImageBuffer;
 public:
   QMutex rectQueueLock;
   HandRecognizer();
