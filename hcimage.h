@@ -84,13 +84,9 @@ public:
     HCImage * copy(QRect r);
     void scale(unsigned w, unsigned h);
     inline bool isNull(){return !init;}
-    QImage toQImage();
-    /*virtual fftw_complex * toComplexArray() = 0;
-    virtual double * toDoubleArray() = 0;
-    virtual void setImageFromComplexArray(fftw_complex *, unsigned w, unsigned h) = 0;
-    */
+    QImage toQImage();    
     virtual void saveImage(int index = 0, string fname = "");
-    //HCImage<uchar> toGrayScale();
+    virtual string saveImageToString();
 };
 
 template <class T>
@@ -252,6 +248,25 @@ void HCImage<T>::saveImage(int index, string fname)
       ofs << endl;
     }
     ofs.close();
+}
+
+template <class T>
+string HCImage<T>::saveImageToString()
+{
+    ostringstream ofs;
+
+    ofs << ppmType << endl;
+    ofs << width() << " " << height() << endl;
+    ofs << 256 << endl;
+    for(int y = 0;y < height(); y++)
+    {
+      for(int x = 0;x < width(); x++)
+      {
+        ofs << color2String(pixel(x,y)) << " ";
+      }
+      ofs << endl;
+    }
+    return ofs.str();
 }
 
 template <class T>

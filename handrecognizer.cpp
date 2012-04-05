@@ -131,13 +131,24 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     }
 
 #ifdef SAVE_HAND
-    //zapis do suboru
-    stringstream fname,fname2,fname3;
-    //index = 0;
-    fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn";
-    fname2 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
-    fname3 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
-    index++;
+    saveImageBuffer.push_back(imgScaled->saveImageToString());
+
+    if(saveImageBuffer.size()>=SAVEIMAGE_BUFFER_SIZE)
+    {
+        for(unsigned i = 0;i<saveImageBuffer.size();i++)
+        {
+            //zapis do suboru
+            stringstream fname,fname2,fname3;
+            //index = 0;
+            fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn";
+            fname2 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
+            fname3 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
+            index++;
+            ofstream ofs(fname2.str().c_str());
+            ofs << saveImageBuffer[i];
+            ofs.close();
+        }
+    }
 /*
     ofstream ofs(fname.str().c_str());
     for(unsigned y = 0;y < SCALE_SIZE; y++)
@@ -154,7 +165,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       }
       ofs << endl;
     }*/
-    imgScaled->saveImage(index,fname2.str());
+    //imgScaled->saveImage(index,fname2.str());
     /*imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
     imgScaled->saveImage(index,fname3.str());*/
     //imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),20)->saveImage(index,fname2.str());
