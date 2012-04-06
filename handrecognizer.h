@@ -43,6 +43,7 @@ public:
   inline QRect getHandRect(){return handRect;}
   inline float getHandP(){return hand_p;}
   void saveAllImages();
+  unsigned getSaveImageBufferSize();
 };
 
 #endif // HANDRECOGNIZER_H

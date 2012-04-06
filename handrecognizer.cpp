@@ -175,7 +175,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 
 void HandRecognizer::saveAllImages()
 {
-    for(unsigned i = 0;i<saveImageBuffer.size();i++)
+    for(unsigned i = 0;i<imageIsHand.size();i++)
     {
         //zapis do suboru
         stringstream fname,fname2,fname3,fname4,fname5,fname6;
@@ -195,7 +195,7 @@ void HandRecognizer::saveAllImages()
         ofs << saveImageBuffer2[i];
         ofs.close();
         ofs.open(fname5.str().c_str());
-        ofs << saveImageBuffer2[i];
+        ofs << saveImageBuffer3[i];
         ofs.close();
         ofs.open(fname6.str().c_str());
         ofs << saveImageBuffer4[i];
@@ -214,4 +214,9 @@ void HandRecognizer::saveAllImages()
     saveImageBuffer5.clear();
     saveImageBuffer6.clear();
     imageIsHand.clear();
+}
+
+unsigned HandRecognizer::getSaveImageBufferSize()
+{
+    return imageIsHand.size();
 }

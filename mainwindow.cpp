@@ -33,8 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     gestureRecognizer= new GestureRecognizer();
     setupCamera();
 
-    connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));
-    connect(ui->cbKalmanFilter,SIGNAL(toggled(bool)),this,SLOT(toggleKalmann(bool)));
+    connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));    
 
 }
 
@@ -96,6 +95,8 @@ MainWindow::~MainWindow()
     if(camera->isStreaming())
             camera->stopStreaming();
     camera->close();
+
+    handRecognizer->saveAllImages();
 
     delete camera;
     delete imageProcessor;
@@ -176,6 +177,7 @@ void MainWindow::getImage()
                 }
                 gestureRecognizer->drawPoints(&p);
                 p.end();          
+                ui->label_4->setText(QString::number(handRecognizer->getSaveImageBufferSize()));
 
                 pixmap = QPixmap::fromImage(img);
         }
