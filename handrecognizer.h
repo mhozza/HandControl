@@ -33,11 +33,11 @@ class HandRecognizer
   QRect handRect;  
   inline void resetHand(){hand_p = 0;}
   bool isSimilarRect(QRect r1, QRect r2);  
-  vector<string> saveImageBuffer;
+  vector<string> saveImageBuffer,saveImageBuffer2,saveImageBuffer3,saveImageBuffer4,saveImageBuffer5,saveImageBuffer6;
 public:
   QMutex rectQueueLock;
   HandRecognizer();
-  void processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * img_ref, GrayScaleImage * img, GrayScaleImage * img2,  ColorImage * imgcolor);
+  void processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, GrayScaleImage * img2,  ColorImage * imgcolor);
   inline bool isHand(){return hand_p>HAND_TRESHOLD;}
   inline QRect getHandRect(){return handRect;}
   inline float getHandP(){return hand_p;}
