@@ -1,7 +1,7 @@
 #include "handrecognizer.h"
 #include "imageprocessor.h"
 
-//#define SAVE_HAND
+#define SAVE_HAND
 
 #include <iostream>
 #include <fstream>
