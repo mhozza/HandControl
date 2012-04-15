@@ -151,27 +151,29 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, GrayScaleImage * imgI
 
 
 
-QRect ImageProcessor::segment(int sx, int sy, uchar color, GrayScaleImage * image, QRect rect)
+QRect ImageProcessor::segment(unsigned sx, unsigned sy, uchar color, GrayScaleImage * image, QRect rect)
 {
-  queue<pair<int,int> > f;
+  queue<pair<unsigned,unsigned> > f;
   f.push(make_pair(sx,sy));
   while(!f.empty())
   {
-      int x = f.front().first;
-      int y = f.front().second;
+      unsigned x = f.front().first;
+      unsigned y = f.front().second;
       f.pop();
-      if(x<0 || x>=image->width()) continue;
-      if(y<0 || y>=image->height()) continue;
+      if(x>=image->width()) continue;
+      if(y>=image->height()) continue;
       if(image->pixel(x,y)!=0) continue;
       image->setPixel(x,y,color);
-      if(x<rect.left()) rect.setLeft(x);
-      if(x>rect.right()) rect.setRight(x);
-      if(y<rect.top()) rect.setTop(y);
-      if(y>rect.bottom()) rect.setBottom(y);
+      if((int)x<rect.left()) rect.setLeft(x);
+      if((int)x>rect.right()) rect.setRight(x);
+      if((int)y<rect.top()) rect.setTop(y);
+      if((int)y>rect.bottom()) rect.setBottom(y);
       f.push(make_pair(x+1,y));
-      f.push(make_pair(x-1,y));
+      if(x>0)
+        f.push(make_pair(x-1,y));
       f.push(make_pair(x,y+1));
-      f.push(make_pair(x,y-1));
+      if(y>0)
+        f.push(make_pair(x,y-1));
   }
   if(rect.height()>(3 *rect.width())/2)
     rect.setHeight(3*rect.width()/2);
@@ -271,9 +273,9 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
     threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (GrayScaleImage*) &image, (GrayScaleImage*) &img, (ColorImage*) &colorimg));
   }
 
-  for(int y = 0;y<expandedImg->height();y++)
+  for(unsigned y = 0;y<expandedImg->height();y++)
   {
-    for(int x = 0;x<expandedImg->width();x++)
+    for(unsigned x = 0;x<expandedImg->width();x++)
     {
       if(expandedImg->pixel(x,y)==0)
       {        

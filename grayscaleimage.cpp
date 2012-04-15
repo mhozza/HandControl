@@ -56,9 +56,9 @@ uchar GrayScaleImage::interpolatePixel(float x, float y)
 fftw_complex * GrayScaleImage::toComplexArray()
 {
     fftw_complex * b = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * w * h);
-    for(int y = 0; y<h;y++)
+    for(unsigned y = 0; y<h;y++)
     {
-        for(int x = 0; x<w;x++)
+        for(unsigned x = 0; x<w;x++)
         {
             b[x+y*w][0] = pixel(x,y);
             b[x+y*w][1] = 0;
@@ -70,9 +70,9 @@ fftw_complex * GrayScaleImage::toComplexArray()
 double * GrayScaleImage::toDoubleArray()
 {
     double * b = (double*) fftw_malloc(sizeof(double) * w * h);
-    for(int y = 0; y<h;y++)
+    for(unsigned y = 0; y<h;y++)
     {
-        for(int x = 0; x<w;x++)
+        for(unsigned x = 0; x<w;x++)
         {
             b[x+y*w] = pixel(x,y);
         }
@@ -85,9 +85,9 @@ void GrayScaleImage::setImageFromComplexArray(fftw_complex *b , unsigned w, unsi
     //ToDo: check w,h
     construct(w,h);
     imageData.resize(w*h,0);
-    for(int y = 0; y<h;y++)
+    for(unsigned y = 0; y<h;y++)
     {
-        for(int x = 0; x<w;x++)
+        for(unsigned x = 0; x<w;x++)
         {
            uchar val = min((long)round(10*log2(Utils::cabs(b[x+y*w]))),255L);
            setPixel(x,y,val);

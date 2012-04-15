@@ -51,8 +51,8 @@ public:
 private:
   bool init;
 protected:
-  string ppmType;
   unsigned w, h;  
+  string ppmType;
   ImageBuffer imageData;
 
   void construct(unsigned w, unsigned h);
@@ -79,8 +79,8 @@ public:
     T pixel(int x, int y);
     virtual T interpolatePixel(float x, float y) = 0;
     void setPixel(unsigned x, unsigned y, T val);
-    HCImage<T>* getFloodFillSelectionMask(int sx, int sy, int treshold = 5);
-    HCImage<T>* getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold = 5,  float originalFactor = 0.35, float changeFactor = 0.5);
+    HCImage<T>* getFloodFillSelectionMask(unsigned sx, unsigned sy, int treshold = 5);
+    HCImage<T>* getAdaptiveFloodFillSelectionMask(unsigned sx, unsigned sy, int treshold = 5,  float originalFactor = 0.35, float changeFactor = 0.5);
     HCImage * copy(QRect r);
     void scale(unsigned w, unsigned h);
     inline bool isNull(){return !init;}
@@ -158,9 +158,9 @@ QImage HCImage<T>::toQImage()
 {    
     QImage img(w,h,QImage::Format_RGB888);
 
-    for(int y = 0; y<h;y++)
+    for(unsigned y = 0; y<h;y++)
     {
-        for(int x = 0; x<w;x++)
+        for(unsigned x = 0; x<w;x++)
         {
             T bc = pixel(x,y);
             uint c = toUint32Color(bc);
@@ -176,9 +176,9 @@ HCImage<T>* HCImage<T>::copy(QRect r)
     ImageBuffer b;
     unsigned width=r.width(), height = r.height(), sx = r.left(), sy = r.top();
     b.resize(width*height);
-    for(int y = 0; y<height;y++)
+    for(unsigned y = 0; y<height;y++)
     {
-        for(int x = 0; x<width;x++)//todo optimize
+        for(unsigned x = 0; x<width;x++)//todo optimize
         {
             b[x+y*width]=imageData[sx+x+(sy+y)*w];
         }
@@ -212,9 +212,9 @@ void HCImage<T>::mask(HCImage<T> *mask, bool invert)
 {
     if(mask->height()!=h || mask->width()!=w) throw 1;
 
-    for(int y = 0; y<h;y++)
+    for(unsigned y = 0; y<h;y++)
     {
-        for(int x = 0; x<w;x++)
+        for(unsigned x = 0; x<w;x++)
         {
             if(!invert)
                 setPixel(x,y,(pixel(x,y) & mask->pixel(x,y)));
@@ -239,9 +239,9 @@ void HCImage<T>::saveImage(int index, string fname)
     ofs << ppmType << endl;
     ofs << width() << " " << height() << endl;
     ofs << 256 << endl;
-    for(int y = 0;y < height(); y++)
+    for(unsigned y = 0;y < height(); y++)
     {
-      for(int x = 0;x < width(); x++)
+      for(unsigned x = 0;x < width(); x++)
       {
         ofs << color2String(pixel(x,y)) << " ";
       }
@@ -258,9 +258,9 @@ string HCImage<T>::saveImageToString()
     ofs << ppmType << endl;
     ofs << width() << " " << height() << endl;
     ofs << 256 << endl;
-    for(int y = 0;y < height(); y++)
+    for(unsigned y = 0;y < height(); y++)
     {
-      for(int x = 0;x < width(); x++)
+      for(unsigned x = 0;x < width(); x++)
       {
         ofs << color2String(pixel(x,y)) << " ";
       }
@@ -270,51 +270,28 @@ string HCImage<T>::saveImageToString()
 }
 
 template <class T>
-HCImage<T>* HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
-{
-  //T reference = pixel(sx,sy);
-  T reference = getAverageColor(sx,sy);
-  ImageBuffer b;
-  b.resize(width()*height(),0);
-  queue<pair<int,int> > f;
-  f.push(make_pair(sx,sy));
-  while(!f.empty())
-  {
-      int x = f.front().first;
-      int y = f.front().second;
-      //cout << x << " " << y << endl;
-      f.pop();
-      if(x<0 || x>=width()) continue;
-      if(y<0 || y>=height()) continue;
-      if(!similar(reference,pixel(x,y),treshold) || b[x+y*w]!=T(0)) continue;
-      b[x+y*w]=0xffffffff;
-      f.push(make_pair(x+1,y));
-      f.push(make_pair(x-1,y));
-      f.push(make_pair(x,y+1));
-      f.push(make_pair(x,y-1));
-
-  }
-  HCImage<T> *maskImage = create(b,width(),height());
-  return maskImage;
+HCImage<T>* HCImage<T>::getFloodFillSelectionMask(unsigned sx, unsigned sy, int treshold)
+{   
+  return getAdaptiveFloodFillSelectionMask(sx,sy,treshold,1);
 }
 
 template <class T>
-HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold, float originalFactor, float changeFactor)
+HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(unsigned sx, unsigned sy, int treshold, float originalFactor, float changeFactor)
 { 
   //T reference = pixel(sx,sy);
   T reference = getAverageColor(sx,sy);
   ImageBuffer b;
   b.resize(width()*height(),0);
-  queue<pair<pair<int,int>,T> > f;
+  queue<pair<pair<unsigned,unsigned>,T> > f;
   f.push(make_pair(make_pair(sx,sy),reference));
   while(!f.empty())
   {
-      int x = f.front().first.first;
-      int y = f.front().first.second;
+      unsigned x = f.front().first.first;
+      unsigned y = f.front().first.second;
       T refcolor = f.front().second;
       f.pop();
-      if(x<0 || x>=width()) continue;
-      if(y<0 || y>=height()) continue;
+      if(x>=width()) continue;
+      if(y>=height()) continue;
 
       T color = pixel(x,y);
       if(!similar(refcolor,color,treshold) || b[x+y*w]!=T(0)) continue;

@@ -33,8 +33,7 @@ MainWindow::MainWindow(QWidget *parent) :
     gestureRecognizer= new GestureRecognizer();
     setupCamera();
 
-    connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));    
-
+    connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));
 }
 
 void MainWindow::setupCamera()
@@ -65,7 +64,7 @@ void MainWindow::setupCamera()
     }
 }
 
-void MainWindow::showEvent(QShowEvent * e)
+void MainWindow::showEvent(QShowEvent *)
 {
     try
     {

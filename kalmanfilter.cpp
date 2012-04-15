@@ -31,7 +31,7 @@ KalmanFilter::KalmanFilter(GrayScaleImage *img)
 
   //firstImage
   double* d = img->toDoubleArray();
-  for(int i=0;i<predicted.size();++i)
+  for(unsigned i=0;i<predicted.size();++i)
     predicted[i] = d[i];
 }
 
@@ -41,20 +41,20 @@ void KalmanFilter::filter(GrayScaleImage *img)
   //observed = img->toDoubleArray();
   //observed.insert(observed.begin(),dimension,img->toDoubleArray());
   double* d = img->toDoubleArray();
-  for(int i=0;i<observed.size();++i)
+  for(unsigned i=0;i<observed.size();++i)
     observed[i] = d[i];
 
-  for(int k=0;k<Kalman.size();++k)
+  for(unsigned k=0;k<Kalman.size();++k)
     Kalman[k] = predictedvar[k]/(predictedvar[k]+noisevar[k]);
-  for(int k=0;k<corrected.size();++k)
+  for(unsigned k=0;k<corrected.size();++k)
     corrected[k] = gain*predicted[k]+(1.0-gain)*observed[k]+Kalman[k]*(observed[k] - predicted[k]);
-  for(int k=0;k<correctedvar.size();++k)
+  for(unsigned k=0;k<correctedvar.size();++k)
     correctedvar[k] = predictedvar[k]*(1.0 - Kalman[k]);
   predictedvar = correctedvar;
   predicted = corrected;
   //save Image
   GrayScaleImage::ImageBuffer b;  b.resize(corrected.size());
-  for(int i=0;i<corrected.size();++i)
+  for(unsigned i=0;i<corrected.size();++i)
     b[i] = (uchar)corrected[i];
   img->setImage(b,width,height);
 }

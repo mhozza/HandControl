@@ -75,7 +75,7 @@ class ImageProcessor
 
     void expandPixelsX(int sy, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut);
     void expandPixelsY(int sx, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut);
-    QRect segment(int x, int y, uchar color, GrayScaleImage * image, QRect rect);
+    QRect segment(unsigned x, unsigned y, uchar color, GrayScaleImage * image, QRect rect);
 
 public:
     bool useKalmanFilter;
