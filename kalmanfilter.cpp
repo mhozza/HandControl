@@ -17,7 +17,7 @@
 
 #include "kalmanfilter.h"
 
-KalmanFilter::KalmanFilter(HCImage *img)
+KalmanFilter::KalmanFilter(GrayScaleImage *img)
   :percentvar(0.05), gain(0.8), width(img->width()), height(img->height())
 {
   dimension = width*height;
@@ -36,7 +36,7 @@ KalmanFilter::KalmanFilter(HCImage *img)
 }
 
 
-void KalmanFilter::filter(HCImage *img)
+void KalmanFilter::filter(GrayScaleImage *img)
 {
   //observed = img->toDoubleArray();
   //observed.insert(observed.begin(),dimension,img->toDoubleArray());
@@ -53,7 +53,7 @@ void KalmanFilter::filter(HCImage *img)
   predictedvar = correctedvar;
   predicted = corrected;
   //save Image
-  ImageBuffer b;  b.resize(corrected.size());
+  GrayScaleImage::ImageBuffer b;  b.resize(corrected.size());
   for(int i=0;i<corrected.size();++i)
     b[i] = (uchar)corrected[i];
   img->setImage(b,width,height);

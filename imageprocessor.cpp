@@ -25,7 +25,7 @@
 
 using namespace std;
 
-void ImageProcessor::medianFilterX(int sy, int ex, int ey, HCImage * imgIn, HCImage * imgOut)
+void ImageProcessor::medianFilterX(int sy, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut)
 {
   int sx = 0;
   for(int y = sy;y<ey;y++)
@@ -45,7 +45,7 @@ void ImageProcessor::medianFilterX(int sy, int ex, int ey, HCImage * imgIn, HCIm
   }
 }
 
-void ImageProcessor::medianFilterY(int sx, int ex, int ey, HCImage * imgIn, HCImage * imgOut)
+void ImageProcessor::medianFilterY(int sx, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut)
 {
   int sy = 0;
   for(int x = sx;x<ex;x++)
@@ -67,7 +67,7 @@ void ImageProcessor::medianFilterY(int sx, int ex, int ey, HCImage * imgIn, HCIm
 }
 
 
-void ImageProcessor::expandPixelsX(int sy, int ex, int ey, HCImage * imgIn, HCImage * imgOut)
+void ImageProcessor::expandPixelsX(int sy, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut)
 {
   int sx = 0;
   for(int y = sy;y<ey;y++)
@@ -108,7 +108,7 @@ void ImageProcessor::expandPixelsX(int sy, int ex, int ey, HCImage * imgIn, HCIm
   }
 }
 
-void ImageProcessor::expandPixelsY(int sx, int ex, int ey, HCImage * imgIn, HCImage * imgOut)
+void ImageProcessor::expandPixelsY(int sx, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut)
 {
   int sy = 0;
   for(int x = sx;x<ex;x++)
@@ -151,7 +151,7 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, HCImage * imgIn, HCIm
 
 
 
-QRect ImageProcessor::segment(int sx, int sy, uchar color, HCImage * image, QRect rect)
+QRect ImageProcessor::segment(int sx, int sy, uchar color, GrayScaleImage * image, QRect rect)
 {
   queue<pair<int,int> > f;
   f.push(make_pair(sx,sy));
@@ -173,12 +173,12 @@ QRect ImageProcessor::segment(int sx, int sy, uchar color, HCImage * image, QRec
       f.push(make_pair(x,y+1));
       f.push(make_pair(x,y-1));
   }
-  if(rect.height()>(3*rect.width())/2)
-    rect.setHeight(rect.width());
+  if(rect.height()>(3 *rect.width())/2)
+    rect.setHeight(3*rect.width()/2);
   return rect;
 }
 
-void ImageProcessor::prepareImg(HCImage &image, int sx, int sy, int ex, int ey)
+void ImageProcessor::prepareImg(GrayScaleImage &image, int sx, int sy, int ex, int ey)
 {
   for(int x = sx;x<ex;x++)
   {
@@ -206,23 +206,20 @@ void ImageProcessor::prepareImg(HCImage &image, int sx, int sy, int ex, int ey)
 ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer)
   : images(0), images2(MAX_FRAMES/2), index(0), useKalmanFilter(true)
 {
-  oldImage = new HCImage(width,height);
-  expandedImg = new HCImage(width,height);
-  expandedImgX = new HCImage(width,height);
+  oldImage = new GrayScaleImage(width,height);
+  expandedImg = new GrayScaleImage(width,height);
+  expandedImgX = new GrayScaleImage(width,height);
   this->handRecognizer = handRecognizer;
   kf = NULL;
 }
 
-HCImage ImageProcessor::processImage(const HCImage &image)
+GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const ColorImage &colorimg)
 {  
   img = image;
   sum = 0;  
   //prepare
   vector<QFuture<void> > threads;
   int n = QThread::idealThreadCount();
-
-
-
 
   for(int i=0;i<n;i++)
   {
@@ -234,12 +231,14 @@ HCImage ImageProcessor::processImage(const HCImage &image)
   }
   threads.clear();
 
+  /*
   if(kf==NULL)
   {
     kf = new KalmanFilter(&img);
   }
   if(useKalmanFilter)
     kf->filter(&img);
+  */
 
   //expand X
   for(int i=0;i<n;i++)
@@ -262,8 +261,6 @@ HCImage ImageProcessor::processImage(const HCImage &image)
   }
   threads.clear();
 
-
-
   //Segment and recognize
   uint color = 1;
 
@@ -271,7 +268,7 @@ HCImage ImageProcessor::processImage(const HCImage &image)
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (HCImage*) &img,&imgLock));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (GrayScaleImage*) &image, (ColorImage*) &colorimg));
   }
 
   for(int y = 0;y<expandedImg->height();y++)
@@ -282,10 +279,10 @@ HCImage ImageProcessor::processImage(const HCImage &image)
       {        
         color = 1+rand()%254;
         QRect r(x,y,0,0);        
-        r = segment(x,y,color,expandedImg,r);
+        r = segment(x,y,color,expandedImg,r);        
         //if(r.width()!=0) color++;
         if(r.width()>=MIN_RECT_SIZE && r.height()>=MIN_RECT_SIZE && r.width()<=MAX_RECT_SIZE && r.height() <= MAX_RECT_SIZE)
-        {
+        {          
           handRecognizer->rectQueueLock.lock();
           rectQueue.push(make_pair(r,color));
           handRecognizer->rectQueueLock.unlock();
@@ -312,7 +309,7 @@ HCImage ImageProcessor::processImage(const HCImage &image)
   }  
 
   delete oldImage;
-  oldImage = new HCImage(image);
+  oldImage = new GrayScaleImage(image);
 
   //return image;
   //Utils::saveImage(img,index++);

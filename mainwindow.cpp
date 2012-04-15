@@ -110,6 +110,14 @@ void MainWindow::getImage()
 {
         QPixmap pixmap;
 
+        ColorImage colorimg(VIDEO_WIDTH,VIDEO_HEIGHT);
+
+        if (camera->getFrame(colorimg) == EXIT_FAILURE)
+        {
+                camera->close();
+                throw new CameraGetImageException();
+                return;
+        }
 
         if (camera->getFrameBW(imageFromCamera) == EXIT_FAILURE)
         {                
@@ -118,20 +126,13 @@ void MainWindow::getImage()
                 return;
         }
 
-        /*HCImage gimg(VIDEO_WIDTH,VIDEO_HEIGHT);
 
-        if (camera->getFrameBW(gimg) == EXIT_FAILURE)
-        {
-                camera->close();
-                throw new CameraGetImageException();
-                return;
-        }*/
 
         //Utils::saveImage(gimg,0);
 
         if(!imageFromCamera.isNull())
         {                
-                QImage img = imageProcessor->processImage(imageFromCamera).toQImage();
+                QImage img = imageProcessor->processImage(imageFromCamera, colorimg).toQImage();
                 //img2 = imageFromCamera.toQImage();
                 //QImage img = gimg.toQImage();
                 //QImage img(VIDEO_WIDTH,VIDEO_HEIGHT,QImage::Format_RGB32);
@@ -182,7 +183,8 @@ void MainWindow::getImage()
         if(!pixmap.isNull())
         {
                 ui->label->setPixmap(pixmap);
-                ui->label_3->setPixmap(QPixmap::fromImage(imageFromCamera.toQImage()));
+                //ui->label_3->setPixmap(QPixmap::fromImage(imageFromCamera.toQImage()));
+                ui->label_3->setPixmap(QPixmap::fromImage(colorimg.toQImage()));
                 ui->radioButton->setChecked(imageProcessor->imageChanged());
         }
 }

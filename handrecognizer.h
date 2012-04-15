@@ -9,7 +9,8 @@
 #include "NeuralNet/neuralnetwork.h"
 #include "NeuralNet/distributedneuralnetwork.h"
 
-#include "hcimage.h"
+#include "grayscaleimage.h"
+#include "colorimage.h"
 
 using namespace std;
 using namespace NeuralNET;
@@ -22,6 +23,7 @@ using namespace NeuralNET;
 #define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
 #define HIDDEN_N2 11
 #define HAND_TRESHOLD 0.80
+#define SAVEIMAGE_BUFFER_SIZE 300
 
 class HandRecognizer
 {
@@ -31,10 +33,11 @@ class HandRecognizer
   QRect handRect;  
   inline void resetHand(){hand_p = 0;}
   bool isSimilarRect(QRect r1, QRect r2);  
+  vector<string> saveImageBuffer;
 public:
   QMutex rectQueueLock;
   HandRecognizer();
-  void processRects(queue<pair<QRect,uint> > * q, HCImage * img_ref, HCImage * img, QMutex *imglock);
+  void processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * img_ref, GrayScaleImage * img,  ColorImage * imgcolor);
   inline bool isHand(){return hand_p>HAND_TRESHOLD;}
   inline QRect getHandRect(){return handRect;}
   inline float getHandP(){return hand_p;}

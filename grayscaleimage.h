@@ -15,26 +15,28 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KALMANNFILTER_H
-#define KALMANNFILTER_H
+#ifndef GRAYSCALEIMAGE_H
+#define GRAYSCALEIMAGE_H
 
-#include <vector>
-//#include <kalman/kfilter.hpp>
-#include "grayscaleimage.h"
+#include "hcimage.h"
+#include <sstream>
 
-using namespace std;
-//using namespace Kalman;
-
-class KalmanFilter //: private KFilter<double,0,false,false,true>
+class GrayScaleImage : public HCImage<uchar>
 {
-  double percentvar;
-  double gain;
-  int width, height, dimension;
-  vector<double> stackslice, filteredslice, noisevar, average, predicted, predictedvar, observed, Kalman, corrected, correctedvar;
-
+  uint toUint32Color(uchar c);
+  bool similar(uchar reference,uchar color, uint treshold);
+  string color2String(uchar color);
+  HCImage<uchar> * create(ImageBuffer img, unsigned w, unsigned h);
+  uchar getAverageColor(int x, int y);
 public:
-  KalmanFilter(GrayScaleImage *img);
-  void filter(GrayScaleImage *img);
+  GrayScaleImage();
+  GrayScaleImage(unsigned w, unsigned h);
+  GrayScaleImage(ImageBuffer img, unsigned w, unsigned h);
+  uchar interpolatePixel(float x, float y);
+
+  fftw_complex * toComplexArray();
+  double * toDoubleArray();
+  void setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned h);
 };
 
-#endif // KALMANNFILTER_H
+#endif // GRAYSCALEIMAGE_H

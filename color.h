@@ -15,26 +15,29 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KALMANNFILTER_H
-#define KALMANNFILTER_H
+#ifndef COLOR_H
+#define COLOR_H
 
-#include <vector>
-//#include <kalman/kfilter.hpp>
-#include "grayscaleimage.h"
+#include <sstream>
+#include <QColor>
+
+/*typedef unsigned int uint;
+typedef unsigned char uchar;*/
 
 using namespace std;
-//using namespace Kalman;
 
-class KalmanFilter //: private KFilter<double,0,false,false,true>
+class Color: public QColor
 {
-  double percentvar;
-  double gain;
-  int width, height, dimension;
-  vector<double> stackslice, filteredslice, noisevar, average, predicted, predictedvar, observed, Kalman, corrected, correctedvar;
-
 public:
-  KalmanFilter(GrayScaleImage *img);
-  void filter(GrayScaleImage *img);
+  Color(){}
+  Color(uchar r, uchar g, uchar b);
+  Color(uint color);
+  uint toUintColor();
+  uchar toGrayScale();
+  string toString();
+  //operator==(Color &c);*/
+  Color operator+(Color c);
+  Color operator*(float f);
 };
 
-#endif // KALMANNFILTER_H
+#endif // COLOR_H

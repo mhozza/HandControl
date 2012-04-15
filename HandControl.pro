@@ -31,10 +31,12 @@ SOURCES += main.cpp\
     gesturemovedown.cpp \
     onscreendisplayform.cpp \
     utils.cpp \
-    hcimage.cpp \
     NeuralNet/distributedneurallayer.cpp \
     NeuralNet/distributedneuralnetwork.cpp \
-    kalmanfilter.cpp
+    kalmanfilter.cpp \
+    colorimage.cpp \
+    grayscaleimage.cpp \
+    color.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -59,7 +61,10 @@ HEADERS  += mainwindow.h \
     hcimage.h \
     NeuralNet/distributedneurallayer.h \
     NeuralNet/distributedneuralnetwork.h \
-    kalmanfilter.h
+    kalmanfilter.h \
+    colorimage.h \
+    grayscaleimage.h \
+    color.h
 
 FORMS += mainwindow.ui \
     onscreendisplayform.ui

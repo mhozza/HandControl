@@ -34,7 +34,7 @@
 
 using namespace std;
 
-#define TRESHOLD 15
+#define TRESHOLD 7
 #define RATIO 24
 #define MAX_FRAMES 40
 #define PIXEL_RADIUS 4
@@ -43,7 +43,7 @@ using namespace std;
 
 class ImageProcessor
 {
-    HCImage *oldImage, img, *expandedImgX, *expandedImg;
+    GrayScaleImage *oldImage, img, *expandedImgX, *expandedImg;
     int images,images2;
     bool imgChanged;
     unsigned sum;
@@ -68,20 +68,20 @@ class ImageProcessor
       return b;
     }
 
-    void prepareImg(HCImage &, int  ,int  ,int ,int );
+    void prepareImg(GrayScaleImage &, int  ,int  ,int ,int );
 
-    void medianFilterX(int sy, int ex, int ey, HCImage * imgIn, HCImage * imgOut);
-    void medianFilterY(int sx, int ex, int ey, HCImage * imgIn, HCImage * imgOut);
+    void medianFilterX(int sy, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut);
+    void medianFilterY(int sx, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut);
 
-    void expandPixelsX(int sy, int ex, int ey, HCImage * imgIn, HCImage * imgOut);
-    void expandPixelsY(int sx, int ex, int ey, HCImage * imgIn, HCImage * imgOut);
-    QRect segment(int x, int y, uchar color, HCImage * image, QRect rect);
+    void expandPixelsX(int sy, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut);
+    void expandPixelsY(int sx, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut);
+    QRect segment(int x, int y, uchar color, GrayScaleImage * image, QRect rect);
 
 public:
     bool useKalmanFilter;
     ImageProcessor(int width, int height, HandRecognizer * handRecognizer);
     ~ImageProcessor();
-    HCImage processImage(const HCImage &img);
+    GrayScaleImage processImage(const GrayScaleImage &image, const ColorImage &colorimg);
     inline bool imageChanged(){return imgChanged;}
 };
 

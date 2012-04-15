@@ -355,7 +355,49 @@ int Webcam::getFrame(QImage &image)
 	return EXIT_SUCCESS;
 }
 
-int Webcam::getFrameBW(HCImage &image)
+
+int Webcam::getFrame(ColorImage &image)
+{
+        int ret = 0;
+
+        // Dequeue a buffer.
+        ret = ioctl(dev, VIDIOC_DQBUF, &buf);
+        if (ret < 0)
+        {
+                KError("Unable to dequeue buffer", errno);
+                return EXIT_FAILURE;
+        }
+
+        // Save the image.
+        //uchar jpegBuf1[buf.bytesused + 420];
+        if (fmt.fmt.pix.pixelformat == V4L2_PIX_FMT_MJPEG)
+        {
+            /*
+                if (mjpegToJpeg(mem[buf.index], jpegBuf1, (int) buf.bytesused) == EXIT_SUCCESS)
+                        image.loadFromData(jpegBuf1, buf.bytesused+420);
+            */
+            return EXIT_FAILURE;
+        }
+
+        if (fmt.fmt.pix.pixelformat == V4L2_PIX_FMT_YUYV)
+        {
+                image.setImage(yuvToRGB(mem[buf.index], currentWidth(), currentHeight()), currentWidth(), currentHeight());
+        }
+
+        // Requeue the buffer.
+        ret = ioctl(dev, VIDIOC_QBUF, &buf);
+        if (ret < 0)
+        {
+                KError("Unable to requeue buffer", errno);
+                return EXIT_FAILURE;
+        }
+        if(!imageNotifier->isEnabled())
+                imageNotifier->setEnabled(true);
+
+        return EXIT_SUCCESS;
+}
+
+int Webcam::getFrameBW(GrayScaleImage &image)
 {
         int ret = 0;
 

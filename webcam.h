@@ -41,7 +41,8 @@ public:
 	int streamOff();
 	int stopStreaming();
 	int getFrame(QImage &image);
-        int getFrameBW(HCImage &image);
+    int getFrame(ColorImage &image);
+    int getFrameBW(GrayScaleImage &image);
 	int currentWidth() const;
 	int currentHeight() const;
 	int currentPixelFormat() const;

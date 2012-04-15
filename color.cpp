@@ -15,26 +15,46 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef KALMANNFILTER_H
-#define KALMANNFILTER_H
+#include "color.h"
+#include <cmath>
 
-#include <vector>
-//#include <kalman/kfilter.hpp>
-#include "grayscaleimage.h"
-
-using namespace std;
-//using namespace Kalman;
-
-class KalmanFilter //: private KFilter<double,0,false,false,true>
+Color::Color(uchar r, uchar  g, uchar  b):QColor(r,g,b)
 {
-  double percentvar;
-  double gain;
-  int width, height, dimension;
-  vector<double> stackslice, filteredslice, noisevar, average, predicted, predictedvar, observed, Kalman, corrected, correctedvar;
+}
 
-public:
-  KalmanFilter(GrayScaleImage *img);
-  void filter(GrayScaleImage *img);
-};
+Color::Color(uint color):QColor(color)
+{
+  /*r = (color >> 16);
+  g = ((color >> 8) & 0xff) ;
+  b = (color & 0xff);*/
+}
 
-#endif // KALMANNFILTER_H
+uint Color::toUintColor()
+{
+  return rgb();
+  //return (0xFF000000 | b | (g << 8) | (r << 16));
+
+}
+
+uchar Color::toGrayScale()
+{
+  //return (4*r+3*g+3*b)/10;
+  return qGray(rgb());
+}
+
+string Color::toString()
+{
+  stringstream ss;
+  ss << red()<< " " << green() << " " << blue() << " ";
+  return ss.str();
+}
+
+Color Color::operator+(Color c)
+{
+  return Color(red()+c.red(),green()+c.green(),blue()+c.blue());
+}
+
+Color Color::operator*(float f)
+{
+  return Color(round(red()*f),round(green()*f),round(blue()*f));
+}

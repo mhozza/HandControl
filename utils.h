@@ -26,10 +26,11 @@
 #include <fftw3.h>
 #include <cmath>
 #include <vector>
-
-#include "hcimage.h"
+//#include "hcimage.h"
 
 using namespace std;
+
+//template <class T> class HCImage;
 
 class Utils
 {
@@ -37,7 +38,7 @@ class Utils
 public:    
   //inline static unsigned grayScale(QColor c) { return (3*c.red()+3*c.green()+4*c.blue())/10; }
   static void saveImage(QImage img, int index);
-  static void saveImage(HCImage img, int index, string fname);
+  //static void saveImage(GrayScaleImage img, int index, string fname);
   static double cabs(fftw_complex v);
 };
 
