@@ -80,7 +80,7 @@ public:
     virtual T interpolatePixel(float x, float y) = 0;
     void setPixel(unsigned x, unsigned y, T val);
     HCImage<T>* getFloodFillSelectionMask(int sx, int sy, int treshold = 5);
-    HCImage<T>* getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold = 5);
+    HCImage<T>* getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold = 5,  float originalFactor = 0.35, float changeFactor = 0.5);
     HCImage * copy(QRect r);
     void scale(unsigned w, unsigned h);
     inline bool isNull(){return !init;}
@@ -299,12 +299,10 @@ HCImage<T>* HCImage<T>::getFloodFillSelectionMask(int sx, int sy, int treshold)
 }
 
 template <class T>
-HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold)
-{
-  float originalFactor = 0.35;
-  float changeFactor = 0.5;
-  T reference = pixel(sx,sy);
-  //T reference = getAverageColor(sx,sy);
+HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(int sx, int sy, int treshold, float originalFactor, float changeFactor)
+{ 
+  //T reference = pixel(sx,sy);
+  T reference = getAverageColor(sx,sy);
   ImageBuffer b;
   b.resize(width()*height(),0);
   queue<pair<pair<int,int>,T> > f;
