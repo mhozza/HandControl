@@ -271,31 +271,8 @@ string HCImage<T>::saveImageToString()
 
 template <class T>
 HCImage<T>* HCImage<T>::getFloodFillSelectionMask(unsigned sx, unsigned sy, int treshold)
-{
-  //T reference = pixel(sx,sy);
-  T reference = getAverageColor(sx,sy);
-  ImageBuffer b;
-  b.resize(width()*height(),0);
-  queue<pair<unsigned,unsigned> > f;
-  f.push(make_pair(sx,sy));
-  while(!f.empty())
-  {
-      unsigned x = f.front().first;
-      unsigned y = f.front().second;
-      //cout << x << " " << y << endl;
-      f.pop();
-      if(x>=width()) continue;
-      if(y>=height()) continue;
-      if(!similar(reference,pixel(x,y),treshold) || b[x+y*w]!=T(0)) continue;
-      b[x+y*w]=0xffffffff;
-      f.push(make_pair(x+1,y));
-      f.push(make_pair(x-1,y));
-      f.push(make_pair(x,y+1));
-      f.push(make_pair(x,y-1));
-
-  }
-  HCImage<T> *maskImage = create(b,width(),height());
-  return maskImage;
+{   
+  return getAdaptiveFloodFillSelectionMask(sx,sy,treshold,1);
 }
 
 template <class T>
