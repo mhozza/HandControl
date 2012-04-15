@@ -48,9 +48,9 @@ GrayScaleImage * ColorImage::toGrayScale()
 {
     GrayScaleImage::ImageBuffer b;
     b.resize(width()*height());
-    for(int y = 0; y<height();y++)
+    for(unsigned y = 0; y<height();y++)
     {
-      for(int x = 0; x<width();x++)//todo optimize
+      for(unsigned x = 0; x<width();x++)//todo optimize
       {
         b[x+y*width()]= pixel(x,y).toGrayScale();// imageData[sx+x+(sy+y)*w];
       }

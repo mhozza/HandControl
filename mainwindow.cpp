@@ -34,8 +34,6 @@ MainWindow::MainWindow(QWidget *parent) :
     setupCamera();
 
     connect(camera,SIGNAL(imageReady()),this,SLOT(getImage()));
-    connect(ui->cbKalmanFilter,SIGNAL(toggled(bool)),this,SLOT(toggleKalmann(bool)));
-
 }
 
 void MainWindow::setupCamera()
@@ -66,7 +64,7 @@ void MainWindow::setupCamera()
     }
 }
 
-void MainWindow::showEvent(QShowEvent * e)
+void MainWindow::showEvent(QShowEvent *)
 {
     try
     {
