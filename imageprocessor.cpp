@@ -233,6 +233,15 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
   }
   threads.clear();
 
+  /*
+  if(kf==NULL)
+  {
+    kf = new KalmanFilter(&img);
+  }
+  if(useKalmanFilter)
+    kf->filter(&img);
+  */
+
   //expand X
   for(int i=0;i<n;i++)
   {
@@ -261,7 +270,7 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (GrayScaleImage*) &image, (GrayScaleImage*) &img, (ColorImage*) &colorimg));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (GrayScaleImage*) &image, (ColorImage*) &colorimg));
   }
 
   for(unsigned y = 0;y<expandedImg->height();y++)

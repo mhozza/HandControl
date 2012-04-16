@@ -116,8 +116,12 @@ uchar GrayScaleImage::getAverageColor(int x, int y)
     for(int j = y-1;j<=y+1;j++)
     {
       color += pixel(i,j);
+      if(i==x && j==y)
+      {
+        color += 2*pixel(i,j);
+      }
     }
   }
-  return round(color/9.0);
+  return round(color/11.0);
 }
 
