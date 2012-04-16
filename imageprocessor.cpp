@@ -221,7 +221,7 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
   sum = 0;  
   //prepare
   vector<QFuture<void> > threads;
-  int n = QThread::idealThreadCount();
+  int n = max(QThread::idealThreadCount()*2,2);
 
   for(int i=0;i<n;i++)
   {
@@ -232,15 +232,6 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
     threads[i].waitForFinished();
   }
   threads.clear();
-
-  /*
-  if(kf==NULL)
-  {
-    kf = new KalmanFilter(&img);
-  }
-  if(useKalmanFilter)
-    kf->filter(&img);
-  */
 
   //expand X
   for(int i=0;i<n;i++)

@@ -47,6 +47,7 @@ bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
 
 void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, GrayScaleImage * img2, ColorImage * imgcolor)
 {
+  //TODO: waiting namiest zaneprazdneneho cakania
   resetHand();
   while(true)
   {
@@ -56,13 +57,16 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
         rectQueueLock.unlock();
         continue;
     }
+
     QRect r = q->front().first;
     uint c = q->front().second;
+
     if (c == 0)
     {
         rectQueueLock.unlock();
         break;
     }
+
     q->pop();
     rectQueueLock.unlock();
 
@@ -99,6 +103,8 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     fftw_execute(p2); // repeat as needed
     fftw_destroy_plan(p2);
 
+    float hand = 0;
+    /*
     //vygenerovanie vector<float> vstupu pre net
     vector<float> input;
     input.resize(N);
@@ -118,7 +124,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     }
 
     //rozpoznanie ruky:
-    float hand = net->classify1(input);
+    hand = net->classify1(input);
 
     if(isSimilarRect(r,handRect)) hand += 0.3;
 
@@ -127,27 +133,31 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       hand_p = hand;
       handRect = r;
     }
+    */
 
 #ifdef SAVE_HAND
     saveLock.lock();
     imageIsHand.push_back(hand>0.5);
+
 	saveImageBuffer.push_back(imgScaled->saveImageToString());    
     imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    saveImageBuffer2.push_back(imgScaled->saveImageToString());    
+    saveImageBuffer2.push_back(imgScaled->saveImageToString());
+
     saveImageBuffer3.push_back(imgScaled2->saveImageToString());
-    imgScaled2->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
+    imgScaled2->setImageFromComplexArray(out2,SCALE_SIZE,SCALE_SIZE);
     saveImageBuffer4.push_back(imgScaled2->saveImageToString());
 
     stringstream ofs;
-    stringstream ofs2;
+    stringstream ofs2;    
+
     for(unsigned y = 0;y < SCALE_SIZE; y++)
     {
       for(unsigned x = 0;x < SCALE_SIZE; x++)
-      {
-        i++;
-        if(x>=imgRefScaled->width() || y >=imgRefScaled->height()) {
-            ofs << 0 << " ";
-            ofs2 << 0 << " ";
+      {        
+        if(x>=imgRefScaled->width() || y >=imgRefScaled->height())
+        {
+          ofs << 0 << " ";
+          ofs2 << 0 << " ";
           continue;
         }
         ofs << 1/(1+Utils::cabs(out[x+y*SCALE_SIZE])) << " ";
@@ -156,6 +166,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       ofs << endl;
       ofs2 << endl;
     }
+
     saveImageBuffer5.push_back(ofs.str());
     saveImageBuffer6.push_back(ofs2.str());
 
