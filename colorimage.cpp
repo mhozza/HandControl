@@ -43,7 +43,6 @@ uint ColorImage::toUint32Color(Color c)
   return c.toUintColor();
 }
 
-
 GrayScaleImage * ColorImage::toGrayScale()
 {
     GrayScaleImage::ImageBuffer b;
@@ -63,32 +62,7 @@ bool ColorImage::similar(Color reference, Color color, uint treshold)
 {
   return abs(reference.red()-color.red())<=treshold && abs(reference.green()-color.green())<=treshold && abs(reference.blue()-color.blue())<=treshold;
 }
-/*
-void ColorImage::saveImage(int index, string fname)
-{
-    if(fname==""){
-        //zapis do suboru
-        stringstream ssfname;
-        ssfname << "hand_images/"<<  "full" << "_" << index << ".pbm";
-        fname = ssfname.str();
-    }
 
-    ofstream ofs(fname.c_str());
-
-    ofs << "P2" << endl;
-    ofs << width() << " " << height() << endl;
-    ofs << 256 << endl;
-    for(int y = 0;y < height(); y++)
-    {
-      for(int x = 0;x < width(); x++)
-      {
-        ofs << pixel(x,y) << " ";
-      }
-      ofs << endl;
-    }
-    ofs.close();
-}
-*/
 Color ColorImage::interpolatePixel(float x, float y)
 {
   float dx = x-floor(x);
@@ -103,7 +77,6 @@ string ColorImage::color2String(Color color)
   return color.toString();
 }
 
-
 Color ColorImage::getAverageColor(int x, int y)
 {
   int colorR = 0;
@@ -116,7 +89,13 @@ Color ColorImage::getAverageColor(int x, int y)
       colorR += pixel(i,j).red();
       colorG += pixel(i,j).red();
       colorB += pixel(i,j).red();
+      if(i==x && j==y)
+      {
+        colorR += 2*pixel(i,j).red();
+        colorG += 2*pixel(i,j).red();
+        colorB += 2*pixel(i,j).red();
+      }
     }
   }
-  return Color(round(colorR/9.0),round(colorG/9.0),round(colorB/9.0));
+  return Color(round(colorR/11.0),round(colorG/11.0),round(colorB/11.0));
 }
