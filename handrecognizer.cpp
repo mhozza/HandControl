@@ -128,13 +128,12 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       handRect = r;
     }
 
-#ifdef SAVE_HAND    
+#ifdef SAVE_HAND
+    saveLock.lock();
     imageIsHand.push_back(hand>0.5);
-	saveImageBuffer.push_back(imgScaled->saveImageToString());
-    cerr << "1: " << saveImageBuffer.back().substr(0,50) << "\n-------------------" << endl;
+	saveImageBuffer.push_back(imgScaled->saveImageToString());    
     imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    saveImageBuffer2.push_back(imgScaled->saveImageToString());
-    cerr << "2: " << saveImageBuffer2.back().substr(0,50) << "\n-------------------" << endl;
+    saveImageBuffer2.push_back(imgScaled->saveImageToString());    
     saveImageBuffer3.push_back(imgScaled2->saveImageToString());
     imgScaled2->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
     saveImageBuffer4.push_back(imgScaled2->saveImageToString());
@@ -158,14 +157,13 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       ofs2 << endl;
     }
     saveImageBuffer5.push_back(ofs.str());
-    cerr << "3: " << saveImageBuffer5.back().substr(0,50) << "\n-------------------" << endl;
     saveImageBuffer6.push_back(ofs2.str());
 
     if(saveImageBuffer.size()>=SAVEIMAGE_BUFFER_SIZE)
     {
         saveAllImages();
     }
-
+    saveLock.unlock();
 #endif    
     fftw_free(out);
     fftw_free(out2);
@@ -177,23 +175,24 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
   }    
 }
 
-string makeFileName(string path, string suffix, unsigned index, bool hand = false)
+string HandRecognizer::makeFileName(string path, string suffix, unsigned index, bool hand)
 {
     stringstream fname;
-    fname << path << (hand ? "hand" : "other") << "_" << index << suffix;
+    //fname << path << (hand ? "hand" : "other") << "_" << index << suffix;
+    fname << path << "img_" << index << suffix;
     return fname.str();
 }
 
 void HandRecognizer::saveAllImages()
 {
     cout << "Saving...";
+
     for(unsigned i = 0;i<imageIsHand.size();i++)
-    {
-        //zapis do suboru
+    {                
         string fname,fname2,fname3,fname4,fname5,fname6;
-        //index = 0;
         string pathNew = "hand_images/new/";
         string pathOld = "hand_images/old/";
+
         fname = makeFileName(pathNew,".trn",index,imageIsHand[i]);
         fname2 = makeFileName(pathNew,".pbm",index,imageIsHand[i]);
         fname3 = makeFileName(pathNew,".trn.pbm",index,imageIsHand[i]);
@@ -201,33 +200,42 @@ void HandRecognizer::saveAllImages()
         fname5 = makeFileName(pathOld,".pbm",index,imageIsHand[i]);
         fname6 = makeFileName(pathOld,".trn.pbm",index,imageIsHand[i]);
         index++;
+
         ofstream ofs;
+
         ofs.open(fname2.c_str());
         ofs << saveImageBuffer[i];
         ofs.close();
+
         ofs.open(fname3.c_str());
         ofs << saveImageBuffer2[i];
         ofs.close();
+
         ofs.open(fname5.c_str());
         ofs << saveImageBuffer3[i];
         ofs.close();
+
         ofs.open(fname6.c_str());
         ofs << saveImageBuffer4[i];
         ofs.close();
+
         ofs.open(fname.c_str());
         ofs << saveImageBuffer5[i];
         ofs.close();
+
         ofs.open(fname4.c_str());
         ofs << saveImageBuffer6[i];
         ofs.close();
     }
+
+    imageIsHand.clear();
     saveImageBuffer.clear();
     saveImageBuffer2.clear();
     saveImageBuffer3.clear();
     saveImageBuffer4.clear();
     saveImageBuffer5.clear();
     saveImageBuffer6.clear();
-    imageIsHand.clear();
+
     cout << " [Done]" << endl;
 }
 

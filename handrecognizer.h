@@ -31,6 +31,7 @@ class HandRecognizer
   int index;  
   float hand_p;
   QRect handRect;  
+  QMutex saveLock;
   inline void resetHand(){hand_p = 0;}
   bool isSimilarRect(QRect r1, QRect r2);  
   string makeFileName(string path, string suffix, unsigned index, bool hand = false);
