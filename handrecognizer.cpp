@@ -72,7 +72,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     GrayScaleImage* imgScaled2 = (GrayScaleImage*)img2->copy(r);
     ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
     imgScaled2->mask(imgRefScaled,true);
-    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),8);
+    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),22,0.35,0.6);
     imgScaled->mask(handMask->toGrayScale());
     delete handMask;
     //imgScaled->mask((GrayScaleImage*)imgScaled->getFloodFillSelectionMask(r.width()/2,r.height()/2));
@@ -90,7 +90,6 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     fftw_execute(p); // repeat as needed
     fftw_destroy_plan(p);
 
-#ifdef SAVE_HAND
     fftw_complex *in2 = NULL;
     fftw_complex *out2 = NULL;
     fftw_plan p2;
@@ -99,7 +98,6 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     p2 = fftw_plan_dft_2d(imgScaled2->width(), imgScaled2->height(), in2, out2, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p2); // repeat as needed
     fftw_destroy_plan(p2);
-#endif
 
     //vygenerovanie vector<float> vstupu pre net
     vector<float> input;
@@ -155,6 +153,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
         ofs2 << 1/(1+Utils::cabs(out2[x+y*SCALE_SIZE])) << " ";
       }
       ofs << endl;
+      ofs2 << endl;
     }
     saveImageBuffer5.push_back(ofs.str());
     saveImageBuffer6.push_back(ofs2.str());
@@ -166,6 +165,8 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 
 #endif    
     fftw_free(out);
+    fftw_free(out2);
+
     delete imgRefScaled;
     delete imgScaled;
     delete imgScaled2;
@@ -175,6 +176,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 
 void HandRecognizer::saveAllImages()
 {
+    cout << "Saving...";
     for(unsigned i = 0;i<imageIsHand.size();i++)
     {
         //zapis do suboru
@@ -214,6 +216,7 @@ void HandRecognizer::saveAllImages()
     saveImageBuffer5.clear();
     saveImageBuffer6.clear();
     imageIsHand.clear();
+    cout << " [Done]" << endl;
 }
 
 unsigned HandRecognizer::getSaveImageBufferSize()
