@@ -131,8 +131,10 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 #ifdef SAVE_HAND    
     imageIsHand.push_back(hand>0.5);
 	saveImageBuffer.push_back(imgScaled->saveImageToString());
+    cerr << "1: " << saveImageBuffer.back().substr(0,50) << "\n-------------------" << endl;
     imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
     saveImageBuffer2.push_back(imgScaled->saveImageToString());
+    cerr << "2: " << saveImageBuffer2.back().substr(0,50) << "\n-------------------" << endl;
     saveImageBuffer3.push_back(imgScaled2->saveImageToString());
     imgScaled2->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
     saveImageBuffer4.push_back(imgScaled2->saveImageToString());
@@ -156,6 +158,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       ofs2 << endl;
     }
     saveImageBuffer5.push_back(ofs.str());
+    cerr << "3: " << saveImageBuffer5.back().substr(0,50) << "\n-------------------" << endl;
     saveImageBuffer6.push_back(ofs2.str());
 
     if(saveImageBuffer.size()>=SAVEIMAGE_BUFFER_SIZE)
@@ -174,38 +177,47 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
   }    
 }
 
+string makeFileName(string path, string suffix, unsigned index, bool hand = false)
+{
+    stringstream fname;
+    fname << path << (hand ? "hand" : "other") << "_" << index << suffix;
+    return fname.str();
+}
+
 void HandRecognizer::saveAllImages()
 {
     cout << "Saving...";
     for(unsigned i = 0;i<imageIsHand.size();i++)
     {
         //zapis do suboru
-        stringstream fname,fname2,fname3,fname4,fname5,fname6;
+        string fname,fname2,fname3,fname4,fname5,fname6;
         //index = 0;
-        fname << "hand_images/new/"<< (imageIsHand[i] ? "hand" : "other") << "_" << index << ".trn";
-        fname2 << "hand_images/new/"<< (imageIsHand[i] ? "hand" : "other") << "_" << index << ".pbm";
-        fname3 << "hand_images/new/"<< (imageIsHand[i] ? "hand" : "other") << "_" << index << ".trn.pbm";
-        fname4 << "hand_images/old/"<< (imageIsHand[i] ? "hand" : "other") << "_" << index << ".trn";
-        fname5 << "hand_images/old/"<< (imageIsHand[i] ? "hand" : "other") << "_" << index << ".pbm";
-        fname6 << "hand_images/old/"<< (imageIsHand[i] ? "hand" : "other") << "_" << index << ".trn.pbm";
+        string pathNew = "hand_images/new/";
+        string pathOld = "hand_images/old/";
+        fname = makeFileName(pathNew,".trn",index,imageIsHand[i]);
+        fname2 = makeFileName(pathNew,".pbm",index,imageIsHand[i]);
+        fname3 = makeFileName(pathNew,".trn.pbm",index,imageIsHand[i]);
+        fname4 = makeFileName(pathOld,".trn",index,imageIsHand[i]);
+        fname5 = makeFileName(pathOld,".pbm",index,imageIsHand[i]);
+        fname6 = makeFileName(pathOld,".trn.pbm",index,imageIsHand[i]);
         index++;
         ofstream ofs;
-        ofs.open(fname2.str().c_str());
+        ofs.open(fname2.c_str());
         ofs << saveImageBuffer[i];
         ofs.close();
-        ofs.open(fname3.str().c_str());
+        ofs.open(fname3.c_str());
         ofs << saveImageBuffer2[i];
         ofs.close();
-        ofs.open(fname5.str().c_str());
+        ofs.open(fname5.c_str());
         ofs << saveImageBuffer3[i];
         ofs.close();
-        ofs.open(fname6.str().c_str());
+        ofs.open(fname6.c_str());
         ofs << saveImageBuffer4[i];
         ofs.close();
-        ofs.open(fname.str().c_str());
+        ofs.open(fname.c_str());
         ofs << saveImageBuffer5[i];
         ofs.close();
-        ofs.open(fname4.str().c_str());
+        ofs.open(fname4.c_str());
         ofs << saveImageBuffer6[i];
         ofs.close();
     }

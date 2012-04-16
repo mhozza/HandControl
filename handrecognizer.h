@@ -33,6 +33,7 @@ class HandRecognizer
   QRect handRect;  
   inline void resetHand(){hand_p = 0;}
   bool isSimilarRect(QRect r1, QRect r2);  
+  string makeFileName(string path, string suffix, unsigned index, bool hand = false);
   vector<string> saveImageBuffer,saveImageBuffer2,saveImageBuffer3,saveImageBuffer4,saveImageBuffer5,saveImageBuffer6;
   vector<bool> imageIsHand;
 public:
