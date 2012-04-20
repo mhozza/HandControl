@@ -94,15 +94,15 @@ void ImageProcessor::expandPixelsX(int sy, int ex, int ey, GrayScaleImage * imgI
       }
       if(x<endblack)
       {
-         imgLock.lock();
+         //imgLock.lock();
          imgOut->setPixel(x,y,0);
-         imgLock.unlock();
+         //imgLock.unlock();
       }
       else
       {
-         imgLock.lock();
+         //imgLock.lock();
          imgOut->setPixel(x,y,0xFF);
-         imgLock.unlock();
+         //imgLock.unlock();
       }
     }
   }
@@ -135,15 +135,15 @@ void ImageProcessor::expandPixelsY(int sx, int ex, int ey, GrayScaleImage * imgI
       }
       if(y<endblack)
       {
-         imgLock.lock();
+         //imgLock.lock();
          imgOut->setPixel(x,y,0);
-         imgLock.unlock();
+         //imgLock.unlock();
       }
       else
       {
-         imgLock.lock();
+         //imgLock.lock();
          imgOut->setPixel(x,y,0xFF);
-         imgLock.unlock();
+         //imgLock.unlock();
       }
     }
   }
@@ -198,9 +198,9 @@ void ImageProcessor::prepareImg(GrayScaleImage &image, int sx, int sy, int ex, i
 
       g=0xFF - g;      
 
-      imgLock.lock();
+      //imgLock.lock();
       img.setPixel(x,y,g);
-      imgLock.unlock();
+      //imgLock.unlock();
     }
   }
 }
