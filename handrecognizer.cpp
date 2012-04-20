@@ -19,7 +19,7 @@ int subtract(QPoint a, QPoint b)
 
 HandRecognizer::HandRecognizer()
 {
-  index = 1248;
+  index = 1565;
   unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
   net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE, N_SIDE,0);
   //net = new NeuralNetwork(2,sizes,N,0);
@@ -76,8 +76,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     GrayScaleImage* imgScaled2 = (GrayScaleImage*)img2->copy(r);
     ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
     imgScaled2->mask(imgRefScaled,true);
-    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),22,0.35,0.6);
+    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),27,0.5,0.5);
     imgScaled->mask(handMask->toGrayScale());
+    //GrayScaleImage* imgScaled = handMask->toGrayScale();
     delete handMask;    
 
     imgScaled->scale(SCALE_SIZE,SCALE_SIZE);
@@ -92,6 +93,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     p = fftw_plan_dft_2d(imgScaled->width(), imgScaled->height(), in, out, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p); // repeat as needed
     fftw_destroy_plan(p);
+    delete in;
 
     fftw_complex *in2 = NULL;
     fftw_complex *out2 = NULL;
@@ -101,6 +103,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     p2 = fftw_plan_dft_2d(imgScaled2->width(), imgScaled2->height(), in2, out2, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p2); // repeat as needed
     fftw_destroy_plan(p2);
+    delete in2;
 
     float hand = 0;
     /*
