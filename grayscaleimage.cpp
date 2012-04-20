@@ -29,10 +29,6 @@ GrayScaleImage::GrayScaleImage(ImageBuffer img, unsigned w, unsigned h):HCImage<
 {
 }
 
-/*GrayScaleImage::GrayScaleImage(GrayScaleImage& img):HCImage<uchar>(img.image(),img.width(),img.height())
-{
-}*/
-
 
 HCImage<uchar> * GrayScaleImage::create(ImageBuffer img, unsigned w, unsigned h)
 {
@@ -134,7 +130,7 @@ void GrayScaleImage::loadFromPPM(string filename)
     ifs >> hdr;
     if(hdr!="P2") throw 1;
     //w, h
-    int w = 0,h = 0;
+    int w = 0, h = 0;
     int colors = 256;
     ifs >> w >> h >> colors;
 
@@ -143,8 +139,11 @@ void GrayScaleImage::loadFromPPM(string filename)
 
     for(int i = 0;i<w*h;i++)
     {
-        ifs >> b[i];
+        int t;
+        ifs >> t;
+        b[i] = (char)t;
     }
+
     ifs.close();
     setImage(b,w,h);
 }
