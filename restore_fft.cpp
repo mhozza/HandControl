@@ -27,7 +27,7 @@ int main(int argc, char * argv[])
     {
         string fname = argv[1];
         GrayScaleImage img;
-        img.loadFromPPM(fname);
+        img.loadFromPPM(fname);        
 
         //fft
         fftw_complex *in = NULL;
@@ -41,9 +41,9 @@ int main(int argc, char * argv[])
 
         img.setImageFromComplexArray(out,img.width(),img.height());
 
-        img.saveImage(0,fname.substr(0,fname.size()-3)+".trn.pbm");
+        img.saveImage(0,fname.substr(0,fname.size()-3)+"trn.pbm");
 
-        ofstream ofs((fname.substr(0,fname.size()-3)+".trn").c_str());
+        ofstream ofs((fname.substr(0,fname.size()-3)+"trn").c_str());
         for(unsigned y = 0;y < img.height(); y++)
         {
           for(unsigned x = 0;x < img.width(); x++)
