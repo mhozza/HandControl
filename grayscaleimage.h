@@ -37,6 +37,7 @@ public:
   fftw_complex * toComplexArray();
   double * toDoubleArray();
   void setImageFromComplexArray(fftw_complex *b , unsigned w, unsigned h);
+  void loadFromPPM(string filename);
 };
 
 #endif // GRAYSCALEIMAGE_H
