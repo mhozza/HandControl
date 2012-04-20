@@ -125,3 +125,26 @@ uchar GrayScaleImage::getAverageColor(int x, int y)
   return round(color/11.0);
 }
 
+void GrayScaleImage::loadFromPPM(string filename)
+{
+    ifstream ifs(filename.c_str());
+    //ppm without comments
+    //head
+    string hdr = "P2";
+    ifs >> hdr;
+    if(hdr!="P2") throw 1;
+    //w, h
+    int w = 0,h = 0;
+    int colors = 256;
+    ifs >> w >> h >> colors;
+
+    ImageBuffer b;
+    b.resize(w*h,0);
+
+    for(int i = 0;i<w*h;i++)
+    {
+        ifs >> b[i];
+    }
+    ifs.close();
+    setImage(b,w,h);
+}
