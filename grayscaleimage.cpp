@@ -130,7 +130,7 @@ void GrayScaleImage::loadFromPPM(string filename)
     ifs >> hdr;
     if(hdr!="P2") throw 1;
     //w, h
-    int w = 0,h = 0;
+    int w = 0, h = 0;
     int colors = 256;
     ifs >> w >> h >> colors;
 
@@ -139,8 +139,11 @@ void GrayScaleImage::loadFromPPM(string filename)
 
     for(int i = 0;i<w*h;i++)
     {
-        ifs >> b[i];
+        int t;
+        ifs >> t;
+        b[i] = (char)t;
     }
+
     ifs.close();
     setImage(b,w,h);
 }
