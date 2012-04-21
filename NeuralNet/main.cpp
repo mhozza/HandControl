@@ -88,10 +88,20 @@ vector<float> loadImage(string path)
 
   FOR(i,N)
   {
-      //int a;
-      //ifs >> a;
-      //res[i] = 1/(1+a);
-      ifs >> res[i];
+      if(datatype==1)
+      {
+          int a;
+          ifs >> a;
+          if(invert)
+          {
+              a = 255-a;
+          }
+          res[i] = 1/(1+a);
+      }
+      else
+      {
+          ifs >> res[i];
+      }
   }
   ifs.close();
   return res;
