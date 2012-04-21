@@ -117,7 +117,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       for(unsigned x = 0;x < SCALE_SIZE; x++)
       {
         i++;
-        if(x>=imgRefScaled->width() || y >=imgRefScaled->height()) {
+        if(x>=imgScaled->width() || y >=imgScaled->height()) {
           input[i] = 0;
           continue;
         }
@@ -156,7 +156,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     {
       for(unsigned x = 0;x < SCALE_SIZE; x++)
       {        
-        if(x>=imgRefScaled->width() || y >=imgRefScaled->height())
+        if(x>=imgScaled->width() || y >=imgScaled->height())
         {
           ofs << 0 << " ";
           ofs2 << 0 << " ";

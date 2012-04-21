@@ -68,7 +68,7 @@ template<class T> vector<T> make_vector(T t)
   return vt;
 }
 
-vector<float> loadImage(string path, int datatype = 0)
+vector<float> loadImage(string path, int datatype = 0, bool invert = false)
 {
   print(path);
   ifstream ifs(path.c_str());
@@ -90,10 +90,20 @@ vector<float> loadImage(string path, int datatype = 0)
 
   FOR(i,N)
   {
-      //int a;
-      //ifs >> a;
-      //res[i] = 1/(1+a);
-      ifs >> res[i];
+      if(datatype==1)
+      {
+          int a;
+          ifs >> a;
+          if(invert)
+          {
+              a = 255-a;
+          }
+          res[i] = 1/(1+a);
+      }
+      else
+      {
+          ifs >> res[i];
+      }
   }
   ifs.close();
   return res;
@@ -101,15 +111,23 @@ vector<float> loadImage(string path, int datatype = 0)
 
 int main(int argc, char *argv[])
 {
-   srand (time(NULL) );
-   float alpha = 0.25;
+   srand(time(NULL)+42);
+
+   float alpha = 0.2;
    int verbose = 0;
    int mode = 0;
    int datatype = 0;//0 - float data, 1 - image
+   bool invert = false;
 
    if(argc>1) mode = atoi(argv[1]);
    if(argc>2) verbose = atoi(argv[2]);
    if(argc>3) datatype = atoi(argv[3]);
+   if(datatype==3)
+   {
+       datatype =1;
+       invert = true;
+   }
+
    string hands_path = "", nonhands_path = "";
    if(argc>4) hands_path = argv[4];
    if(argc>5) nonhands_path = argv[5];

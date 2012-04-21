@@ -39,7 +39,7 @@ void Perceptron::randomizeWeights()
 {
   for(unsigned i = 0;i<dimension;i++)
   {
-    weights[i]=(((float)rand()/RAND_MAX)-0.5);
+    weights[i]=((2*(float)rand()/RAND_MAX)-1);
   }    
 }
 
