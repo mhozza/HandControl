@@ -9,3 +9,4 @@ HandControl
 NeuralNet/NeuralNet
 RestoreFFT/RestoreFFT
 ui_*
+*.weights

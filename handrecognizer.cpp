@@ -142,13 +142,14 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     imageIsHand.push_back(hand>0.5);
 
 	saveImageBuffer.push_back(imgScaled->saveImageToString());    
-    imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    saveImageBuffer2.push_back(imgScaled->saveImageToString());
+    //imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
+    //saveImageBuffer2.push_back(imgScaled->saveImageToString());
 
     saveImageBuffer3.push_back(imgScaled2->saveImageToString());
-    imgScaled2->setImageFromComplexArray(out2,SCALE_SIZE,SCALE_SIZE);
-    saveImageBuffer4.push_back(imgScaled2->saveImageToString());
+    //imgScaled2->setImageFromComplexArray(out2,SCALE_SIZE,SCALE_SIZE);
+    //saveImageBuffer4.push_back(imgScaled2->saveImageToString());
 
+    /*
     stringstream ofs;
     stringstream ofs2;    
 
@@ -171,6 +172,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 
     saveImageBuffer5.push_back(ofs.str());
     saveImageBuffer6.push_back(ofs2.str());
+    */
 
     if(saveImageBuffer.size()>=SAVEIMAGE_BUFFER_SIZE)
     {
@@ -220,14 +222,17 @@ void HandRecognizer::saveAllImages()
         ofs << saveImageBuffer[i];
         ofs.close();
 
+        /*
         ofs.open(fname3.c_str());
         ofs << saveImageBuffer2[i];
         ofs.close();
+        */
 
         ofs.open(fname5.c_str());
         ofs << saveImageBuffer3[i];
         ofs.close();
 
+        /*
         ofs.open(fname6.c_str());
         ofs << saveImageBuffer4[i];
         ofs.close();
@@ -239,15 +244,16 @@ void HandRecognizer::saveAllImages()
         ofs.open(fname4.c_str());
         ofs << saveImageBuffer6[i];
         ofs.close();
+        */
     }
 
     imageIsHand.clear();
     saveImageBuffer.clear();
-    saveImageBuffer2.clear();
+    //saveImageBuffer2.clear();
     saveImageBuffer3.clear();
-    saveImageBuffer4.clear();
+    /*saveImageBuffer4.clear();
     saveImageBuffer5.clear();
-    saveImageBuffer6.clear();
+    saveImageBuffer6.clear();*/
 
     cout << " [Done]" << endl;
 }
