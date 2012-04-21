@@ -54,6 +54,11 @@ Color Color::operator+(Color c)
   return Color(red()+c.red(),green()+c.green(),blue()+c.blue());
 }
 
+Color Color::operator-(Color c)
+{
+  return Color(red()-c.red(),green()-c.green(),blue()-c.blue());
+}
+
 Color Color::operator*(float f)
 {
   return Color(round(red()*f),round(green()*f),round(blue()*f));

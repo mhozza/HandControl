@@ -147,3 +147,8 @@ void GrayScaleImage::loadFromPPM(string filename)
     ifs.close();
     setImage(b,w,h);
 }
+
+uchar GrayScaleImage::invertColor(uchar color)
+{
+    return 255-color;
+}

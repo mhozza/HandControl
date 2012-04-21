@@ -61,6 +61,7 @@ protected:
   virtual string color2String(T color) = 0;
   virtual HCImage<T>* create(ImageBuffer img, unsigned w, unsigned h) = 0;
   virtual T getAverageColor(int x, int y) = 0;
+  virtual T invertColor(T color) = 0;
 public:
   HCImage():init(false),w(0),h(0),ppmType("P2") { }
     HCImage(unsigned w, unsigned h);
@@ -87,6 +88,7 @@ public:
     QImage toQImage();    
     virtual void saveImage(int index = 0, string fname = "");
     virtual string saveImageToString();
+    void invert();
 };
 
 template <class T>
@@ -306,6 +308,15 @@ HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(unsigned sx, unsigned 
   }
   HCImage<T> * maskImage = create(b,width(),height());
   return maskImage;
+}
+
+template <class T>
+void HCImage<T>::invert()
+{
+    for(unsigned i = 0;i<width()*height();i++)
+    {
+        imageData[i] = invertColor(imageData[i]);
+    }
 }
 
 #endif // HCIMAGE_H

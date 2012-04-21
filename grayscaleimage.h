@@ -28,6 +28,7 @@ class GrayScaleImage : public HCImage<uchar>
   string color2String(uchar color);
   HCImage<uchar> * create(ImageBuffer img, unsigned w, unsigned h);
   uchar getAverageColor(int x, int y);
+  uchar invertColor(uchar color);
 public:
   GrayScaleImage();
   GrayScaleImage(unsigned w, unsigned h);

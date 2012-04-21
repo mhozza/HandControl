@@ -99,3 +99,8 @@ Color ColorImage::getAverageColor(int x, int y)
   }
   return Color(round(colorR/11.0),round(colorG/11.0),round(colorB/11.0));
 }
+
+Color ColorImage::invertColor(Color color)
+{
+    return Color(255,255,255)-color;
+}

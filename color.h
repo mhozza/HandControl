@@ -37,6 +37,7 @@ public:
   string toString();
   //operator==(Color &c);*/
   Color operator+(Color c);
+  Color operator-(Color c);
   Color operator*(float f);
 };
 
