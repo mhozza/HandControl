@@ -1,4 +1,19 @@
 #!/bin/bash
+
+mkdir ../hands
+mkdir ../other
+mkdir ../hands_fft
+mkdir ../other_fft
+mkdir ../hands_fft_images
+mkdir ../other_fft_images
+
+mkdir ../hands_old
+mkdir ../other_old
+mkdir ../hands_old_fft
+mkdir ../other_old_fft
+mkdir ../hands_old_fft_images
+mkdir ../other_old_fft_images
+
 echo "Moving hands..."
 #hands
 for j in `cat hands.txt`; do
@@ -22,3 +37,4 @@ mv ../old/*.pbm ../other_old/
 mv ../new/*.pbm ../other/
 
 echo "[Done]"
+

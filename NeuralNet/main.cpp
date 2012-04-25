@@ -51,7 +51,7 @@ vector<string> listDirectory(string path)
      while ((ep = readdir (dp)))
      {
        string s = ep->d_name;
-       if(s=="." || s == "..") continue;
+       if(s=="." || s == ".." || s=="nu") continue;
        files.push_back(path+s);
      }
      closedir(dp);
@@ -174,12 +174,12 @@ int main(int argc, char *argv[])
 
    for(unsigned i = 0;i<hands.size();i++)
    {
-     tests.push_back(make_pair(loadImage(hands[i],datatype),make_vector(1)));
+     tests.push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
    }
 
    for(unsigned i = 0;i<nonhands.size();i++)
    {
-     tests.push_back(make_pair(loadImage(nonhands[i],datatype),make_vector(0)));
+     tests.push_back(make_pair(loadImage(nonhands[i],datatype,invert),make_vector(0)));
    }
 
    float E = 100;

@@ -279,9 +279,9 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
     {
       if(expandedImg->pixel(x,y)==0)
       {        
-        color = 1+rand()%254;
+        //color = 1+rand()%254;
         QRect r(x,y,0,0);        
-        r = segment(x,y,color,expandedImg,r);        
+        r = segment(x,y,1,expandedImg,r);
         //if(r.width()!=0) color++;
         if(r.width()>=MIN_RECT_SIZE && r.height()>=MIN_RECT_SIZE && r.width()<=MAX_RECT_SIZE && r.height() <= MAX_RECT_SIZE)
         {          
