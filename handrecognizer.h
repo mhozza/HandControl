@@ -34,7 +34,7 @@ class HandRecognizer
   QMutex saveLock;
   inline void resetHand(){hand_p = 0;}
   bool isSimilarRect(QRect r1, QRect r2);  
-  string makeFileName(string path, string suffix, unsigned index, bool hand = false);
+  string makeFileName(string path, string suffix, unsigned seqindex, unsigned frameindex, char partindex, bool hand = false);
   vector<string> saveImageBuffer,saveImageBuffer3;
   //vector<string> saveImageBuffer2,saveImageBuffer4,saveImageBuffer5,saveImageBuffer6;
   vector<bool> imageIsHand;

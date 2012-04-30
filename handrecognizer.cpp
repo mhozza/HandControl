@@ -190,11 +190,11 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
   }    
 }
 
-string HandRecognizer::makeFileName(string path, string suffix, unsigned index, bool hand)
+string HandRecognizer::makeFileName(string path, string suffix, unsigned seqindex, unsigned frameindex, char partindex, bool hand)
 {
     stringstream fname;
     //fname << path << (hand ? "hand" : "other") << "_" << index << suffix;
-    fname << path << "img_" << index << suffix;
+    fname << path << "img_" << seqindex << "_" << frameindex << partindex << suffix;
     return fname.str();
 }
 
@@ -208,12 +208,12 @@ void HandRecognizer::saveAllImages()
         string pathNew = "hand_images/new/";
         string pathOld = "hand_images/old/";
 
-        fname = makeFileName(pathNew,".trn",index,imageIsHand[i]);
-        fname2 = makeFileName(pathNew,".pbm",index,imageIsHand[i]);
-        fname3 = makeFileName(pathNew,".trn.pbm",index,imageIsHand[i]);
-        fname4 = makeFileName(pathOld,".trn",index,imageIsHand[i]);
-        fname5 = makeFileName(pathOld,".pbm",index,imageIsHand[i]);
-        fname6 = makeFileName(pathOld,".trn.pbm",index,imageIsHand[i]);
+        fname = makeFileName(pathNew,".trn",0,index,'a',imageIsHand[i]);
+        fname2 = makeFileName(pathNew,".pbm",0,index,'a',imageIsHand[i]);
+        fname3 = makeFileName(pathNew,".trn.pbm",0,index,'a',imageIsHand[i]);
+        fname4 = makeFileName(pathOld,".trn",0,index,'a',imageIsHand[i]);
+        fname5 = makeFileName(pathOld,".pbm",0,index,'a',imageIsHand[i]);
+        fname6 = makeFileName(pathOld,".trn.pbm",0,index,'a',imageIsHand[i]);
         index++;
 
         ofstream ofs;
