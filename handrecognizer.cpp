@@ -126,7 +126,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     }
 
     //rozpoznanie ruky:    
-    float hand = net->classify1(input);
+    hand = net->classify1(input);
 
     if(isSimilarRect(r,handRect)) hand += 0.3;
 
