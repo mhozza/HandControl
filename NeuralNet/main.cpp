@@ -51,7 +51,7 @@ vector<string> listDirectory(string path)
      while ((ep = readdir (dp)))
      {
        string s = ep->d_name;
-       if(s=="." || s == "..") continue;
+       if(s=="." || s == ".." || s=="nu") continue;
        files.push_back(path+s);
      }
      closedir(dp);
@@ -68,23 +68,25 @@ template<class T> vector<T> make_vector(T t)
   return vt;
 }
 
-vector<float> loadImage(string path)
+vector<float> loadImage(string path, int datatype = 0, bool invert = false)
 {
   print(path);
   ifstream ifs(path.c_str());
   vector<float> res;
   res.resize(N,0);
-/*
-  //ppm without comments
-  //head
-  string hdr = "P2";
-  ifs >> hdr;
-  if(hdr!="P2") throw 1;
-  //w, h
-  int w = N_SIDE,h=N_SIDE;
-  int colors = 256;
-  ifs >> w >> h >> colors;
-  if(w!=N_SIDE || h!=N_SIDE) throw 1;*/
+  if(datatype == 1)
+  {
+    //ppm without comments
+    //head
+    string hdr = "P2";
+    ifs >> hdr;
+    if(hdr!="P2") throw 1;
+    //w, h
+    int w = N_SIDE,h=N_SIDE;
+    int colors = 256;
+    ifs >> w >> h >> colors;
+    if(w!=N_SIDE || h!=N_SIDE) throw 1;
+  }
 
   FOR(i,N)
   {
@@ -109,12 +111,31 @@ vector<float> loadImage(string path)
 
 int main(int argc, char *argv[])
 {
-   srand (time(NULL) );
-   float alpha = 0.25;
+   srand(time(NULL)+42);
+
+   float alpha = 0.2;
    int verbose = 0;
    int mode = 0;
+   int datatype = 0;//0 - float data, 1 - image
+   bool invert = false;
+
    if(argc>1) mode = atoi(argv[1]);
    if(argc>2) verbose = atoi(argv[2]);
+   if(argc>3) datatype = atoi(argv[3]);
+   if(datatype==3)
+   {
+       datatype =1;
+       invert = true;
+   }
+
+   string hands_path = "", nonhands_path = "";
+   if(argc>4) hands_path = argv[4];
+   if(argc>5) nonhands_path = argv[5];
+   string infile = "vahy";
+   if(argc>6) infile = argv[6];
+   string outfile = infile;
+   if(argc>7) outfile = argv[7];
+
 
    //unsigned sizes[] = {HIDDEN_N, OUT_N};
    //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
@@ -126,36 +147,39 @@ int main(int argc, char *argv[])
 
    //net->saveWeights("blabla");
 
-   string hands_path, nonhands_path;
    if(mode==0)
    {
-    hands_path = "../hand_images/hands";
-    nonhands_path = "../hand_images/other";
-    net->loadWeights("vahy");
+     if(hands_path=="")
+       hands_path = "../hand_images/hands";
+     if(nonhands_path=="")
+       nonhands_path = "../hand_images/other";
+     net->loadWeights(infile);
    }
    else
    {
     // hands_path = "../hand_images/hands";
     // nonhands_path = "../hand_images/other";
-    hands_path = "../hand_images/test/hands";
-    nonhands_path = "../hand_images/test/other";
-    net->loadWeights("vahy");
+    if(hands_path=="")
+      hands_path = "../hand_images/test/hands";
+    if(nonhands_path=="")
+      nonhands_path = "../hand_images/test/other";
+    net->loadWeights(infile);
    }
 
 
    //nacitaj
-   //net->loadWeights("vahy");
+   //net->loadWeights(infile);
    vector<string> hands = listDirectory(hands_path);
    vector<string> nonhands = listDirectory(nonhands_path);
 
    for(unsigned i = 0;i<hands.size();i++)
    {
-     tests.push_back(make_pair(loadImage(hands[i]),make_vector(1)));
+     tests.push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
    }
 
    for(unsigned i = 0;i<nonhands.size();i++)
    {
-     tests.push_back(make_pair(loadImage(nonhands[i]),make_vector(0)));
+     tests.push_back(make_pair(loadImage(nonhands[i],datatype,invert),make_vector(0)));
    }
 
    float E = 100;
@@ -203,6 +227,6 @@ int main(int argc, char *argv[])
      if(stop) break;
    }
    if(verbose)cout << epoche << endl;
-   if(mode == 0) net->saveWeights("vahy");
+   if(mode == 0) net->saveWeights(outfile);
 
 }
