@@ -87,13 +87,13 @@ Color ColorImage::getAverageColor(int x, int y)
     for(int j = y-1;j<=y+1;j++)
     {
       colorR += pixel(i,j).red();
-      colorG += pixel(i,j).red();
-      colorB += pixel(i,j).red();
+      colorG += pixel(i,j).green();
+      colorB += pixel(i,j).blue();
       if(i==x && j==y)
       {
         colorR += 2*pixel(i,j).red();
-        colorG += 2*pixel(i,j).red();
-        colorB += 2*pixel(i,j).red();
+        colorG += 2*pixel(i,j).green();
+        colorB += 2*pixel(i,j).blue();
       }
     }
   }
