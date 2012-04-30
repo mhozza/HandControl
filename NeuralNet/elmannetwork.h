@@ -24,8 +24,14 @@ namespace NeuralNET {
 
 class ElmanNetwork : public NeuralNetwork
 {
+    vector<float> hiddenCopy, tmpHiddenCopy;
+    unsigned hiddenSize;
 public:
-    ElmanNetwork();
+    ElmanNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha);
+    void updateCopy();
+    void resetCopy();
+    float train(vector<float> input,vector<int> target);
+    vector<float> classify(vector<float> input);
 };
 
 }

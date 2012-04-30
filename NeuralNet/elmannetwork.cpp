@@ -19,6 +19,34 @@
 
 using namespace NeuralNET;
 
-ElmanNetwork::ElmanNetwork()
+ElmanNetwork::ElmanNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha)
+    :NeuralNetwork(layerCount,sizes,dimension+sizes[0],alpha)
 {
+    hiddenSize = sizes[0];
+    hiddenCopy.resize(hiddenSize,0);
+}
+
+void ElmanNetwork::resetCopy()
+{
+    hiddenCopy.resize(0);
+    hiddenCopy.resize(hiddenSize,0);
+}
+
+void ElmanNetwork::updateCopy()
+{
+    hiddenCopy = tmpHiddenCopy;
+}
+
+vector<float> ElmanNetwork::classify(vector<float> input)
+{
+    input.insert(input.end(),hiddenCopy.begin(),hiddenCopy.end());
+    tmpHiddenCopy = layers[0]->classify(input);
+    return NeuralNetwork::classify(input);
+}
+
+float ElmanNetwork::train(vector<float> input, vector<int> target)
+{
+    input.insert(input.end(),hiddenCopy.begin(),hiddenCopy.end());
+    tmpHiddenCopy = layers[0]->classify(input);
+    return NeuralNetwork::train(input,target);
 }
