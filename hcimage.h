@@ -279,8 +279,7 @@ HCImage<T>* HCImage<T>::getFloodFillSelectionMask(unsigned sx, unsigned sy, int 
 
 template <class T>
 HCImage<T>* HCImage<T>::getAdaptiveFloodFillSelectionMask(unsigned sx, unsigned sy, int treshold, float originalFactor, float changeFactor)
-{ 
-  //T reference = pixel(sx,sy);
+{
   T reference = getAverageColor(sx,sy);
   ImageBuffer b;
   b.resize(width()*height(),0);

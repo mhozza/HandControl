@@ -56,14 +56,17 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
         rectQueueLock.unlock();
         continue;
     }
+
     QRect r = q->front().first;
-    uint c = q->front().second;    
+    uint c = q->front().second;
+
     if (c == 0)
     {
         rectQueueLock.unlock();
         break;
     }
-    q->pop();    
+
+    q->pop();
     rectQueueLock.unlock();
 
     //crop and scale image
@@ -85,7 +88,11 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
     p = fftw_plan_dft_2d(imgScaled->width(), imgScaled->height(), in, out, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p); // repeat as needed
-    fftw_destroy_plan(p);       
+    fftw_destroy_plan(p);
+    delete in;
+
+   
+    float hand = 0;
 
     //vygenerovanie vector<float> vstupu pre net
     vector<float> input;
@@ -128,6 +135,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       hand_p = hand;
       handRect = r;
     }
+
 
 #ifdef SAVE_HAND
     saveImageBuffer.push_back(imgScaled->saveImageToString());
