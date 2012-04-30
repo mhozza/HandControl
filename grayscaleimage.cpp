@@ -112,13 +112,14 @@ uchar GrayScaleImage::getAverageColor(int x, int y)
     for(int j = y-1;j<=y+1;j++)
     {
       color += pixel(i,j);
-      if(i==x && j==y)
+      /*if(i==x && j==y)
       {
         color += 2*pixel(i,j);
-      }
+      }*/
     }
   }
-  return round(color/11.0);
+  float cnt = 9;
+  return round(color/cnt);
 }
 
 void GrayScaleImage::loadFromPPM(string filename)

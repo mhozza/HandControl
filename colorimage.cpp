@@ -89,15 +89,16 @@ Color ColorImage::getAverageColor(int x, int y)
       colorR += pixel(i,j).red();
       colorG += pixel(i,j).green();
       colorB += pixel(i,j).blue();
-      if(i==x && j==y)
+      /*if(i==x && j==y)
       {
         colorR += 2*pixel(i,j).red();
         colorG += 2*pixel(i,j).green();
         colorB += 2*pixel(i,j).blue();
-      }
+      }*/
     }
   }
-  return Color(round(colorR/11.0),round(colorG/11.0),round(colorB/11.0));
+  float cnt = 9;
+  return Color(round(colorR/cnt),round(colorG/cnt),round(colorB/cnt));
 }
 
 Color ColorImage::invertColor(Color color)
