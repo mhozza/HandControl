@@ -7,5 +7,7 @@ ScreenShots/*
 moc_*
 HandControl
 NeuralNet/NeuralNet
+NeuralNet/*.weights
+NeuralNet/NeuralNet_*
 RestoreFFT/RestoreFFT
 ui_*
