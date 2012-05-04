@@ -30,6 +30,12 @@ public:
     RecurentPerceptron(unsigned int dimension, float alpha);
     float getLastOutput();
     void updateLastOutput();
+
+    //void train(vector<float> input, int target);
+    //void trainDelta(vector<float> input, float target);
+
+    float classify(vector<float> input);
+    //int discreteClassify(vector<float> input);
 };
 
 }

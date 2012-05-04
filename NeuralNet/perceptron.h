@@ -38,7 +38,7 @@ namespace NeuralNET
     void train(vector<float>,int);
     void trainDelta(vector<float>,float);
 
-    float classify(vector<float>);
+    virtual float classify(vector<float>);
     int discreteClassify(vector<float>);
 
     void randomizeWeights();

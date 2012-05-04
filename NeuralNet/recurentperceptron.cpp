@@ -20,16 +20,39 @@
 using namespace NeuralNET;
 
 RecurentPerceptron::RecurentPerceptron(unsigned int dimension,float alpha)
-    :ContinuousPerceptron(dimension+1,alpha)
+    :ContinuousPerceptron(dimension+1,alpha), lastOutput(0), tmpLastOutput(0)
 {
+
 }
 
 void RecurentPerceptron::updateLastOutput()
 {
-
+    lastOutput = tmpLastOutput;
 }
 
 float RecurentPerceptron::getLastOutput()
 {
-    return 0;
+    return lastOutput;
 }
+/*
+void RecurentPerceptron::train(vector<float> input,int target)
+{
+
+}
+
+void RecurentPerceptron::trainDelta(vector<float> input,float target)
+{
+
+}
+*/
+float RecurentPerceptron::classify(vector<float> input)
+{
+    input.push_back(getLastOutput());
+    return (tmpLastOutput = ContinuousPerceptron::classify(input));
+}
+
+/*int RecurentPerceptron::discreteClassify(vector<float> input)
+{
+
+}
+*/
