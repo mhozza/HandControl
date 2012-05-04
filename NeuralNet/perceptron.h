@@ -34,10 +34,13 @@ namespace NeuralNET
     vector<float> weights;    
   public:
     Perceptron(unsigned, float);    
+
     void train(vector<float>,int);
     void trainDelta(vector<float>,float);
+
     float classify(vector<float>);
     int discreteClassify(vector<float>);
+
     void randomizeWeights();
     void save(string filename);
     void load(string filename);
