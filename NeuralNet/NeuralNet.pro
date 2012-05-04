@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     distributedneurallayer.cpp \
     distributedneuralnetwork.cpp \
     elmannetwork.cpp \
-    recurentperceptron.cpp
+    recurentperceptron.cpp \
+    recurrentlayer.cpp
 
 HEADERS += \
     perceptron.h \
@@ -27,7 +28,8 @@ HEADERS += \
     distributedneurallayer.h \
     distributedneuralnetwork.h \
     elmannetwork.h \
-    recurentperceptron.h
+    recurentperceptron.h \
+    recurrentlayer.h
 
 QMAKE_CXXFLAGS_RELEASE += -O3
 
