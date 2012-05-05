@@ -21,6 +21,24 @@ using namespace NeuralNET;
 #define HIDDEN_N2 11
 #define OUT_N 1
 
+struct IndexInfo
+{
+    uint seqIndex, frameIndex;
+    char partIndex;
+    IndexInfo(uint seqIndex,uint frameIndex, char partIndex):seqIndex(seqIndex),
+        frameIndex(frameIndex), partIndex(partIndex){}
+};
+
+IndexInfo parseFilename(string fname, uint prefixLength = 4, uint suffixLength = 4)
+{
+    string s = fname.substr(prefixLength,fname.size()-prefixLength-suffixLength);
+    char ch = s[s.size()-1];
+    size_t pos  = s.find('_');
+    string s1 = s.substr(0,pos);
+    string s2 = s.substr(pos+1,s.size()-pos-2);
+    return IndexInfo(atoi(s1.c_str()), atoi(s2.c_str(), ch));
+}
+
 inline void print(string s)
 {
   cout << s << endl;
