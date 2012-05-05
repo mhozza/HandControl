@@ -26,21 +26,29 @@
 #include <fftw3.h>
 #include <cmath>
 #include <vector>
-//#include "hcimage.h"
+#include "utils.h"
+#include <queue>
 
 using namespace std;
-
-//template <class T> class HCImage;
 
 class Utils
 {
   Utils(){}
-public:    
-  //inline static unsigned grayScale(QColor c) { return (3*c.red()+3*c.green()+4*c.blue())/10; }
+public:
   static void saveImage(QImage img, int index);
-  //static void saveImage(GrayScaleImage img, int index, string fname);
   static double cabs(fftw_complex v);
 };
+
+
+struct IndexInfo
+{
+    uint seqIndex, frameIndex;
+    char partIndex;
+    IndexInfo(uint seqIndex,uint frameIndex, char partIndex):seqIndex(seqIndex),
+        frameIndex(frameIndex), partIndex(partIndex){}
+};
+
+typedef queue<pair<pair<QRect,uint>, IndexInfo> > RectQueue;
 
 /*
 template <class T> class Matrix

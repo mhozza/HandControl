@@ -26,8 +26,6 @@
 #include <QtConcurrentRun>
 #include <QMutex>
 
-#include <queue>
-
 #include <utils.h>
 #include "handrecognizer.h"
 #include "kalmanfilter.h"
@@ -44,13 +42,13 @@ using namespace std;
 class ImageProcessor
 {
     GrayScaleImage *oldImage, img, *expandedImgX, *expandedImg;
-    int images,images2;
+    int images,images2;    
     bool imgChanged;
     unsigned sum;
     QMutex imgLock;
     HandRecognizer * handRecognizer;
-    queue<pair<QRect,uint> > rectQueue;
-    int index;
+    RectQueue rectQueue;
+    int index, seqIndex;
     KalmanFilter * kf;
 
     template<class T> inline void exchange(T &a, T &b)
@@ -77,12 +75,13 @@ class ImageProcessor
     void expandPixelsY(int sx, int ex, int ey, GrayScaleImage * imgIn, GrayScaleImage * imgOut);
     QRect segment(unsigned x, unsigned y, uchar color, GrayScaleImage * image, QRect rect);
 
-public:
+public:    
     bool useKalmanFilter;
     ImageProcessor(int width, int height, HandRecognizer * handRecognizer);
     ~ImageProcessor();
     GrayScaleImage processImage(const GrayScaleImage &image, const ColorImage &colorimg);
     inline bool imageChanged(){return imgChanged;}
+    void incSeqIndex();
 };
 
 #endif // IMAGEPROCESSOR_H

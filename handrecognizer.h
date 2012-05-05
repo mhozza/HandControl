@@ -1,7 +1,6 @@
 #ifndef HANDRECOGNIZER_H
 #define HANDRECOGNIZER_H
 
-#include <queue>
 #include <QRect>
 #include <QImage>
 #include <QMutex>
@@ -11,6 +10,7 @@
 
 #include "grayscaleimage.h"
 #include "colorimage.h"
+#include "utils.h"
 
 using namespace std;
 using namespace NeuralNET;
@@ -27,21 +27,20 @@ using namespace NeuralNET;
 
 class HandRecognizer
 {
-  NeuralNetwork * net;  
-  int index;  
+  NeuralNetwork * net;    
   float hand_p;
   QRect handRect;  
   QMutex saveLock;
   inline void resetHand(){hand_p = 0;}
   bool isSimilarRect(QRect r1, QRect r2);  
   string makeFileName(string path, string suffix, unsigned seqindex, unsigned frameindex, char partindex, bool hand = false);
-  vector<string> saveImageBuffer,saveImageBuffer3;
-  //vector<string> saveImageBuffer2,saveImageBuffer4,saveImageBuffer5,saveImageBuffer6;
+  vector<string> saveImageBuffer1,saveImageBuffer2;
   vector<bool> imageIsHand;
+  vector<IndexInfo> indexInfoBuffer;
 public:
   QMutex rectQueueLock;
   HandRecognizer();
-  void processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, GrayScaleImage * img2,  ColorImage * imgcolor);
+  void processRects(RectQueue * q, GrayScaleImage * imgRef, GrayScaleImage * img, GrayScaleImage * img2,  ColorImage * imgcolor);
   inline bool isHand(){return hand_p>HAND_TRESHOLD;}
   inline QRect getHandRect(){return handRect;}
   inline float getHandP(){return hand_p;}

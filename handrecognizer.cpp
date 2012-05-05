@@ -1,5 +1,4 @@
 #include "handrecognizer.h"
-#include "imageprocessor.h"
 
 #define SAVE_HAND
 
@@ -17,9 +16,8 @@ int subtract(QPoint a, QPoint b)
   return round(sqrt(x*x+y*y));
 }
 
-HandRecognizer::HandRecognizer()
-{
-  index = 4400;
+HandRecognizer::HandRecognizer()    
+{  
   unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
   net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE, N_SIDE,0);
   //net = new NeuralNetwork(2,sizes,N,0);
@@ -45,7 +43,8 @@ bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
   return false;
 }
 
-void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, GrayScaleImage * img2, ColorImage * imgcolor)
+//void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, GrayScaleImage * img2, ColorImage * imgcolor)
+void HandRecognizer::processRects(RectQueue *q, GrayScaleImage *imgRef, GrayScaleImage *img, GrayScaleImage *img2, ColorImage *imgcolor)
 {
   //TODO: waiting namiest zaneprazdneneho cakania
   resetHand();
@@ -58,8 +57,9 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
         continue;
     }
 
-    QRect r = q->front().first;
-    uint c = q->front().second;
+    QRect r = q->front().first.first;
+    uint c = q->front().first.second;
+    IndexInfo index = q->front().second;
 
     if (c == 0)
     {
@@ -105,7 +105,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     fftw_destroy_plan(p2);
     delete in2;
 
-    float hand = 0;
+    float hand = 1;
     /*
     //vygenerovanie vector<float> vstupu pre net
     vector<float> input;
@@ -140,41 +140,13 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 #ifdef SAVE_HAND
     saveLock.lock();
     imageIsHand.push_back(hand>0.5);
+    indexInfoBuffer.push_back(index);
 
-	saveImageBuffer.push_back(imgScaled->saveImageToString());    
-    //imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    //saveImageBuffer2.push_back(imgScaled->saveImageToString());
+    saveImageBuffer1.push_back(imgScaled->saveImageToString());
+    saveImageBuffer2.push_back(imgScaled2->saveImageToString());
 
-    saveImageBuffer3.push_back(imgScaled2->saveImageToString());
-    //imgScaled2->setImageFromComplexArray(out2,SCALE_SIZE,SCALE_SIZE);
-    //saveImageBuffer4.push_back(imgScaled2->saveImageToString());
 
-    /*
-    stringstream ofs;
-    stringstream ofs2;    
-
-    for(unsigned y = 0;y < SCALE_SIZE; y++)
-    {
-      for(unsigned x = 0;x < SCALE_SIZE; x++)
-      {        
-        if(x>=imgScaled->width() || y >=imgScaled->height())
-        {
-          ofs << 0 << " ";
-          ofs2 << 0 << " ";
-          continue;
-        }
-        ofs << 1/(1+Utils::cabs(out[x+y*SCALE_SIZE])) << " ";
-        ofs2 << 1/(1+Utils::cabs(out2[x+y*SCALE_SIZE])) << " ";
-      }
-      ofs << endl;
-      ofs2 << endl;
-    }
-
-    saveImageBuffer5.push_back(ofs.str());
-    saveImageBuffer6.push_back(ofs2.str());
-    */
-
-    if(saveImageBuffer.size()>=SAVEIMAGE_BUFFER_SIZE)
+    if(saveImageBuffer1.size()>=SAVEIMAGE_BUFFER_SIZE)
     {
         saveAllImages();
     }
@@ -202,58 +174,29 @@ void HandRecognizer::saveAllImages()
 {
     cout << "Saving...";
 
-    for(unsigned i = 0;i<imageIsHand.size();i++)
+    for(unsigned i = 0;i<saveImageBuffer1.size();i++)
     {                
-        string fname,fname2,fname3,fname4,fname5,fname6;
+        string fname1,fname2;
         string pathNew = "hand_images/new/";
         string pathOld = "hand_images/old/";
 
-        fname = makeFileName(pathNew,".trn",0,index,'a',imageIsHand[i]);
-        fname2 = makeFileName(pathNew,".pbm",0,index,'a',imageIsHand[i]);
-        fname3 = makeFileName(pathNew,".trn.pbm",0,index,'a',imageIsHand[i]);
-        fname4 = makeFileName(pathOld,".trn",0,index,'a',imageIsHand[i]);
-        fname5 = makeFileName(pathOld,".pbm",0,index,'a',imageIsHand[i]);
-        fname6 = makeFileName(pathOld,".trn.pbm",0,index,'a',imageIsHand[i]);
-        index++;
+        fname1 = makeFileName(pathNew,".pbm", indexInfoBuffer[i].seqIndex, indexInfoBuffer[i].frameIndex, indexInfoBuffer[i].partIndex,imageIsHand[i]);
+        fname2 = makeFileName(pathOld,".pbm", indexInfoBuffer[i].seqIndex, indexInfoBuffer[i].frameIndex, indexInfoBuffer[i].partIndex,imageIsHand[i]);
 
         ofstream ofs;
 
-        ofs.open(fname2.c_str());
-        ofs << saveImageBuffer[i];
+        ofs.open(fname1.c_str());
+        ofs << saveImageBuffer1[i];
         ofs.close();
 
-        /*
-        ofs.open(fname3.c_str());
+        ofs.open(fname2.c_str());
         ofs << saveImageBuffer2[i];
         ofs.close();
-        */
-
-        ofs.open(fname5.c_str());
-        ofs << saveImageBuffer3[i];
-        ofs.close();
-
-        /*
-        ofs.open(fname6.c_str());
-        ofs << saveImageBuffer4[i];
-        ofs.close();
-
-        ofs.open(fname.c_str());
-        ofs << saveImageBuffer5[i];
-        ofs.close();
-
-        ofs.open(fname4.c_str());
-        ofs << saveImageBuffer6[i];
-        ofs.close();
-        */
     }
 
     imageIsHand.clear();
-    saveImageBuffer.clear();
-    //saveImageBuffer2.clear();
-    saveImageBuffer3.clear();
-    /*saveImageBuffer4.clear();
-    saveImageBuffer5.clear();
-    saveImageBuffer6.clear();*/
+    saveImageBuffer1.clear();
+    saveImageBuffer2.clear();
 
     cout << " [Done]" << endl;
 }

@@ -206,7 +206,7 @@ void ImageProcessor::prepareImg(GrayScaleImage &image, int sx, int sy, int ex, i
 }
 
 ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer)
-  : images(0), images2(MAX_FRAMES/2), index(0), useKalmanFilter(true)
+    : images(0), images2(MAX_FRAMES/2), index(0), seqIndex(0), useKalmanFilter(true)
 {
   oldImage = new GrayScaleImage(width,height);
   expandedImg = new GrayScaleImage(width,height);
@@ -273,6 +273,7 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
     threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (GrayScaleImage*) &image, (GrayScaleImage*) &img, (ColorImage*) &colorimg));
   }
 
+  char letter_index = 'a';
   for(unsigned y = 0;y<expandedImg->height();y++)
   {
     for(unsigned x = 0;x<expandedImg->width();x++)
@@ -286,15 +287,16 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
         if(r.width()>=MIN_RECT_SIZE && r.height()>=MIN_RECT_SIZE && r.width()<=MAX_RECT_SIZE && r.height() <= MAX_RECT_SIZE)
         {          
           handRecognizer->rectQueueLock.lock();
-          rectQueue.push(make_pair(r,color));
+          rectQueue.push(make_pair(make_pair(r,color),IndexInfo(seqIndex,index,letter_index++)));
           handRecognizer->rectQueueLock.unlock();
         }
       }
     }
   }
+  index++;
 
   QRect tmprect;
-  rectQueue.push(make_pair(tmprect,0));
+  rectQueue.push(make_pair(make_pair(tmprect,0),IndexInfo(0,0,'a')));
 
   for(int i=0;i<n-1 || i<1;i++)
   {
@@ -318,6 +320,12 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
 
   return img;
   //return *expandedImg;
+}
+
+void ImageProcessor::incSeqIndex()
+{
+    seqIndex++;
+    index = 0;
 }
 
 ImageProcessor::~ImageProcessor()

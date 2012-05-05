@@ -159,9 +159,10 @@ void MainWindow::getImage()
                   gestureRecognizer->addPoint(point);
                   Gesture *g = gestureRecognizer->getGesture();
                   if(g!=NULL)
-                  {
+                  {                    
                     g->action();
                     osd.setText(g->text());
+                    imageProcessor->incSeqIndex();
                     gestureRecognizer->resetGesture();
                     osd.show();
                   }
@@ -171,7 +172,9 @@ void MainWindow::getImage()
                   noHandFrames++;
                   if(noHandFrames>=NO_HAND_FRAMES)
                   {                    
-                    gestureRecognizer->resetGesture();
+                      imageProcessor->incSeqIndex();
+                      gestureRecognizer->resetGesture();
+                      noHandFrames = 0;
                   }
                 }
                 gestureRecognizer->drawPoints(&p);
