@@ -30,10 +30,18 @@ RecurrentLayer::RecurrentLayer(unsigned size, unsigned dimension, float alpha)
     }
 }
 
-void RecurrentLayer::updateLastOutput()
+void RecurrentLayer::update()
 {
     for(unsigned i = 0; i< neurons.size();i++)
     {
-      ((RecurentPerceptron*) neurons[i])->updateLastOutput();
+      ((RecurentPerceptron*) neurons[i])->update();
+    }
+}
+
+void RecurrentLayer::reset()
+{
+    for(unsigned i = 0; i< neurons.size();i++)
+    {
+      ((RecurentPerceptron*) neurons[i])->reset();
     }
 }

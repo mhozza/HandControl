@@ -28,7 +28,8 @@ class RecurrentLayer : public NeuralLayer
 {
 public:
     RecurrentLayer(unsigned size, unsigned dimension, float alpha);
-    void updateLastOutput();
+    void update();
+    void reset();
 };
 
 }

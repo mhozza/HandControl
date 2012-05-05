@@ -30,7 +30,8 @@ class RecurentPerceptron : public ContinuousPerceptron
 public:
     RecurentPerceptron(unsigned int dimension, float alpha);
     float getLastOutput();
-    void updateLastOutput();
+    void update();
+    void reset();
 
     //void train(vector<float> input, int target);
     //void trainDelta(vector<float> input, float target);

@@ -25,9 +25,14 @@ RecurentPerceptron::RecurentPerceptron(unsigned int dimension,float alpha)
 
 }
 
-void RecurentPerceptron::updateLastOutput()
+void RecurentPerceptron::update()
 {
     lastOutput = tmpLastOutput;
+}
+
+void RecurentPerceptron::reset()
+{
+    tmpLastOutput = lastOutput = 0;
 }
 
 float RecurentPerceptron::getLastOutput()
