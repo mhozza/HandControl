@@ -26,6 +26,7 @@ namespace NeuralNET
 class RecurentPerceptron : public ContinuousPerceptron
 {
     float lastOutput, tmpLastOutput;
+    void prepare(vector<float> * input);
 public:
     RecurentPerceptron(unsigned int dimension, float alpha);
     float getLastOutput();

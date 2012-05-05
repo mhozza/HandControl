@@ -34,25 +34,14 @@ float RecurentPerceptron::getLastOutput()
 {
     return lastOutput;
 }
-/*
-void RecurentPerceptron::train(vector<float> input,int target)
-{
 
-}
-
-void RecurentPerceptron::trainDelta(vector<float> input,float target)
-{
-
-}
-*/
 float RecurentPerceptron::classify(vector<float> input)
-{
-    input.push_back(getLastOutput());
+{    
     return (tmpLastOutput = ContinuousPerceptron::classify(input));
 }
 
-/*int RecurentPerceptron::discreteClassify(vector<float> input)
+void RecurentPerceptron::prepare(vector<float> * input)
 {
-
+    input->push_back(lastOutput);
+    ContinuousPerceptron::prepare(input);
 }
-*/
