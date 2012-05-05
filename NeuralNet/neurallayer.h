@@ -17,6 +17,7 @@ namespace NeuralNET
     void setMomentum(float);
     void setW0(float);
   protected:
+    NeuralLayer(){}
     float getError(vector<float>,vector<int>);
     vector<Perceptron*> neurons;
   public:
