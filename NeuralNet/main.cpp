@@ -8,6 +8,7 @@
 #include <cstdio>
 #include <sys/types.h>
 #include <dirent.h>
+#include <map>
 
 
 using namespace std;
@@ -29,14 +30,23 @@ struct IndexInfo
         frameIndex(frameIndex), partIndex(partIndex){}
 };
 
-IndexInfo parseFilename(string fname, uint prefixLength = 4, uint suffixLength = 4)
+string baseName(string path)
 {
-    string s = fname.substr(prefixLength,fname.size()-prefixLength-suffixLength);
+    size_t pos  = path.rfind('/');
+    if(pos==string::npos) return path;
+    return path.substr(pos+1);
+}
+
+IndexInfo parseFilename(string path, uint prefixLength = 4, uint suffixLength = 4)
+{    
+    path = baseName(path);
+    string s = path.substr(prefixLength,path.size()-prefixLength-suffixLength);
     char ch = s[s.size()-1];
     size_t pos  = s.find('_');
     string s1 = s.substr(0,pos);
     string s2 = s.substr(pos+1,s.size()-pos-2);
-    return IndexInfo(atoi(s1.c_str()), atoi(s2.c_str(), ch));
+    //cerr << s1 << " " << s2 << " " << ch << endl;
+    return IndexInfo(atoi(s1.c_str()), atoi(s2.c_str()), ch);
 }
 
 inline void print(string s)
@@ -127,6 +137,18 @@ vector<float> loadImage(string path, int datatype = 0, bool invert = false)
   return res;
 }
 
+map<unsigned,unsigned> indexMap;
+unsigned currIndexMap = 0;
+
+unsigned getIndex(unsigned seqIndex)
+{
+    if(indexMap.find(seqIndex)==indexMap.end())
+    {
+        indexMap[seqIndex] = currIndexMap++;
+    }
+    return indexMap[seqIndex];
+}
+
 int main(int argc, char *argv[])
 {
    srand(time(NULL)+42);
@@ -161,7 +183,9 @@ int main(int argc, char *argv[])
    NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
    signal(SIGINT, ctrlc);
 
-   vector<pair<vector<float>,vector<int > > > tests;
+   //vector<pair<vector<float>,vector<int > > > tests;
+   vector<vector<vector<pair<vector<float>,vector<int > > > > > tests;//tests[seqIndex][frame][part]
+
 
    //net->saveWeights("blabla");
 
@@ -188,16 +212,40 @@ int main(int argc, char *argv[])
    //nacitaj
    //net->loadWeights(infile);
    vector<string> hands = listDirectory(hands_path);
-   vector<string> nonhands = listDirectory(nonhands_path);
+   vector<string> others = listDirectory(nonhands_path);
 
    for(unsigned i = 0;i<hands.size();i++)
    {
-     tests.push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
+       IndexInfo ii = parseFilename(hands[i]);
+
+       unsigned si = getIndex(ii.seqIndex);
+       if(si>=tests.size())
+       {
+           tests.resize(si+1);
+       }
+       if(ii.frameIndex>=tests[si].size())
+       {
+           tests[si].resize(ii.frameIndex+1);
+       }
+       tests[si][ii.frameIndex].push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
+       //tests.push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
    }
 
-   for(unsigned i = 0;i<nonhands.size();i++)
+   for(unsigned i = 0;i<others.size();i++)
    {
-     tests.push_back(make_pair(loadImage(nonhands[i],datatype,invert),make_vector(0)));
+       IndexInfo ii = parseFilename(others[i]);
+
+       unsigned si = getIndex(ii.seqIndex);
+       if(si>=tests.size())
+       {
+           tests.resize(tests.size()+1);
+       }
+       if(ii.frameIndex>=tests[si].size())
+       {
+           tests[si].resize(tests[si].size()+1);
+       }
+       tests[si][ii.frameIndex].push_back(make_pair(loadImage(others[i],datatype,invert),make_vector(0)));
+     //tests.push_back(make_pair(loadImage(nonhands[i],datatype,invert),make_vector(0)));
    }
 
    float E = 100;
@@ -213,34 +261,44 @@ int main(int argc, char *argv[])
 
      FOR(i,tests.size())
      {
-        if(verbose)
-        {
-           cout << i << ": ";
-           cout << tests[i].second[0] << " ";
-        }
-        vector<float> tc = net->classify(tests[i].first);
-       float c = tc[0];
-       if(verbose)
-        cout << (c>0.5) << " (" << c  << ")" << endl;
+         FOR(j,tests[i].size())
+         {
+             FOR(k,tests[i][j].size())
+             {
+                 if(verbose)
+                 {
+                     cout << i << ": ";
+                     cout << tests[i][j][k].second[0] << " ";
+                 }
+                 vector<float> tc = net->classify(tests[i][j][k].first);
+                 float c = tc[0];
+                 if(verbose)
+                     cout << (c>0.5) << " (" << c  << ")" << endl;
 
 
-       float e = 0;
-       if(mode==0)
-         e = net->train(tests[i].first,tests[i].second);
-       else
-       {
-         if(abs(tests[i].second[0] - c)<0.5) good++;
-         e = getError(c,tests[i].second[0]);
-         cout << e << endl;
-       }
-
-       E += e;
+                 float e = 0;
+                 if(mode==0)
+                     e = net->train(tests[i][j][k].first,tests[i][j][k].second);
+                 else
+                 {
+                     if(abs(tests[i][j][k].second[0] - c)<0.5) good++;
+                     e = getError(c,tests[i][j][k].second[0]);
+                     cout << e << endl;
+                 }
+                 if(tests[i][j][k].second[0]==1)
+                 {
+                     //net->update();
+                     cerr << "Update" << endl;
+                 }
+                 E += e;
+             }
+         }
      }
      cout << "Final error:" << E << endl;
      if(mode>0)
      {
-       cout << "Good: " << good << " of " << tests.size() << " "
-            << (100.0*good)/tests.size() << "%" << endl;
+         cout << "Good: " << good << " of " << hands.size()+others.size() << " "
+              << (100.0*good)/(hands.size()+others.size()) << "%" << endl;
      }
      if(stop) break;
    }
