@@ -25,7 +25,7 @@ RecurrentLayer::RecurrentLayer(unsigned size, unsigned dimension, float alpha)
     for(unsigned i = 0; i< neurons.size();i++)
     {
       //neurons[i] = new BinaryPerceptron(dimension,alpha);
-      neurons[i] = new RecurentPerceptron(dimension,alpha);
+      neurons[i] = new RecurrentPerceptron(dimension,alpha);
       neurons[i]->randomizeWeights();
     }
 }
@@ -34,7 +34,7 @@ void RecurrentLayer::update()
 {
     for(unsigned i = 0; i< neurons.size();i++)
     {
-      ((RecurentPerceptron*) neurons[i])->update();
+      ((RecurrentPerceptron*) neurons[i])->update();
     }
 }
 
@@ -42,6 +42,6 @@ void RecurrentLayer::reset()
 {
     for(unsigned i = 0; i< neurons.size();i++)
     {
-      ((RecurentPerceptron*) neurons[i])->reset();
+      ((RecurrentPerceptron*) neurons[i])->reset();
     }
 }

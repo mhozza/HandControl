@@ -15,30 +15,38 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RECURENTPERCEPTRON_H
-#define RECURENTPERCEPTRON_H
+#include "recurentperceptron.h"
 
-#include "continuous_perceptron.h"
+using namespace NeuralNET;
 
-namespace NeuralNET
+RecurrentPerceptron::RecurrentPerceptron(unsigned int dimension,float alpha)
+    :ContinuousPerceptron(dimension+1,alpha), lastOutput(0), tmpLastOutput(0)
 {
-
-class RecurentPerceptron : public ContinuousPerceptron
-{
-    float lastOutput, tmpLastOutput;
-    void prepare(vector<float> * input);
-public:
-    RecurentPerceptron(unsigned int dimension, float alpha);
-    float getLastOutput();
-    void update();
-    void reset();
-
-    //void train(vector<float> input, int target);
-    //void trainDelta(vector<float> input, float target);
-
-    float classify(vector<float> input);
-    //int discreteClassify(vector<float> input);
-};
 
 }
-#endif // RECURENTPERCEPTRON_H
+
+void RecurrentPerceptron::update()
+{
+    lastOutput = tmpLastOutput;
+}
+
+void RecurrentPerceptron::reset()
+{
+    tmpLastOutput = lastOutput = 0;
+}
+
+float RecurrentPerceptron::getLastOutput()
+{
+    return lastOutput;
+}
+
+float RecurrentPerceptron::classify(vector<float> input)
+{    
+    return (tmpLastOutput = ContinuousPerceptron::classify(input));
+}
+
+void RecurrentPerceptron::prepare(vector<float> * input)
+{
+    input->push_back(lastOutput);
+    ContinuousPerceptron::prepare(input);
+}
