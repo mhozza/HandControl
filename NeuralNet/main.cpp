@@ -149,7 +149,7 @@ unsigned getIndex(unsigned seqIndex)
     return indexMap[seqIndex];
 }
 
-int main(int argc, char *argv[])
+int recurrentTrain(int argc, char *argv[], unsigned param_offest = 0)
 {
    srand(time(NULL)+42);
 
@@ -159,9 +159,9 @@ int main(int argc, char *argv[])
    int datatype = 0;//0 - float data, 1 - image
    bool invert = false;
 
-   if(argc>1) mode = atoi(argv[1]);
-   if(argc>2) verbose = atoi(argv[2]);
-   if(argc>3) datatype = atoi(argv[3]);
+   if(argc>1+param_offest) mode = atoi(argv[1+param_offest]);
+   if(argc>2+param_offest) verbose = atoi(argv[2+param_offest]);
+   if(argc>3+param_offest) datatype = atoi(argv[3+param_offest]);
    if(datatype==3)
    {
        datatype =1;
@@ -169,12 +169,12 @@ int main(int argc, char *argv[])
    }
 
    string hands_path = "", nonhands_path = "";
-   if(argc>4) hands_path = argv[4];
-   if(argc>5) nonhands_path = argv[5];
+   if(argc>4+param_offest) hands_path = argv[4+param_offest];
+   if(argc>5+param_offest) nonhands_path = argv[5+param_offest];
    string infile = "vahy";
-   if(argc>6) infile = argv[6];
+   if(argc>6+param_offest) infile = argv[6+param_offest];
    string outfile = infile;
-   if(argc>7) outfile = argv[7];
+   if(argc>7+param_offest) outfile = argv[7+param_offest];
 
 
    //unsigned sizes[] = {HIDDEN_N, OUT_N};
@@ -304,5 +304,19 @@ int main(int argc, char *argv[])
    }
    if(verbose)cout << epoche << endl;
    if(mode == 0) net->saveWeights(outfile);
+}
 
+int main(int argc, char *argv[])
+{
+    if(argc>0)
+    {
+        char ch = argv[0];
+
+        if(ch == 'r')
+        {
+            return recurrentTrain(argc,argv,1);
+        }
+    }
+    cerr << "Invalid arguments" << endl;
+    return 1;
 }
