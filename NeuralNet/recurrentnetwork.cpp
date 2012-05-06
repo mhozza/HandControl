@@ -15,38 +15,22 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "recurentperceptron.h"
+#include "recurrentnetwork.h"
 
 using namespace NeuralNET;
 
-RecurentPerceptron::RecurentPerceptron(unsigned int dimension,float alpha)
-    :ContinuousPerceptron(dimension+1,alpha), lastOutput(0), tmpLastOutput(0)
+RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha)
 {
-
-}
-
-void RecurentPerceptron::update()
-{
-    lastOutput = tmpLastOutput;
-}
-
-void RecurentPerceptron::reset()
-{
-    tmpLastOutput = lastOutput = 0;
-}
-
-float RecurentPerceptron::getLastOutput()
-{
-    return lastOutput;
-}
-
-float RecurentPerceptron::classify(vector<float> input)
-{    
-    return (tmpLastOutput = ContinuousPerceptron::classify(input));
-}
-
-void RecurentPerceptron::prepare(vector<float> * input)
-{
-    input->push_back(lastOutput);
-    ContinuousPerceptron::prepare(input);
+    layers.resize(layerCount);
+    for(unsigned i = 0; i< layers.size();i++)
+    {
+      if(i==0)
+      {
+        layers[i] = new RecurrentLayer(sizes[i], sizes[i-1], alpha);
+      }
+      else
+      {
+        layers[i] = new NeuralLayer(sizes[i], sizes[i-1], alpha);
+      }
+    }
 }

@@ -15,33 +15,30 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#include "recurrentlayer.h"
+#ifndef RECURENTPERCEPTRON_H
+#define RECURENTPERCEPTRON_H
 
-using namespace NeuralNET;
+#include "continuous_perceptron.h"
 
-RecurrentLayer::RecurrentLayer(unsigned size, unsigned dimension, float alpha)
+namespace NeuralNET
 {
-    neurons.resize(size);
-    for(unsigned i = 0; i< neurons.size();i++)
-    {
-      //neurons[i] = new BinaryPerceptron(dimension,alpha);
-      neurons[i] = new RecurrentPerceptron(dimension,alpha);
-      neurons[i]->randomizeWeights();
-    }
-}
 
-void RecurrentLayer::update()
+class RecurrentPerceptron : public ContinuousPerceptron
 {
-    for(unsigned i = 0; i< neurons.size();i++)
-    {
-      ((RecurrentPerceptron*) neurons[i])->update();
-    }
-}
+    float lastOutput, tmpLastOutput;
+    void prepare(vector<float> * input);
+public:
+    RecurrentPerceptron(unsigned int dimension, float alpha);
+    float getLastOutput();
+    void update();
+    void reset();
 
-void RecurrentLayer::reset()
-{
-    for(unsigned i = 0; i< neurons.size();i++)
-    {
-      ((RecurrentPerceptron*) neurons[i])->reset();
-    }
+    //void train(vector<float> input, int target);
+    //void trainDelta(vector<float> input, float target);
+
+    float classify(vector<float> input);
+    //int discreteClassify(vector<float> input);
+};
+
 }
+#endif // RECURENTPERCEPTRON_H

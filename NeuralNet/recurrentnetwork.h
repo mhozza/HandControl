@@ -15,33 +15,20 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
+#ifndef RECURRENTNETWORK_H
+#define RECURRENTNETWORK_H
+
+#include "neuralnetwork.h"
 #include "recurrentlayer.h"
 
-using namespace NeuralNET;
+namespace NeuralNET {
 
-RecurrentLayer::RecurrentLayer(unsigned size, unsigned dimension, float alpha)
+class RecurrentNetwork : public NeuralNetwork
 {
-    neurons.resize(size);
-    for(unsigned i = 0; i< neurons.size();i++)
-    {
-      //neurons[i] = new BinaryPerceptron(dimension,alpha);
-      neurons[i] = new RecurrentPerceptron(dimension,alpha);
-      neurons[i]->randomizeWeights();
-    }
+public:
+    RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha);
+};
+
 }
 
-void RecurrentLayer::update()
-{
-    for(unsigned i = 0; i< neurons.size();i++)
-    {
-      ((RecurrentPerceptron*) neurons[i])->update();
-    }
-}
-
-void RecurrentLayer::reset()
-{
-    for(unsigned i = 0; i< neurons.size();i++)
-    {
-      ((RecurrentPerceptron*) neurons[i])->reset();
-    }
-}
+#endif // RECURRENTNETWORK_H
