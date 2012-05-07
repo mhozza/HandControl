@@ -21,11 +21,14 @@
 #include "neurallayer.h"
 namespace NeuralNET
 {
-  class DistributedNeuralLayer : public NeuralLayer
+  class DistributedNeuralLayer : virtual public NeuralLayer
   {
-    unsigned neuronsPerZone, width, height, dimensionWidth, dimensionHeight, inputWidth, inputHeight;
     vector<float> prepareInput(unsigned x, unsigned y, vector<float> &input);
     void trainDelta(vector<float> input,vector<float> delta);
+  protected:
+    DistributedNeuralLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH);
+    //DistributedNeuralLayer(){}
+    unsigned neuronsPerZone, width, height, dimensionWidth, dimensionHeight, inputWidth, inputHeight;
   public:
       DistributedNeuralLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha);
       float train(vector<float>,vector<int>);

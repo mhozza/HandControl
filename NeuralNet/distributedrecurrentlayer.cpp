@@ -17,6 +17,16 @@
 
 #include "distributedrecurrentlayer.h"
 
-DistributedRecurrentLayer::DistributedRecurrentLayer()
+using namespace NeuralNET;
+
+DistributedRecurrentLayer::DistributedRecurrentLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha)
+    :RecurrentLayer(w*h*neuronsPerZone,(dimensionW*dimensionH)/(w*h),alpha), DistributedNeuralLayer(neuronsPerZone,w,h,dimensionW,dimensionH)
 {
+    /*this->neuronsPerZone = neuronsPerZone;
+    this->width = w;
+    this->height = h;
+    this->dimensionWidth = dimensionW;
+    this->dimensionHeight = dimensionH;
+    this->inputWidth = dimensionWidth/width;
+    this->inputHeight = dimensionHeight/height;*/
 }

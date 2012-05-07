@@ -19,13 +19,13 @@
 #define RECURRENTLAYER_H
 
 #include "neurallayer.h"
-#include "recurentperceptron.h"
+#include "recurrentperceptron.h"
 
 namespace NeuralNET
 {
 
-class RecurrentLayer : public NeuralLayer
-{
+class RecurrentLayer : virtual public NeuralLayer
+{   
 public:
     RecurrentLayer(unsigned size, unsigned dimension, float alpha);
     void update();
