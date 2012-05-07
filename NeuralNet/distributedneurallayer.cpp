@@ -26,6 +26,14 @@ DistributedNeuralLayer::DistributedNeuralLayer(unsigned neuronsPerZone, unsigned
 
 }
 
+DistributedNeuralLayer::DistributedNeuralLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH)
+    : neuronsPerZone(neuronsPerZone), width(w), height(h), dimensionWidth(dimensionW),
+      dimensionHeight(dimensionH), inputWidth(dimensionWidth/width), inputHeight(dimensionHeight/height)
+{
+
+}
+
+
 vector<float> DistributedNeuralLayer::prepareInput(unsigned x, unsigned y, vector<float> &input)
 {
   unsigned sx = x*inputWidth,sy = y*inputHeight;

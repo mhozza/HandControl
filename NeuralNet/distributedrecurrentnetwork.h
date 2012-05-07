@@ -18,10 +18,17 @@
 #ifndef DISTRIBUTEDRECURRENTNETWORK_H
 #define DISTRIBUTEDRECURRENTNETWORK_H
 
+#include "recurrentnetwork.h"
+
+namespace NeuralNET
+{
+
 class DistributedRecurrentNetwork : public RecurrentNetwork
 {
 public:
-    DistributedRecurrentNetwork();
+    DistributedRecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned firstLayerW, unsigned firstLayerH, unsigned dimensionW, unsigned dimensionH, float alpha);
 };
+
+}
 
 #endif // DISTRIBUTEDRECURRENTNETWORK_H

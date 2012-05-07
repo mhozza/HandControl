@@ -18,10 +18,17 @@
 #ifndef DISTRIBUTEDRECURRENTLAYER_H
 #define DISTRIBUTEDRECURRENTLAYER_H
 
-class DistributedRecurrentLayer : public RecurrentLayer
+#include "recurrentlayer.h"
+#include "distributedneurallayer.h"
+
+namespace NeuralNET {
+
+class DistributedRecurrentLayer : public RecurrentLayer, public DistributedNeuralLayer
 {
 public:
-    DistributedRecurrentLayer();
+    DistributedRecurrentLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha);
 };
+
+}
 
 #endif // DISTRIBUTEDRECURRENTLAYER_H
