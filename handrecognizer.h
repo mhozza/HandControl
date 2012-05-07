@@ -28,8 +28,8 @@ using namespace NeuralNET;
 class HandRecognizer
 {
   NeuralNetwork * net;    
-  float hand_p;
-  QRect handRect;  
+  float hand_p; //probability of best hand
+  QRect handRect;
   QMutex saveLock;
   inline void resetHand(){hand_p = 0;}
   bool isSimilarRect(QRect r1, QRect r2);  

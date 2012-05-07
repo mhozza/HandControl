@@ -66,6 +66,7 @@ void HandRecognizer::processRects(RectQueue *q, GrayScaleImage *imgRef, GrayScal
         rectQueueLock.unlock();
         break;
     }
+    //cerr << r.x() << "," << r.y() << ":" << index.frameIndex << index.partIndex << endl;
 
     q->pop();
     rectQueueLock.unlock();
@@ -75,7 +76,7 @@ void HandRecognizer::processRects(RectQueue *q, GrayScaleImage *imgRef, GrayScal
     GrayScaleImage* imgScaled = (GrayScaleImage*)img->copy(r);
     GrayScaleImage* imgScaled2 = (GrayScaleImage*)img2->copy(r);
     ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
-    imgScaled2->mask(imgRefScaled,true);
+    //imgScaled2->mask(imgRefScaled,true);
     ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.55*r.height(),23,0.25,0.55);
     imgScaled->mask(handMask->toGrayScale());
     //GrayScaleImage* imgScaled = handMask->toGrayScale();
@@ -141,7 +142,6 @@ void HandRecognizer::processRects(RectQueue *q, GrayScaleImage *imgRef, GrayScal
     saveLock.lock();
     imageIsHand.push_back(hand>0.5);
     indexInfoBuffer.push_back(index);
-
     saveImageBuffer1.push_back(imgScaled->saveImageToString());
     saveImageBuffer2.push_back(imgScaled2->saveImageToString());
 

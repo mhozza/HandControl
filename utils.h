@@ -28,6 +28,7 @@
 #include <vector>
 #include "utils.h"
 #include <queue>
+#include <iostream>
 
 using namespace std;
 
@@ -39,13 +40,15 @@ public:
   static double cabs(fftw_complex v);
 };
 
-
 struct IndexInfo
 {
     uint seqIndex, frameIndex;
     char partIndex;
     IndexInfo(uint seqIndex,uint frameIndex, char partIndex):seqIndex(seqIndex),
-        frameIndex(frameIndex), partIndex(partIndex){}
+        frameIndex(frameIndex), partIndex(partIndex)
+    {
+        //if(partIndex!=0) cerr << seqIndex << "_" << frameIndex << partIndex << endl;
+    }
 };
 
 typedef queue<pair<pair<QRect,uint>, IndexInfo> > RectQueue;
