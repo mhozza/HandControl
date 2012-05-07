@@ -289,12 +289,12 @@ int recurrentTrain(int argc, char *argv[], int param_offest = 0)
                  }
                  if(tests[i][j][k].second[0]==1)
                  {
-                     net->update();
-                     //cerr << "Update" << endl;
+                     net->update();                     
                  }
                  E += e;
              }
          }
+         net->reset();
      }
      cout << "Final error:" << E << endl;
      if(mode>0)
