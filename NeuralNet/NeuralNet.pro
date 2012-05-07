@@ -20,7 +20,8 @@ SOURCES += main.cpp \
     recurrentlayer.cpp \
     recurrentnetwork.cpp \
     recurrentperceptron.cpp \
-    distributedrecurrentnetwork.cpp
+    distributedrecurrentnetwork.cpp \
+    distributedrecurrentlayer.cpp
 
 HEADERS += \
     perceptron.h \
@@ -33,7 +34,8 @@ HEADERS += \
     recurrentlayer.h \
     recurrentnetwork.h \
     recurrentperceptron.h \
-    distributedrecurrentnetwork.h
+    distributedrecurrentnetwork.h \
+    distributedrecurrentlayer.h
 
 QMAKE_CXXFLAGS_RELEASE += -O3
 
