@@ -21,6 +21,7 @@
 using namespace NeuralNET;
 
 DistributedRecurrentNetwork::DistributedRecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned firstLayerW, unsigned firstLayerH, unsigned dimensionW, unsigned dimensionH, float alpha)
+    :RecurrentNetwork(0)
 {
     layers.resize(layerCount);
     for(unsigned i = 0; i< layers.size();i++)
