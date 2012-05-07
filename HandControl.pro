@@ -40,7 +40,8 @@ SOURCES += main.cpp\
     NeuralNet/elmannetwork.cpp \
     NeuralNet/recurrentlayer.cpp \
     NeuralNet/recurentperceptron.cpp \
-    NeuralNet/recurrentnetwork.cpp
+    NeuralNet/recurrentnetwork.cpp \
+    NeuralNet/distributedrecurrentnetwork.cpp
 
 HEADERS  += mainwindow.h \
     webcam.h \
@@ -72,7 +73,8 @@ HEADERS  += mainwindow.h \
     NeuralNet/elmannetwork.h \
     NeuralNet/recurrentlayer.h \
     NeuralNet/recurentperceptron.h \
-    NeuralNet/recurrentnetwork.h
+    NeuralNet/recurrentnetwork.h \
+    NeuralNet/distributedrecurrentnetwork.h
 
 FORMS += mainwindow.ui \
     onscreendisplayform.ui
