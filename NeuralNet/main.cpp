@@ -1,6 +1,8 @@
 #include <iostream>
 #include "neuralnetwork.h"
 #include "distributedneuralnetwork.h"
+#include "distributedrecurrentnetwork.h"
+#include "recurrentnetwork.h"
 #include <cstdlib>
 #include <algorithm>
 #include <fstream>
@@ -8,6 +10,7 @@
 #include <cstdio>
 #include <sys/types.h>
 #include <dirent.h>
+#include <map>
 
 
 using namespace std;
@@ -20,6 +23,34 @@ using namespace NeuralNET;
 #define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
 #define HIDDEN_N2 11
 #define OUT_N 1
+#define MAX_EPOCHE 400
+
+struct IndexInfo
+{
+    uint seqIndex, frameIndex;
+    char partIndex;
+    IndexInfo(uint seqIndex,uint frameIndex, char partIndex):seqIndex(seqIndex),
+        frameIndex(frameIndex), partIndex(partIndex){}
+};
+
+string baseName(string path)
+{
+    size_t pos  = path.rfind('/');
+    if(pos==string::npos) return path;
+    return path.substr(pos+1);
+}
+
+IndexInfo parseFilename(string path, uint prefixLength = 4, uint suffixLength = 4)
+{    
+    path = baseName(path);
+    string s = path.substr(prefixLength,path.size()-prefixLength-suffixLength);
+    char ch = s[s.size()-1];
+    size_t pos  = s.find('_');
+    string s1 = s.substr(0,pos);
+    string s2 = s.substr(pos+1,s.size()-pos-2);
+    //cerr << s1 << " " << s2 << " " << ch << endl;
+    return IndexInfo(atoi(s1.c_str()), atoi(s2.c_str()), ch);
+}
 
 inline void print(string s)
 {
@@ -109,83 +140,148 @@ vector<float> loadImage(string path, int datatype = 0, bool invert = false)
   return res;
 }
 
-int main(int argc, char *argv[])
+map<unsigned,unsigned> indexMap;
+unsigned currIndexMap = 0;
+
+unsigned getIndex(unsigned seqIndex)
 {
-   srand(time(NULL)+42);
+    if(indexMap.find(seqIndex)==indexMap.end())
+    {
+        indexMap[seqIndex] = currIndexMap++;
+    }
+    return indexMap[seqIndex];
+}
 
-   float alpha = 0.2;
-   int verbose = 0;
-   int mode = 0;
-   int datatype = 0;//0 - float data, 1 - image
-   bool invert = false;
+float alpha = 0.2;
+int verbose = 0;
+int mode = 0;
+int datatype = 0;//0 - float data, 1 - image
+bool invert = false;
+string hands_path = "", nonhands_path = "";
+string infile = "vahy", outfile;
+vector<string> hands, others;
 
-   if(argc>1) mode = atoi(argv[1]);
-   if(argc>2) verbose = atoi(argv[2]);
-   if(argc>3) datatype = atoi(argv[3]);
-   if(datatype==3)
-   {
-       datatype =1;
-       invert = true;
-   }
+int recurrentTrain(unsigned sizes[])
+{
+    vector<vector<vector<pair<vector<float>,vector<int > > > > > tests;//tests[seqIndex][frame][part]
 
-   string hands_path = "", nonhands_path = "";
-   if(argc>4) hands_path = argv[4];
-   if(argc>5) nonhands_path = argv[5];
-   string infile = "vahy";
-   if(argc>6) infile = argv[6];
-   string outfile = infile;
-   if(argc>7) outfile = argv[7];
+   //RecurrentNetwork *net = new RecurrentNetwork(2,sizes,N,alpha);
+   RecurrentNetwork *net = new DistributedRecurrentNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);   
 
-
-   //unsigned sizes[] = {HIDDEN_N, OUT_N};
-   //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
-   unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
-   NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
-   signal(SIGINT, ctrlc);
-
-   vector<pair<vector<float>,vector<int > > > tests;
-
-   //net->saveWeights("blabla");
-
-   if(mode==0)
-   {
-     if(hands_path=="")
-       hands_path = "../hand_images/hands";
-     if(nonhands_path=="")
-       nonhands_path = "../hand_images/other";
-     net->loadWeights(infile);
-   }
-   else
-   {
-    // hands_path = "../hand_images/hands";
-    // nonhands_path = "../hand_images/other";
-    if(hands_path=="")
-      hands_path = "../hand_images/test/hands";
-    if(nonhands_path=="")
-      nonhands_path = "../hand_images/test/other";
-    net->loadWeights(infile);
-   }
-
-
-   //nacitaj
-   //net->loadWeights(infile);
-   vector<string> hands = listDirectory(hands_path);
-   vector<string> nonhands = listDirectory(nonhands_path);
-
+   //nacitaj   
+   net->loadWeights(infile);   
    for(unsigned i = 0;i<hands.size();i++)
    {
-     tests.push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
-   }
+       IndexInfo ii = parseFilename(hands[i]);
 
-   for(unsigned i = 0;i<nonhands.size();i++)
+       unsigned si = getIndex(ii.seqIndex);
+       if(si>=tests.size())
+       {
+           tests.resize(si+1);
+       }
+       if(ii.frameIndex>=tests[si].size())
+       {
+           tests[si].resize(ii.frameIndex+1);
+       }
+       tests[si][ii.frameIndex].push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));       
+   }
+   for(unsigned i = 0;i<others.size();i++)
    {
-     tests.push_back(make_pair(loadImage(nonhands[i],datatype,invert),make_vector(0)));
+       IndexInfo ii = parseFilename(others[i]);
+
+       unsigned si = getIndex(ii.seqIndex);
+       if(si>=tests.size())
+       {
+           tests.resize(si+1);
+       }
+       if(ii.frameIndex>=tests[si].size())
+       {
+           tests[si].resize(ii.frameIndex+1);
+       }
+       tests[si][ii.frameIndex].push_back(make_pair(loadImage(others[i],datatype,invert),make_vector(0)));
+     //tests.push_back(make_pair(loadImage(nonhands[i],datatype,invert),make_vector(0)));
    }
 
    float E = 100;
    int epoche = 0;
    int good = 0;
-   while(epoche<400 && (mode==0 || epoche<1))
+   while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
+   {
+     epoche++;
+     if(mode==0) cerr << epoche << endl;
+     E=0;
+     if(mode==0)
+        random_shuffle(tests.begin(),tests.end());
+
+     FOR(i,tests.size())
+     {
+         FOR(j,tests[i].size())
+         {
+             FOR(k,tests[i][j].size())
+             {
+                 if(verbose)
+                 {
+                     cout << i << ": ";
+                     cout << tests[i][j][k].second[0] << " ";
+                 }
+                 vector<float> tc = net->classify(tests[i][j][k].first);
+                 float c = tc[0];
+                 if(verbose)
+                     cout << (c>0.5) << " (" << c  << ")" << endl;
+
+
+                 float e = 0;
+                 if(mode==0)
+                     e = net->train(tests[i][j][k].first,tests[i][j][k].second);
+                 else
+                 {
+                     if(abs(tests[i][j][k].second[0] - c)<0.5) good++;
+                     e = getError(c,tests[i][j][k].second[0]);
+                     cout << e << endl;
+                 }
+                 if(tests[i][j][k].second[0]==1)
+                 {
+                     net->update();                     
+                 }
+                 E += e;
+             }
+         }
+         net->reset();
+     }
+     cout << "Final error:" << E << endl;
+     if(mode>0)
+     {
+         cout << "Good: " << good << " of " << hands.size()+others.size() << " "
+              << (100.0*good)/(hands.size()+others.size()) << "%" << endl;
+     }
+     if(stop) break;
+   }
+   if(verbose) cout << epoche << endl;
+   if(mode == 0) net->saveWeights(outfile);
+   return 0;
+}
+
+int normalTrain(unsigned sizes[])
+{
+   vector<pair<vector<float>,vector<int > > > tests;
+
+   //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
+   NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
+   //nacitaj
+   net->loadWeights(infile);
+   for(unsigned i = 0;i<hands.size();i++)
+   {
+     tests.push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
+   }
+   for(unsigned i = 0;i<others.size();i++)
+   {
+     tests.push_back(make_pair(loadImage(others[i],datatype,invert),make_vector(0)));
+   }
+
+   float E = 100;
+   int epoche = 0;
+   int good = 0;
+   while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
      epoche++;
      if(mode==0) cerr << epoche << endl;
@@ -228,5 +324,64 @@ int main(int argc, char *argv[])
    }
    if(verbose)cout << epoche << endl;
    if(mode == 0) net->saveWeights(outfile);
+   return 0;
+}
 
+int main(int argc, char *argv[])
+{
+    srand(time(NULL)+42);
+    signal(SIGINT, ctrlc);
+    if(argc>0)
+    {
+        char ch = *(argv[1]);
+
+        if(argc>2) mode = atoi(argv[2]);
+        if(argc>3) verbose = atoi(argv[3]);
+        if(argc>4) datatype = atoi(argv[4]);
+        if(datatype==3)
+        {
+            datatype =1;
+            invert = true;
+        }
+
+        if(argc>5) hands_path = argv[5];
+        if(argc>6) nonhands_path = argv[6];
+        if(argc>7) infile = argv[7];
+        outfile = infile;
+        if(argc>8) outfile = argv[8];
+
+        if(mode==0)
+        {
+          if(hands_path=="")
+            hands_path = "../hand_images/hands";
+          if(nonhands_path=="")
+            nonhands_path = "../hand_images/other";
+        }
+        else
+        {
+         // hands_path = "../hand_images/hands";
+         // nonhands_path = "../hand_images/other";
+         if(hands_path=="")
+           hands_path = "../hand_images/test/hands";
+         if(nonhands_path=="")
+           nonhands_path = "../hand_images/test/other";
+        }
+
+        hands = listDirectory(hands_path);
+        others = listDirectory(nonhands_path);
+
+        //unsigned sizes[] = {HIDDEN_N, OUT_N};
+        unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+        if(ch == 'r')
+        {
+            return recurrentTrain(sizes);
+        }
+        if(ch == 'n')
+        {
+            return normalTrain(sizes);
+        }
+    }
+
+    cerr << "Invalid arguments" << endl;
+    return 1;
 }

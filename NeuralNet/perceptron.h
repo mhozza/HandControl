@@ -20,24 +20,27 @@ namespace NeuralNET
   class Perceptron
   {
     friend class NeuralLayer;
-    void prepare(vector<float>*);
     void trainDelta(vector<float>*,float);
-    virtual float activationFunction(const vector<float>*) = 0;
+    virtual float activationFunction(const vector<float>* input) = 0;
     virtual float derivativeFunction(float x) = 0;
     float getDelta(vector<float>,int);
     float momentum;
     float w0;
     vector<float> deltaW;
   protected:
+    virtual void prepare(vector<float>* input);
     float alpha;
     unsigned dimension;
     vector<float> weights;    
   public:
     Perceptron(unsigned, float);    
-    void train(vector<float>,int);
-    void trainDelta(vector<float>,float);
-    float classify(vector<float>);
-    int discreteClassify(vector<float>);
+
+    void train(vector<float> input,int target);
+    void trainDelta(vector<float> input, float delta);
+
+    virtual float classify(vector<float> input);
+    int discreteClassify(vector<float> input);
+
     void randomizeWeights();
     void save(string filename);
     void load(string filename);

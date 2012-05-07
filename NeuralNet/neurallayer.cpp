@@ -1,6 +1,5 @@
 #include "neurallayer.h"
 
-
 using namespace std;
 using namespace NeuralNET;
 
