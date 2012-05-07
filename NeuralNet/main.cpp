@@ -24,6 +24,7 @@ using namespace NeuralNET;
 //#define HIDDEN_N 60
 #define HIDDEN_N2 12
 #define OUT_N 1
+#define MAX_EPOCHE 400
 
 struct IndexInfo
 {
@@ -152,71 +153,24 @@ unsigned getIndex(unsigned seqIndex)
     return indexMap[seqIndex];
 }
 
-int recurrentTrain(int argc, char *argv[], int param_offest = 0)
+float alpha = 0.2;
+int verbose = 0;
+int mode = 0;
+int datatype = 0;//0 - float data, 1 - image
+bool invert = false;
+string hands_path = "", nonhands_path = "";
+string infile = "vahy", outfile;
+vector<string> hands, others;
+
+int recurrentTrain(unsigned sizes[])
 {
-   srand(time(NULL)+42);
+    vector<vector<vector<pair<vector<float>,vector<int > > > > > tests;//tests[seqIndex][frame][part]
 
-   float alpha = 0.2;
-   int verbose = 0;
-   int mode = 0;
-   int datatype = 0;//0 - float data, 1 - image
-   bool invert = false;
-
-   if(argc>1+param_offest) mode = atoi(argv[1+param_offest]);
-   if(argc>2+param_offest) verbose = atoi(argv[2+param_offest]);
-   if(argc>3+param_offest) datatype = atoi(argv[3+param_offest]);
-   if(datatype==3)
-   {
-       datatype =1;
-       invert = true;
-   }
-
-   string hands_path = "", nonhands_path = "";
-   if(argc>4+param_offest) hands_path = argv[4+param_offest];
-   if(argc>5+param_offest) nonhands_path = argv[5+param_offest];
-   string infile = "vahy";
-   if(argc>6+param_offest) infile = argv[6+param_offest];
-   string outfile = infile;
-   if(argc>7+param_offest) outfile = argv[7+param_offest];
-
-
-   //unsigned sizes[] = {HIDDEN_N, OUT_N};
    //RecurrentNetwork *net = new RecurrentNetwork(2,sizes,N,alpha);
-   unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
-   RecurrentNetwork *net = new DistributedRecurrentNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
-   signal(SIGINT, ctrlc);
-
-   //vector<pair<vector<float>,vector<int > > > tests;
-   vector<vector<vector<pair<vector<float>,vector<int > > > > > tests;//tests[seqIndex][frame][part]
-
-
-   //net->saveWeights("blabla");
-
-   if(mode==0)
-   {
-     if(hands_path=="")
-       hands_path = "../hand_images/hands";
-     if(nonhands_path=="")
-       nonhands_path = "../hand_images/other";
-     net->loadWeights(infile);
-   }
-   else
-   {
-    // hands_path = "../hand_images/hands";
-    // nonhands_path = "../hand_images/other";
-    if(hands_path=="")
-      hands_path = "../hand_images/test/hands";
-    if(nonhands_path=="")
-      nonhands_path = "../hand_images/test/other";
-    net->loadWeights(infile);
-   }
-
+   RecurrentNetwork *net = new DistributedRecurrentNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);   
 
    //nacitaj
-   //net->loadWeights(infile);
-   vector<string> hands = listDirectory(hands_path);
-   vector<string> others = listDirectory(nonhands_path);
-
+   net->loadWeights(infile);
    for(unsigned i = 0;i<hands.size();i++)
    {
        IndexInfo ii = parseFilename(hands[i]);
@@ -230,10 +184,8 @@ int recurrentTrain(int argc, char *argv[], int param_offest = 0)
        {
            tests[si].resize(ii.frameIndex+1);
        }
-       tests[si][ii.frameIndex].push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
-       //tests.push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
+       tests[si][ii.frameIndex].push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));       
    }
-
    for(unsigned i = 0;i<others.size();i++)
    {
        IndexInfo ii = parseFilename(others[i]);
@@ -254,7 +206,7 @@ int recurrentTrain(int argc, char *argv[], int param_offest = 0)
    float E = 100;
    int epoche = 0;
    int good = 0;
-   while(epoche<400 && (mode==0 || epoche<1))
+   while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
      epoche++;
      if(mode==0) cerr << epoche << endl;
@@ -305,87 +257,32 @@ int recurrentTrain(int argc, char *argv[], int param_offest = 0)
      }
      if(stop) break;
    }
-   if(verbose)cout << epoche << endl;
+   if(verbose) cout << epoche << endl;
    if(mode == 0) net->saveWeights(outfile);
    return 0;
 }
 
-int normalTrain(int argc, char *argv[], int param_offest = 0)
+int normalTrain(unsigned sizes[])
 {
-   srand(time(NULL)+42);
-
-   float alpha = 0.2;
-   int verbose = 0;
-   int mode = 0;
-   int datatype = 0;//0 - float data, 1 - image
-   bool invert = false;
-
-   if(argc>1+param_offest) mode = atoi(argv[1+param_offest]);
-   if(argc>2+param_offest) verbose = atoi(argv[2+param_offest]);
-   if(argc>3+param_offest) datatype = atoi(argv[3+param_offest]);
-   if(datatype==3)
-   {
-       datatype =1;
-       invert = true;
-   }
-
-   string hands_path = "", nonhands_path = "";
-   if(argc>4+param_offest) hands_path = argv[4+param_offest];
-   if(argc>5+param_offest) nonhands_path = argv[5+param_offest];
-   string infile = "vahy";
-   if(argc>6+param_offest) infile = argv[6+param_offest];
-   string outfile = infile;
-   if(argc>7+param_offest) outfile = argv[7+param_offest];
-
-   //unsigned sizes[] = {HIDDEN_N, OUT_N};
-   unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
-   //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
-   NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
-   signal(SIGINT, ctrlc);
-
    vector<pair<vector<float>,vector<int > > > tests;
 
-   //net->saveWeights("blabla");
-
-   if(mode==0)
-   {
-     if(hands_path=="")
-       hands_path = "../hand_images/hands";
-     if(nonhands_path=="")
-       nonhands_path = "../hand_images/other";
-     net->loadWeights(infile);
-   }
-   else
-   {
-    // hands_path = "../hand_images/hands";
-    // nonhands_path = "../hand_images/other";
-    if(hands_path=="")
-      hands_path = "../hand_images/test/hands";
-    if(nonhands_path=="")
-      nonhands_path = "../hand_images/test/other";
-    net->loadWeights(infile);
-   }
-
-
+   //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
+   NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
    //nacitaj
-   //net->loadWeights(infile);
-   vector<string> hands = listDirectory(hands_path);
-   vector<string> nonhands = listDirectory(nonhands_path);
-
+   net->loadWeights(infile);
    for(unsigned i = 0;i<hands.size();i++)
    {
      tests.push_back(make_pair(loadImage(hands[i],datatype,invert),make_vector(1)));
    }
-
-   for(unsigned i = 0;i<nonhands.size();i++)
+   for(unsigned i = 0;i<others.size();i++)
    {
-     tests.push_back(make_pair(loadImage(nonhands[i],datatype,invert),make_vector(0)));
+     tests.push_back(make_pair(loadImage(others[i],datatype,invert),make_vector(0)));
    }
 
    float E = 100;
    int epoche = 0;
    int good = 0;
-   while(epoche<400 && (mode==0 || epoche<1))
+   while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
      epoche++;
      if(mode==0) cerr << epoche << endl;
@@ -433,17 +330,56 @@ int normalTrain(int argc, char *argv[], int param_offest = 0)
 
 int main(int argc, char *argv[])
 {
+    srand(time(NULL)+42);
+    signal(SIGINT, ctrlc);
     if(argc>0)
     {
         char ch = *(argv[1]);
 
+        if(argc>1) mode = atoi(argv[1]);
+        if(argc>2) verbose = atoi(argv[2]);
+        if(argc>3) datatype = atoi(argv[3]);
+        if(datatype==3)
+        {
+            datatype =1;
+            invert = true;
+        }
+
+        if(argc>4) hands_path = argv[4];
+        if(argc>5) nonhands_path = argv[5];
+        if(argc>6) infile = argv[6];
+        outfile = infile;
+        if(argc>7) outfile = argv[7];
+
+        if(mode==0)
+        {
+          if(hands_path=="")
+            hands_path = "../hand_images/hands";
+          if(nonhands_path=="")
+            nonhands_path = "../hand_images/other";
+        }
+        else
+        {
+         // hands_path = "../hand_images/hands";
+         // nonhands_path = "../hand_images/other";
+         if(hands_path=="")
+           hands_path = "../hand_images/test/hands";
+         if(nonhands_path=="")
+           nonhands_path = "../hand_images/test/other";
+        }
+
+        hands = listDirectory(hands_path);
+        others = listDirectory(nonhands_path);
+
+        //unsigned sizes[] = {HIDDEN_N, OUT_N};
+        unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
         if(ch == 'r')
         {
-            return recurrentTrain(argc,argv,1);
+            return recurrentTrain(sizes);
         }
         if(ch == 'n')
         {
-            return normalTrain(argc,argv,1);
+            return normalTrain(sizes);
         }
     }
 
