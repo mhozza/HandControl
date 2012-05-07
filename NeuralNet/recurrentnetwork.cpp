@@ -38,10 +38,10 @@ RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsign
 
 void RecurrentNetwork::update()
 {
-    ((RecurrentNetwork*) layers[recurrentLayerIndex])->update();
+    dynamic_cast<RecurrentLayer*>(layers[recurrentLayerIndex])->update();
 }
 
 void RecurrentNetwork::reset()
 {
-    ((RecurrentNetwork*) layers[recurrentLayerIndex])->reset();
+    dynamic_cast<RecurrentLayer*>(layers[recurrentLayerIndex])->reset();
 }

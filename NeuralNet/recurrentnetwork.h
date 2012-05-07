@@ -27,9 +27,12 @@ class RecurrentNetwork : public NeuralNetwork
 {
     unsigned recurrentLayerIndex;
 protected:
-    RecurrentNetwork(){}
+    RecurrentNetwork(unsigned recurrentLayerIndex = 0)
+    {
+        this->recurrentLayerIndex = recurrentLayerIndex;
+    }
 public:
-    RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = 0.25, unsigned recurrentLayer = 0);
+    RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = 0.25, unsigned recurrentLayerIndex = 0);
     void update();
     void reset();
 };

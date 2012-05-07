@@ -240,11 +240,11 @@ int recurrentTrain(int argc, char *argv[], int param_offest = 0)
        unsigned si = getIndex(ii.seqIndex);
        if(si>=tests.size())
        {
-           tests.resize(tests.size()+1);
+           tests.resize(si+1);
        }
        if(ii.frameIndex>=tests[si].size())
        {
-           tests[si].resize(tests[si].size()+1);
+           tests[si].resize(ii.frameIndex+1);
        }
        tests[si][ii.frameIndex].push_back(make_pair(loadImage(others[i],datatype,invert),make_vector(0)));
      //tests.push_back(make_pair(loadImage(nonhands[i],datatype,invert),make_vector(0)));
@@ -289,8 +289,8 @@ int recurrentTrain(int argc, char *argv[], int param_offest = 0)
                  }
                  if(tests[i][j][k].second[0]==1)
                  {
-                     //net->update();
-                     cerr << "Update" << endl;
+                     net->update();
+                     //cerr << "Update" << endl;
                  }
                  E += e;
              }
