@@ -168,8 +168,8 @@ int recurrentTrain(unsigned sizes[])
    //RecurrentNetwork *net = new RecurrentNetwork(2,sizes,N,alpha);
    RecurrentNetwork *net = new DistributedRecurrentNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);   
 
-   //nacitaj
-   net->loadWeights(infile);
+   //nacitaj   
+   net->loadWeights(infile);   
    for(unsigned i = 0;i<hands.size();i++)
    {
        IndexInfo ii = parseFilename(hands[i]);
@@ -335,20 +335,20 @@ int main(int argc, char *argv[])
     {
         char ch = *(argv[1]);
 
-        if(argc>1) mode = atoi(argv[1]);
-        if(argc>2) verbose = atoi(argv[2]);
-        if(argc>3) datatype = atoi(argv[3]);
+        if(argc>2) mode = atoi(argv[2]);
+        if(argc>3) verbose = atoi(argv[3]);
+        if(argc>4) datatype = atoi(argv[4]);
         if(datatype==3)
         {
             datatype =1;
             invert = true;
         }
 
-        if(argc>4) hands_path = argv[4];
-        if(argc>5) nonhands_path = argv[5];
-        if(argc>6) infile = argv[6];
+        if(argc>5) hands_path = argv[5];
+        if(argc>6) nonhands_path = argv[6];
+        if(argc>7) infile = argv[7];
         outfile = infile;
-        if(argc>7) outfile = argv[7];
+        if(argc>8) outfile = argv[8];
 
         if(mode==0)
         {
