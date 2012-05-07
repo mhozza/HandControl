@@ -179,10 +179,10 @@ int recurrentTrain(int argc, char *argv[], int param_offest = 0)
    if(argc>7+param_offest) outfile = argv[7+param_offest];
 
 
-   unsigned sizes[] = {HIDDEN_N, OUT_N};
-   RecurrentNetwork *net = new RecurrentNetwork(2,sizes,N,alpha);
-   //unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
-   //RecurrentNetwork *net = new RecurrentNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
+   //unsigned sizes[] = {HIDDEN_N, OUT_N};
+   //RecurrentNetwork *net = new RecurrentNetwork(2,sizes,N,alpha);
+   unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+   RecurrentNetwork *net = new DistributedRecurrentNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
    signal(SIGINT, ctrlc);
 
    //vector<pair<vector<float>,vector<int > > > tests;

@@ -19,12 +19,13 @@
 
 using namespace NeuralNET;
 
-RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha)
+RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha, unsigned recurrentLayerIndex)
+    :recurrentLayerIndex(recurrentLayerIndex)
 {
     layers.resize(layerCount);
     for(unsigned i = 0; i< layers.size();i++)
     {
-      if(i==0)
+      if(i==recurrentLayerIndex)
       {
         layers[i] = new RecurrentLayer(sizes[i], sizes[i-1], alpha);
       }
@@ -33,4 +34,14 @@ RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsign
         layers[i] = new NeuralLayer(sizes[i], sizes[i-1], alpha);
       }
     }
+}
+
+void RecurrentNetwork::update()
+{
+    ((RecurrentNetwork*) layers[recurrentLayerIndex])->update();
+}
+
+void RecurrentNetwork::reset()
+{
+    ((RecurrentNetwork*) layers[recurrentLayerIndex])->reset();
 }

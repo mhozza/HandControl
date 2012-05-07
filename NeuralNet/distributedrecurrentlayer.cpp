@@ -15,25 +15,18 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RECURRENTNETWORK_H
-#define RECURRENTNETWORK_H
+#include "distributedrecurrentlayer.h"
 
-#include "neuralnetwork.h"
-#include "recurrentlayer.h"
+using namespace NeuralNET;
 
-namespace NeuralNET {
-
-class RecurrentNetwork : public NeuralNetwork
+DistributedRecurrentLayer::DistributedRecurrentLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha)
+    :RecurrentLayer(w*h*neuronsPerZone,(dimensionW*dimensionH)/(w*h),alpha), DistributedNeuralLayer(neuronsPerZone,w,h,dimensionW,dimensionH)
 {
-    unsigned recurrentLayerIndex;
-protected:
-    RecurrentNetwork(){}
-public:
-    RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = 0.25, unsigned recurrentLayer = 0);
-    void update();
-    void reset();
-};
-
+    /*this->neuronsPerZone = neuronsPerZone;
+    this->width = w;
+    this->height = h;
+    this->dimensionWidth = dimensionW;
+    this->dimensionHeight = dimensionH;
+    this->inputWidth = dimensionWidth/width;
+    this->inputHeight = dimensionHeight/height;*/
 }
-
-#endif // RECURRENTNETWORK_H

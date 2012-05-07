@@ -15,25 +15,20 @@
  *    along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-#ifndef RECURRENTNETWORK_H
-#define RECURRENTNETWORK_H
+#ifndef DISTRIBUTEDRECURRENTLAYER_H
+#define DISTRIBUTEDRECURRENTLAYER_H
 
-#include "neuralnetwork.h"
 #include "recurrentlayer.h"
+#include "distributedneurallayer.h"
 
 namespace NeuralNET {
 
-class RecurrentNetwork : public NeuralNetwork
+class DistributedRecurrentLayer : public RecurrentLayer, public DistributedNeuralLayer
 {
-    unsigned recurrentLayerIndex;
-protected:
-    RecurrentNetwork(){}
 public:
-    RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = 0.25, unsigned recurrentLayer = 0);
-    void update();
-    void reset();
+    DistributedRecurrentLayer(unsigned neuronsPerZone, unsigned w, unsigned h, unsigned dimensionW, unsigned dimensionH, float alpha);
 };
 
 }
 
-#endif // RECURRENTNETWORK_H
+#endif // DISTRIBUTEDRECURRENTLAYER_H
