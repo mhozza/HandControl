@@ -39,7 +39,7 @@ SOURCES += main.cpp\
     color.cpp \
     NeuralNet/elmannetwork.cpp \
     NeuralNet/recurrentlayer.cpp \
-    NeuralNet/recurentperceptron.cpp \
+    NeuralNet/recurrentperceptron.cpp \
     NeuralNet/recurrentnetwork.cpp \
     NeuralNet/distributedrecurrentnetwork.cpp \
     NeuralNet/distributedrecurrentlayer.cpp
@@ -73,7 +73,7 @@ HEADERS  += mainwindow.h \
     color.h \
     NeuralNet/elmannetwork.h \
     NeuralNet/recurrentlayer.h \
-    NeuralNet/recurentperceptron.h \
+    NeuralNet/recurrentperceptron.h \
     NeuralNet/recurrentnetwork.h \
     NeuralNet/distributedrecurrentnetwork.h \
     NeuralNet/distributedrecurrentlayer.h
