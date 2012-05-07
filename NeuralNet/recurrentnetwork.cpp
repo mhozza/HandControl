@@ -27,11 +27,11 @@ RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsign
     {
       if(i==recurrentLayerIndex)
       {
-        layers[i] = new RecurrentLayer(sizes[i], sizes[i-1], alpha);
+        layers[i] = new RecurrentLayer(sizes[i], i==0 ? dimension : sizes [i-1], alpha);
       }
       else
       {
-        layers[i] = new NeuralLayer(sizes[i], sizes[i-1], alpha);
+        layers[i] = new NeuralLayer(sizes[i], i==0 ? dimension : sizes [i-1], alpha);
       }
     }
 }

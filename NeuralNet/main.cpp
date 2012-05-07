@@ -1,6 +1,7 @@
 #include <iostream>
 #include "neuralnetwork.h"
 #include "distributedneuralnetwork.h"
+#include "distributedrecurrentnetwork.h"
 #include "recurrentnetwork.h"
 #include <cstdlib>
 #include <algorithm>
