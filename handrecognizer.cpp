@@ -195,6 +195,7 @@ void HandRecognizer::saveAllImages()
     }
 
     imageIsHand.clear();
+    indexInfoBuffer.clear();
     saveImageBuffer1.clear();
     saveImageBuffer2.clear();
 
