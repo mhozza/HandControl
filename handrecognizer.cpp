@@ -86,7 +86,7 @@ void HandRecognizer::processRects(RectQueue *q, GrayScaleImage *imgRef, GrayScal
     imgScaled2->scale(SCALE_SIZE,SCALE_SIZE);
 
     //fft
-    fftw_complex *in = NULL;
+    /*fftw_complex *in = NULL;
     fftw_complex *out = NULL;
     fftw_plan p;
     in = imgScaled->toComplexArray();
@@ -104,7 +104,7 @@ void HandRecognizer::processRects(RectQueue *q, GrayScaleImage *imgRef, GrayScal
     p2 = fftw_plan_dft_2d(imgScaled2->width(), imgScaled2->height(), in2, out2, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
     fftw_execute(p2); // repeat as needed
     fftw_destroy_plan(p2);
-    delete in2;
+    delete in2;*/
 
     float hand = 1;
     /*
@@ -152,8 +152,8 @@ void HandRecognizer::processRects(RectQueue *q, GrayScaleImage *imgRef, GrayScal
     }
     saveLock.unlock();
 #endif    
-    fftw_free(out);
-    fftw_free(out2);
+    //fftw_free(out);
+    //fftw_free(out2);
 
     delete imgRefScaled;
     delete imgScaled;
