@@ -12,7 +12,6 @@
 #include <dirent.h>
 #include <map>
 
-
 using namespace std;
 using namespace NeuralNET;
 
@@ -22,7 +21,7 @@ using namespace NeuralNET;
 #define HIDDEN_N_SIDE 4
 #define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
 //#define HIDDEN_N 60
-#define HIDDEN_N2 12
+#define HIDDEN_N2 13
 #define OUT_N 1
 #define MAX_EPOCHE 400
 
@@ -83,7 +82,7 @@ vector<string> listDirectory(string path)
      while ((ep = readdir (dp)))
      {
        string s = ep->d_name;
-       if(s=="." || s == ".." || s=="nu") continue;
+       if(s[0]=='.') continue;
        files.push_back(path+s);
      }
      closedir(dp);
@@ -345,6 +344,7 @@ int main(int argc, char *argv[])
             invert = true;
         }
 
+        //if(argc>5) sizes = argv[5];
         if(argc>5) hands_path = argv[5];
         if(argc>6) nonhands_path = argv[6];
         if(argc>7) infile = argv[7];
