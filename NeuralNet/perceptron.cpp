@@ -19,7 +19,7 @@ void Perceptron::prepare(vector<float>* input)
   }
   else
   {
-    cout << "PrepareException" << endl;
+    cerr << "PrepareException" << endl;
     throw -1;
   }
 }

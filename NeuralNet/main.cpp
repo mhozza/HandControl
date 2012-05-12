@@ -82,7 +82,7 @@ vector<string> listDirectory(string path)
      while ((ep = readdir (dp)))
      {
        string s = ep->d_name;
-       if(s[0]=='.') continue;
+       if(s[0]=='.' || s=="nu") continue;
        files.push_back(path+s);
      }
      closedir(dp);
@@ -344,7 +344,6 @@ int main(int argc, char *argv[])
             invert = true;
         }
 
-        //if(argc>5) sizes = argv[5];
         if(argc>5) hands_path = argv[5];
         if(argc>6) nonhands_path = argv[6];
         if(argc>7) infile = argv[7];
@@ -371,8 +370,18 @@ int main(int argc, char *argv[])
         hands = listDirectory(hands_path);
         others = listDirectory(nonhands_path);
 
-        //unsigned sizes[] = {HIDDEN_N, OUT_N};
+
         unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+        if(ch=='c')
+        {
+            cin >> ch;
+            FOR(i,2)
+            {
+                cin >> sizes[i];
+                cerr << sizes[i] << endl;
+            }
+            sizes[0]*=HIDDEN_N_SIDE*HIDDEN_N_SIDE;
+        }
         if(ch == 'r')
         {
             return recurrentTrain(sizes);
