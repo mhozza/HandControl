@@ -206,7 +206,8 @@ void ImageProcessor::prepareImg(GrayScaleImage &image, int sx, int sy, int ex, i
 }
 
 ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecognizer)
-    : images(0), images2(MAX_FRAMES/2), index(0), seqIndex(0), useKalmanFilter(true)
+    : images(0), images2(MAX_FRAMES/2), index(0), seqIndex(110)
+    //, useKalmanFilter(true)
 {
   oldImage = new GrayScaleImage(width,height);
   expandedImg = new GrayScaleImage(width,height);
