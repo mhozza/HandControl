@@ -25,8 +25,8 @@ namespace NeuralNET {
 
 class RecurrentNetwork : public NeuralNetwork
 {
-    unsigned recurrentLayerIndex;
 protected:
+    unsigned recurrentLayerIndex;
     RecurrentNetwork(unsigned recurrentLayerIndex = 0)
     {
         this->recurrentLayerIndex = recurrentLayerIndex;

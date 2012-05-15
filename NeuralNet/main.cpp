@@ -29,7 +29,7 @@ using namespace NeuralNET;
 double diffclock(clock_t clock1,clock_t clock2)
 {
     double diffticks=clock1-clock2;
-    double diffms=(diffticks*10)/CLOCKS_PER_SEC;
+    double diffms=(diffticks*10000.0)/CLOCKS_PER_SEC;
     return diffms;
 }
 
@@ -215,7 +215,7 @@ int recurrentTrain(unsigned sizes[], int type = 1)
 
    float E = 100;
    int epoche = 0;
-   int good = 0;
+   int good = 0, hgood = 0;
    clock_t begin=clock();
    while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
@@ -241,17 +241,21 @@ int recurrentTrain(unsigned sizes[], int type = 1)
                  if(verbose)
                      cout << (c>0.5) << " (" << c  << ")" << endl;
 
-
                  float e = 0;
                  if(mode==0)
                      e = net->train(tests[i][j][k].first,tests[i][j][k].second);
                  else
                  {
-                     if(abs(tests[i][j][k].second[0] - c)<0.5) good++;
+                     if(abs(tests[i][j][k].second[0] - c)<0.5)
+                     {
+                       good++;
+                       if(tests[i][j][k].second[0]==1) hgood++;
+                     }
                      e = getError(c,tests[i][j][k].second[0]);
                      cout << e << endl;
                  }
-                 if(tests[i][j][k].second[0]==1)
+                 //if(tests[i][j][k].second[0]==1)
+                 if(c>0.5)
                  {
                      net->update();                     
                  }
@@ -265,12 +269,16 @@ int recurrentTrain(unsigned sizes[], int type = 1)
      {
          cout << "Good: " << good << " of " << hands.size()+others.size() << " "
               << (100.0*good)/(hands.size()+others.size()) << "%" << endl;
+         cout << "Good hands: " << hgood << " of " << hands.size() << " "
+              << (100.0*hgood)/(hands.size()) << "%" << endl;
+         cout << "Good other: " << good-hgood << " of " << others.size() << " "
+              << (100.0*(good-hgood))/(others.size()) << "%" << endl;
      }
      if(stop) break;
    }
    clock_t end=clock();
    if(verbose) cout << epoche << endl;
-   cout << "Time elapsed: " << double(diffclock(end,begin)) << " ms"<< endl;
+   cerr << "Time elapsed: " << double(diffclock(end,begin)) << " ms"<< endl;
    if(mode == 0) net->saveWeights(outfile);
    return 0;
 }
@@ -298,7 +306,7 @@ int normalTrain(unsigned sizes[], int type = 1)
 
    float E = 100;
    int epoche = 0;
-   int good = 0;
+   int good = 0, hgood = 0;
    clock_t begin=clock();
    while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
@@ -326,7 +334,12 @@ int normalTrain(unsigned sizes[], int type = 1)
          e = net->train(tests[i].first,tests[i].second);
        else
        {
-         if(abs(tests[i].second[0] - c)<0.5) good++;
+         if(abs(tests[i].second[0] - c)<0.5)
+         {
+           good++;
+           if(tests[i].second[0]==1)
+             hgood++;
+         }
          e = getError(c,tests[i].second[0]);
          cout << e << endl;
        }
@@ -338,6 +351,10 @@ int normalTrain(unsigned sizes[], int type = 1)
      {
        cout << "Good: " << good << " of " << tests.size() << " "
             << (100.0*good)/tests.size() << "%" << endl;
+       cout << "Good hands: " << hgood << " of " << hands.size() << " "
+            << (100.0*hgood)/(hands.size()) << "%" << endl;
+       cout << "Good other: " << good-hgood << " of " << others.size() << " "
+            << (100.0*(good-hgood))/(others.size()) << "%" << endl;
      }
      if(stop) break;
    }
