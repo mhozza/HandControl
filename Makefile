@@ -169,6 +169,7 @@ all: Makefile $(TARGET)
 
 $(TARGET): ui_mainwindow.h ui_onscreendisplayform.h $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
+	{ test -n "$(DESTDIR)" && DESTDIR="$(DESTDIR)" || DESTDIR=.; } && test $$(gdb --version | sed -e 's,[^0-9]\+\([0-9]\)\.\([0-9]\).*,\1\2,;q') -gt 72 && gdb --nx --batch --quiet -ex 'set confirm off' -ex "save gdb-index $$DESTDIR" -ex quit '$(TARGET)' && test -f $(TARGET).gdb-index && objcopy --add-section '.gdb_index=$(TARGET).gdb-index' --set-section-flags '.gdb_index=readonly' '$(TARGET)' '$(TARGET)' && rm -f $(TARGET).gdb-index || true
 
 Makefile: HandControl.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/share/qt4/mkspecs/common/unix.conf \
 		/usr/share/qt4/mkspecs/common/linux.conf \
@@ -182,7 +183,7 @@ Makefile: HandControl.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/shar
 		/usr/share/qt4/mkspecs/features/qt_config.prf \
 		/usr/share/qt4/mkspecs/features/exclusive_builds.prf \
 		/usr/share/qt4/mkspecs/features/default_pre.prf \
-		/usr/share/qt4/mkspecs/features/release.prf \
+		/usr/share/qt4/mkspecs/features/debug.prf \
 		/usr/share/qt4/mkspecs/features/default_post.prf \
 		/usr/share/qt4/mkspecs/features/unix/gdb_dwarf_index.prf \
 		/usr/share/qt4/mkspecs/features/warn_on.prf \
@@ -196,7 +197,7 @@ Makefile: HandControl.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/shar
 		/usr/share/qt4/mkspecs/features/include_source_dir.prf \
 		/usr/lib/i386-linux-gnu/libQtGui.prl \
 		/usr/lib/i386-linux-gnu/libQtCore.prl
-	$(QMAKE) -spec /usr/share/qt4/mkspecs/linux-g++ -o Makefile HandControl.pro
+	$(QMAKE) -spec /usr/share/qt4/mkspecs/linux-g++ CONFIG+=debug QMLJSDEBUGGER_PATH=/usr/share/qtcreator/qml/qmljsdebugger -o Makefile HandControl.pro
 /usr/share/qt4/mkspecs/common/unix.conf:
 /usr/share/qt4/mkspecs/common/linux.conf:
 /usr/share/qt4/mkspecs/common/gcc-base.conf:
@@ -209,7 +210,7 @@ Makefile: HandControl.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/shar
 /usr/share/qt4/mkspecs/features/qt_config.prf:
 /usr/share/qt4/mkspecs/features/exclusive_builds.prf:
 /usr/share/qt4/mkspecs/features/default_pre.prf:
-/usr/share/qt4/mkspecs/features/release.prf:
+/usr/share/qt4/mkspecs/features/debug.prf:
 /usr/share/qt4/mkspecs/features/default_post.prf:
 /usr/share/qt4/mkspecs/features/unix/gdb_dwarf_index.prf:
 /usr/share/qt4/mkspecs/features/warn_on.prf:
@@ -224,7 +225,7 @@ Makefile: HandControl.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/shar
 /usr/lib/i386-linux-gnu/libQtGui.prl:
 /usr/lib/i386-linux-gnu/libQtCore.prl:
 qmake:  FORCE
-	@$(QMAKE) -spec /usr/share/qt4/mkspecs/linux-g++ -o Makefile HandControl.pro
+	@$(QMAKE) -spec /usr/share/qt4/mkspecs/linux-g++ CONFIG+=debug QMLJSDEBUGGER_PATH=/usr/share/qtcreator/qml/qmljsdebugger -o Makefile HandControl.pro
 
 dist: 
 	@$(CHK_DIR_EXISTS) .tmp/HandControl1.0.0 || $(MKDIR) .tmp/HandControl1.0.0 
