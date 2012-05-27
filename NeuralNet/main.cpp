@@ -13,6 +13,7 @@
 #include <ctime>
 #include <map>
 
+
 using namespace std;
 using namespace NeuralNET;
 
@@ -177,7 +178,7 @@ int recurrentTrain(unsigned sizes[], int type = 1)
     if(type==0)
         net = new RecurrentNetwork(2,sizes,N,alpha);
     else
-        net = new DistributedRecurrentNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
+        net = new DistributedRecurrentNetwork(2,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
 
    //nacitaj   
    net->loadWeights(infile);   
@@ -219,6 +220,7 @@ int recurrentTrain(unsigned sizes[], int type = 1)
    clock_t begin=clock();
    while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
+     good = 0, hgood = 0;
      epoche++;
      if(mode==0) cerr << epoche << endl;
      E=0;
@@ -242,18 +244,21 @@ int recurrentTrain(unsigned sizes[], int type = 1)
                      cout << (c>0.5) << " (" << c  << ")" << endl;
 
                  float e = 0;
+
+                 if(abs(tests[i][j][k].second[0] - c)<0.5)
+                 {
+                   good++;
+                   if(tests[i][j][k].second[0]==1) hgood++;
+                 }
+
                  if(mode==0)
                      e = net->train(tests[i][j][k].first,tests[i][j][k].second);
                  else
                  {
-                     if(abs(tests[i][j][k].second[0] - c)<0.5)
-                     {
-                       good++;
-                       if(tests[i][j][k].second[0]==1) hgood++;
-                     }
-                     e = getError(c,tests[i][j][k].second[0]);
-                     cout << e << endl;
+                   e = getError(c,tests[i][j][k].second[0]);
+                   cout << e << endl;
                  }
+
                  //if(tests[i][j][k].second[0]==1)
                  if(c>0.5)
                  {
@@ -265,15 +270,13 @@ int recurrentTrain(unsigned sizes[], int type = 1)
          net->reset();
      }
      cout << "Final error:" << E/(hands.size()+others.size())  << endl;
-     if(mode>0)
-     {
-         cout << "Good: " << good << " of " << hands.size()+others.size() << " "
-              << (100.0*good)/(hands.size()+others.size()) << "%" << endl;
-         cout << "Good hands: " << hgood << " of " << hands.size() << " "
-              << (100.0*hgood)/(hands.size()) << "%" << endl;
-         cout << "Good other: " << good-hgood << " of " << others.size() << " "
-              << (100.0*(good-hgood))/(others.size()) << "%" << endl;
-     }
+     cout << "Good: " << good << " of " << hands.size()+others.size() << " "
+          << (100.0*good)/(hands.size()+others.size()) << "%" << endl;
+     cout << "Good hands: " << hgood << " of " << hands.size() << " "
+          << (100.0*hgood)/(hands.size()) << "%" << endl;
+     cout << "Good other: " << good-hgood << " of " << others.size() << " "
+          << (100.0*(good-hgood))/(others.size()) << "%" << endl;
+
      if(stop) break;
    }
    clock_t end=clock();
@@ -291,7 +294,7 @@ int normalTrain(unsigned sizes[], int type = 1)
    if(type==0)
        net = new NeuralNetwork(2,sizes,N,alpha);
    else
-       net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
+       net = new DistributedNeuralNetwork(2,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
 
    //nacitaj
    net->loadWeights(infile);
@@ -310,6 +313,7 @@ int normalTrain(unsigned sizes[], int type = 1)
    clock_t begin=clock();
    while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
+     good = 0, hgood = 0;
      epoche++;
      if(mode==0) cerr << epoche << endl;
      E=0;
@@ -409,13 +413,13 @@ int main(int argc, char *argv[])
         others = listDirectory(nonhands_path);
 
         int type = 1;
-        //unsigned sizes[] = {HIDDEN_N, OUT_N};
-        unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+        unsigned sizes[] = {HIDDEN_N, OUT_N};
+        //unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
 
         if(ch=='c')
         {
             cin >> ch;
-            FOR(i,type+1)
+            FOR(i,(int)(sizeof(sizes)/sizeof(unsigned))-1)
             {
                 cin >> sizes[i];
                 cerr << sizes[i] << endl;

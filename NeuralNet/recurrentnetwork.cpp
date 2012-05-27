@@ -19,8 +19,7 @@
 
 using namespace NeuralNET;
 
-RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha, unsigned recurrentLayerIndex)
-    :recurrentLayerIndex(recurrentLayerIndex)
+RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha)
 {
     layers.resize(layerCount);
     for(unsigned i = 0; i< layers.size();i++)
@@ -38,10 +37,16 @@ RecurrentNetwork::RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsign
 
 void RecurrentNetwork::update()
 {
-    dynamic_cast<RecurrentLayer*>(layers[recurrentLayerIndex])->update();
+  for(unsigned i = 0; i< layers.size();i++)
+  {
+    dynamic_cast<RecurrentLayer*>(layers[i])->update();
+  }
 }
 
 void RecurrentNetwork::reset()
 {
-    dynamic_cast<RecurrentLayer*>(layers[recurrentLayerIndex])->reset();
+  for(unsigned i = 0; i< layers.size();i++)
+  {
+    dynamic_cast<RecurrentLayer*>(layers[i])->reset();
+  }
 }
