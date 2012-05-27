@@ -25,11 +25,14 @@ namespace NeuralNET {
 
 class RecurrentNetwork : public NeuralNetwork
 {
-protected:
     unsigned recurrentLayerIndex;
-    RecurrentNetwork() {}
+protected:
+    RecurrentNetwork(unsigned recurrentLayerIndex = 0)
+    {
+        this->recurrentLayerIndex = recurrentLayerIndex;
+    }
 public:
-    RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = 0.25);
+    RecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned dimension, float alpha = 0.25, unsigned recurrentLayerIndex = 0);
     void update();
     void reset();
 };
