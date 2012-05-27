@@ -312,6 +312,7 @@ int normalTrain(unsigned sizes[], int type = 1)
    clock_t begin=clock();
    while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
+     good = 0, hgood = 0;
      epoche++;
      if(mode==0) cerr << epoche << endl;
      E=0;
