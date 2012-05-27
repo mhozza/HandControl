@@ -1,0 +1,1942 @@
+n 13 7
+../hand_images/test/hands_r_fft/img_101_10a.trn
+../hand_images/test/hands_r_fft/img_101_11a.trn
+../hand_images/test/hands_r_fft/img_102_0a.trn
+../hand_images/test/hands_r_fft/img_102_10a.trn
+../hand_images/test/hands_r_fft/img_102_11a.trn
+../hand_images/test/hands_r_fft/img_102_1a.trn
+../hand_images/test/hands_r_fft/img_102_2a.trn
+../hand_images/test/hands_r_fft/img_102_3a.trn
+../hand_images/test/hands_r_fft/img_102_5a.trn
+../hand_images/test/hands_r_fft/img_102_6b.trn
+../hand_images/test/hands_r_fft/img_102_7a.trn
+../hand_images/test/hands_r_fft/img_102_8a.trn
+../hand_images/test/hands_r_fft/img_103_0a.trn
+../hand_images/test/hands_r_fft/img_103_10a.trn
+../hand_images/test/hands_r_fft/img_103_11a.trn
+../hand_images/test/hands_r_fft/img_103_1a.trn
+../hand_images/test/hands_r_fft/img_103_3a.trn
+../hand_images/test/hands_r_fft/img_103_4a.trn
+../hand_images/test/hands_r_fft/img_103_5a.trn
+../hand_images/test/hands_r_fft/img_103_6a.trn
+../hand_images/test/hands_r_fft/img_103_7a.trn
+../hand_images/test/hands_r_fft/img_103_8a.trn
+../hand_images/test/hands_r_fft/img_103_9a.trn
+../hand_images/test/hands_r_fft/img_104_0a.trn
+../hand_images/test/hands_r_fft/img_104_11c.trn
+../hand_images/test/hands_r_fft/img_104_1a.trn
+../hand_images/test/hands_r_fft/img_104_2a.trn
+../hand_images/test/hands_r_fft/img_104_3a.trn
+../hand_images/test/hands_r_fft/img_104_4a.trn
+../hand_images/test/hands_r_fft/img_104_5a.trn
+../hand_images/test/hands_r_fft/img_104_6a.trn
+../hand_images/test/hands_r_fft/img_104_7a.trn
+../hand_images/test/hands_r_fft/img_102_4a.trn
+../hand_images/test/hands_r_fft/img_103_2a.trn
+../hand_images/test/hands_r_fft/img_104_10a.trn
+../hand_images/test/hands_r_fft/img_104_8a.trn
+../hand_images/test/hands_r_fft/img_128_4b.trn
+../hand_images/test/hands_r_fft/img_71_10b.trn
+../hand_images/test/hands_r_fft/img_72_1a.trn
+../hand_images/test/hands_r_fft/img_73_10a.trn
+../hand_images/test/hands_r_fft/img_74_3a.trn
+../hand_images/test/hands_r_fft/img_75_3a.trn
+../hand_images/test/hands_r_fft/img_78_10a.trn
+../hand_images/test/hands_r_fft/img_78_8a.trn
+../hand_images/test/hands_r_fft/img_79_5a.trn
+../hand_images/test/hands_r_fft/img_80_4a.trn
+../hand_images/test/hands_r_fft/img_83_11a.trn
+../hand_images/test/hands_r_fft/img_83_9a.trn
+../hand_images/test/hands_r_fft/img_85_6a.trn
+../hand_images/test/hands_r_fft/img_104_9a.trn
+../hand_images/test/hands_r_fft/img_126_10b.trn
+../hand_images/test/hands_r_fft/img_127_10b.trn
+../hand_images/test/hands_r_fft/img_127_9b.trn
+../hand_images/test/hands_r_fft/img_128_0b.trn
+../hand_images/test/hands_r_fft/img_128_11b.trn
+../hand_images/test/hands_r_fft/img_128_1b.trn
+../hand_images/test/hands_r_fft/img_128_2b.trn
+../hand_images/test/hands_r_fft/img_128_7c.trn
+../hand_images/test/hands_r_fft/img_128_8d.trn
+../hand_images/test/hands_r_fft/img_129_0b.trn
+../hand_images/test/hands_r_fft/img_129_1b.trn
+../hand_images/test/hands_r_fft/img_129_2c.trn
+../hand_images/test/hands_r_fft/img_129_3b.trn
+../hand_images/test/hands_r_fft/img_129_4b.trn
+../hand_images/test/hands_r_fft/img_129_7a.trn
+../hand_images/test/hands_r_fft/img_71_11b.trn
+../hand_images/test/hands_r_fft/img_71_5c.trn
+../hand_images/test/hands_r_fft/img_71_6c.trn
+../hand_images/test/hands_r_fft/img_71_7c.trn
+../hand_images/test/hands_r_fft/img_71_8c.trn
+../hand_images/test/hands_r_fft/img_71_9b.trn
+../hand_images/test/hands_r_fft/img_72_0b.trn
+../hand_images/test/hands_r_fft/img_72_10a.trn
+../hand_images/test/hands_r_fft/img_72_2a.trn
+../hand_images/test/hands_r_fft/img_72_3a.trn
+../hand_images/test/hands_r_fft/img_72_4b.trn
+../hand_images/test/hands_r_fft/img_72_5a.trn
+../hand_images/test/hands_r_fft/img_72_6a.trn
+../hand_images/test/hands_r_fft/img_72_7a.trn
+../hand_images/test/hands_r_fft/img_72_8a.trn
+../hand_images/test/hands_r_fft/img_72_9a.trn
+../hand_images/test/hands_r_fft/img_73_11a.trn
+../hand_images/test/hands_r_fft/img_73_1b.trn
+../hand_images/test/hands_r_fft/img_73_9b.trn
+../hand_images/test/hands_r_fft/img_74_0c.trn
+../hand_images/test/hands_r_fft/img_74_10b.trn
+../hand_images/test/hands_r_fft/img_74_11b.trn
+../hand_images/test/hands_r_fft/img_74_1a.trn
+../hand_images/test/hands_r_fft/img_74_2c.trn
+../hand_images/test/hands_r_fft/img_74_5b.trn
+../hand_images/test/hands_r_fft/img_74_6b.trn
+../hand_images/test/hands_r_fft/img_74_7b.trn
+../hand_images/test/hands_r_fft/img_74_8b.trn
+../hand_images/test/hands_r_fft/img_74_9b.trn
+../hand_images/test/hands_r_fft/img_75_0a.trn
+../hand_images/test/hands_r_fft/img_75_1a.trn
+../hand_images/test/hands_r_fft/img_75_2b.trn
+../hand_images/test/hands_r_fft/img_77_10a.trn
+../hand_images/test/hands_r_fft/img_77_11a.trn
+../hand_images/test/hands_r_fft/img_77_5a.trn
+../hand_images/test/hands_r_fft/img_77_6a.trn
+../hand_images/test/hands_r_fft/img_77_7a.trn
+../hand_images/test/hands_r_fft/img_77_8a.trn
+../hand_images/test/hands_r_fft/img_77_9a.trn
+../hand_images/test/hands_r_fft/img_78_0a.trn
+../hand_images/test/hands_r_fft/img_78_11a.trn
+../hand_images/test/hands_r_fft/img_78_1a.trn
+../hand_images/test/hands_r_fft/img_78_2a.trn
+../hand_images/test/hands_r_fft/img_78_3a.trn
+../hand_images/test/hands_r_fft/img_78_4a.trn
+../hand_images/test/hands_r_fft/img_78_5a.trn
+../hand_images/test/hands_r_fft/img_78_6a.trn
+../hand_images/test/hands_r_fft/img_78_7a.trn
+../hand_images/test/hands_r_fft/img_78_9a.trn
+../hand_images/test/hands_r_fft/img_79_0a.trn
+../hand_images/test/hands_r_fft/img_79_10a.trn
+../hand_images/test/hands_r_fft/img_79_11a.trn
+../hand_images/test/hands_r_fft/img_79_1a.trn
+../hand_images/test/hands_r_fft/img_79_2a.trn
+../hand_images/test/hands_r_fft/img_79_3a.trn
+../hand_images/test/hands_r_fft/img_79_4a.trn
+../hand_images/test/hands_r_fft/img_79_6a.trn
+../hand_images/test/hands_r_fft/img_79_7a.trn
+../hand_images/test/hands_r_fft/img_79_8a.trn
+../hand_images/test/hands_r_fft/img_79_9a.trn
+../hand_images/test/hands_r_fft/img_80_0a.trn
+../hand_images/test/hands_r_fft/img_80_1a.trn
+../hand_images/test/hands_r_fft/img_80_2a.trn
+../hand_images/test/hands_r_fft/img_80_3a.trn
+../hand_images/test/hands_r_fft/img_80_5a.trn
+../hand_images/test/hands_r_fft/img_80_6a.trn
+../hand_images/test/hands_r_fft/img_80_7a.trn
+../hand_images/test/hands_r_fft/img_82_10a.trn
+../hand_images/test/hands_r_fft/img_82_11a.trn
+../hand_images/test/hands_r_fft/img_82_9a.trn
+../hand_images/test/hands_r_fft/img_83_0a.trn
+../hand_images/test/hands_r_fft/img_83_10a.trn
+../hand_images/test/hands_r_fft/img_83_1a.trn
+../hand_images/test/hands_r_fft/img_83_2a.trn
+../hand_images/test/hands_r_fft/img_83_3a.trn
+../hand_images/test/hands_r_fft/img_83_4a.trn
+../hand_images/test/hands_r_fft/img_83_5a.trn
+../hand_images/test/hands_r_fft/img_83_6a.trn
+../hand_images/test/hands_r_fft/img_83_7a.trn
+../hand_images/test/hands_r_fft/img_83_8a.trn
+../hand_images/test/hands_r_fft/img_84_4a.trn
+../hand_images/test/hands_r_fft/img_85_0a.trn
+../hand_images/test/hands_r_fft/img_85_10a.trn
+../hand_images/test/hands_r_fft/img_85_11a.trn
+../hand_images/test/hands_r_fft/img_85_2a.trn
+../hand_images/test/hands_r_fft/img_85_3a.trn
+../hand_images/test/hands_r_fft/img_85_4a.trn
+../hand_images/test/hands_r_fft/img_85_5a.trn
+../hand_images/test/hands_r_fft/img_86_0a.trn
+../hand_images/test/hands_r_fft/img_86_10a.trn
+../hand_images/test/hands_r_fft/img_86_1a.trn
+../hand_images/test/hands_r_fft/img_86_2a.trn
+../hand_images/test/hands_r_fft/img_86_3a.trn
+../hand_images/test/hands_r_fft/img_86_4a.trn
+../hand_images/test/hands_r_fft/img_86_5a.trn
+../hand_images/test/hands_r_fft/img_86_6a.trn
+../hand_images/test/hands_r_fft/img_86_7a.trn
+../hand_images/test/hands_r_fft/img_86_8a.trn
+../hand_images/test/hands_r_fft/img_86_9a.trn
+../hand_images/test/hands_r_fft/img_89_10a.trn
+../hand_images/test/hands_r_fft/img_89_3a.trn
+../hand_images/test/hands_r_fft/img_89_4a.trn
+../hand_images/test/hands_r_fft/img_89_9a.trn
+../hand_images/test/other_r_fft/img_120_10a.trn
+../hand_images/test/other_r_fft/img_72_4a.trn
+../hand_images/test/other_r_fft/img_100_11a.trn
+../hand_images/test/other_r_fft/img_100_2a.trn
+../hand_images/test/other_r_fft/img_100_7a.trn
+../hand_images/test/other_r_fft/img_100_9a.trn
+../hand_images/test/other_r_fft/img_100_9b.trn
+../hand_images/test/other_r_fft/img_101_0a.trn
+../hand_images/test/other_r_fft/img_101_1a.trn
+../hand_images/test/other_r_fft/img_101_3a.trn
+../hand_images/test/other_r_fft/img_101_4b.trn
+../hand_images/test/other_r_fft/img_101_4c.trn
+../hand_images/test/other_r_fft/img_101_5a.trn
+../hand_images/test/other_r_fft/img_101_5b.trn
+../hand_images/test/other_r_fft/img_101_6a.trn
+../hand_images/test/other_r_fft/img_101_8a.trn
+../hand_images/test/other_r_fft/img_101_8c.trn
+../hand_images/test/other_r_fft/img_101_9b.trn
+../hand_images/test/other_r_fft/img_102_1b.trn
+../hand_images/test/other_r_fft/img_102_3b.trn
+../hand_images/test/other_r_fft/img_102_6a.trn
+../hand_images/test/other_r_fft/img_102_8b.trn
+../hand_images/test/other_r_fft/img_102_9a.trn
+../hand_images/test/other_r_fft/img_103_3b.trn
+../hand_images/test/other_r_fft/img_103_4b.trn
+../hand_images/test/other_r_fft/img_104_10b.trn
+../hand_images/test/other_r_fft/img_104_11b.trn
+../hand_images/test/other_r_fft/img_104_11d.trn
+../hand_images/test/other_r_fft/img_105_1a.trn
+../hand_images/test/other_r_fft/img_105_2a.trn
+../hand_images/test/other_r_fft/img_105_2b.trn
+../hand_images/test/other_r_fft/img_105_3a.trn
+../hand_images/test/other_r_fft/img_105_4a.trn
+../hand_images/test/other_r_fft/img_105_4b.trn
+../hand_images/test/other_r_fft/img_101_4a.trn
+../hand_images/test/other_r_fft/img_102_0b.trn
+../hand_images/test/other_r_fft/img_104_11a.trn
+../hand_images/test/other_r_fft/img_105_7a.trn
+../hand_images/test/other_r_fft/img_111_11b.trn
+../hand_images/test/other_r_fft/img_112_3a.trn
+../hand_images/test/other_r_fft/img_112_7a.trn
+../hand_images/test/other_r_fft/img_113_1a.trn
+../hand_images/test/other_r_fft/img_114_4a.trn
+../hand_images/test/other_r_fft/img_115_5a.trn
+../hand_images/test/other_r_fft/img_116_1a.trn
+../hand_images/test/other_r_fft/img_116_7c.trn
+../hand_images/test/other_r_fft/img_117_11a.trn
+../hand_images/test/other_r_fft/img_117_5c.trn
+../hand_images/test/other_r_fft/img_118_2a.trn
+../hand_images/test/other_r_fft/img_119_0a.trn
+../hand_images/test/other_r_fft/img_110_2a.trn
+../hand_images/test/other_r_fft/img_110_2b.trn
+../hand_images/test/other_r_fft/img_110_3a.trn
+../hand_images/test/other_r_fft/img_110_3b.trn
+../hand_images/test/other_r_fft/img_110_3c.trn
+../hand_images/test/other_r_fft/img_110_5a.trn
+../hand_images/test/other_r_fft/img_110_7a.trn
+../hand_images/test/other_r_fft/img_110_9a.trn
+../hand_images/test/other_r_fft/img_112_0a.trn
+../hand_images/test/other_r_fft/img_112_0b.trn
+../hand_images/test/other_r_fft/img_112_10a.trn
+../hand_images/test/other_r_fft/img_112_11a.trn
+../hand_images/test/other_r_fft/img_112_1a.trn
+../hand_images/test/other_r_fft/img_112_2a.trn
+../hand_images/test/other_r_fft/img_112_2b.trn
+../hand_images/test/other_r_fft/img_112_2c.trn
+../hand_images/test/other_r_fft/img_112_3b.trn
+../hand_images/test/other_r_fft/img_112_3c.trn
+../hand_images/test/other_r_fft/img_112_3d.trn
+../hand_images/test/other_r_fft/img_112_4a.trn
+../hand_images/test/other_r_fft/img_112_4b.trn
+../hand_images/test/other_r_fft/img_112_5a.trn
+../hand_images/test/other_r_fft/img_112_6a.trn
+../hand_images/test/other_r_fft/img_112_6b.trn
+../hand_images/test/other_r_fft/img_112_8a.trn
+../hand_images/test/other_r_fft/img_112_9a.trn
+../hand_images/test/other_r_fft/img_112_9b.trn
+../hand_images/test/other_r_fft/img_113_0a.trn
+../hand_images/test/other_r_fft/img_113_10a.trn
+../hand_images/test/other_r_fft/img_113_10b.trn
+../hand_images/test/other_r_fft/img_113_11a.trn
+../hand_images/test/other_r_fft/img_113_11b.trn
+../hand_images/test/other_r_fft/img_113_2a.trn
+../hand_images/test/other_r_fft/img_113_5a.trn
+../hand_images/test/other_r_fft/img_113_6a.trn
+../hand_images/test/other_r_fft/img_113_7a.trn
+../hand_images/test/other_r_fft/img_113_8a.trn
+../hand_images/test/other_r_fft/img_113_9a.trn
+../hand_images/test/other_r_fft/img_114_0a.trn
+../hand_images/test/other_r_fft/img_114_11a.trn
+../hand_images/test/other_r_fft/img_114_5a.trn
+../hand_images/test/other_r_fft/img_115_0a.trn
+../hand_images/test/other_r_fft/img_115_10a.trn
+../hand_images/test/other_r_fft/img_115_11a.trn
+../hand_images/test/other_r_fft/img_115_1a.trn
+../hand_images/test/other_r_fft/img_115_2a.trn
+../hand_images/test/other_r_fft/img_115_3a.trn
+../hand_images/test/other_r_fft/img_115_4a.trn
+../hand_images/test/other_r_fft/img_115_5b.trn
+../hand_images/test/other_r_fft/img_115_6a.trn
+../hand_images/test/other_r_fft/img_115_8a.trn
+../hand_images/test/other_r_fft/img_115_9a.trn
+../hand_images/test/other_r_fft/img_115_9b.trn
+../hand_images/test/other_r_fft/img_116_0a.trn
+../hand_images/test/other_r_fft/img_116_0b.trn
+../hand_images/test/other_r_fft/img_116_10a.trn
+../hand_images/test/other_r_fft/img_116_2a.trn
+../hand_images/test/other_r_fft/img_116_2b.trn
+../hand_images/test/other_r_fft/img_116_3a.trn
+../hand_images/test/other_r_fft/img_116_4a.trn
+../hand_images/test/other_r_fft/img_116_5a.trn
+../hand_images/test/other_r_fft/img_116_6a.trn
+../hand_images/test/other_r_fft/img_116_7a.trn
+../hand_images/test/other_r_fft/img_116_7b.trn
+../hand_images/test/other_r_fft/img_116_8a.trn
+../hand_images/test/other_r_fft/img_116_8b.trn
+../hand_images/test/other_r_fft/img_116_9a.trn
+../hand_images/test/other_r_fft/img_116_9b.trn
+../hand_images/test/other_r_fft/img_117_0a.trn
+../hand_images/test/other_r_fft/img_117_0b.trn
+../hand_images/test/other_r_fft/img_117_10a.trn
+../hand_images/test/other_r_fft/img_117_10b.trn
+../hand_images/test/other_r_fft/img_117_1a.trn
+../hand_images/test/other_r_fft/img_117_2a.trn
+../hand_images/test/other_r_fft/img_117_3a.trn
+../hand_images/test/other_r_fft/img_117_3b.trn
+../hand_images/test/other_r_fft/img_117_4a.trn
+../hand_images/test/other_r_fft/img_117_4b.trn
+../hand_images/test/other_r_fft/img_117_5a.trn
+../hand_images/test/other_r_fft/img_117_5b.trn
+../hand_images/test/other_r_fft/img_117_8a.trn
+../hand_images/test/other_r_fft/img_117_9a.trn
+../hand_images/test/other_r_fft/img_118_0a.trn
+../hand_images/test/other_r_fft/img_118_10a.trn
+../hand_images/test/other_r_fft/img_118_10b.trn
+../hand_images/test/other_r_fft/img_118_10c.trn
+../hand_images/test/other_r_fft/img_118_11a.trn
+../hand_images/test/other_r_fft/img_118_11b.trn
+../hand_images/test/other_r_fft/img_118_2b.trn
+../hand_images/test/other_r_fft/img_118_3a.trn
+../hand_images/test/other_r_fft/img_118_3b.trn
+../hand_images/test/other_r_fft/img_118_8a.trn
+../hand_images/test/other_r_fft/img_118_8b.trn
+../hand_images/test/other_r_fft/img_118_9a.trn
+../hand_images/test/other_r_fft/img_118_9b.trn
+../hand_images/test/other_r_fft/img_118_9c.trn
+../hand_images/test/other_r_fft/img_119_10a.trn
+../hand_images/test/other_r_fft/img_119_10b.trn
+../hand_images/test/other_r_fft/img_119_10c.trn
+../hand_images/test/other_r_fft/img_119_1a.trn
+../hand_images/test/other_r_fft/img_119_1b.trn
+../hand_images/test/other_r_fft/img_119_1c.trn
+../hand_images/test/other_r_fft/img_119_9a.trn
+../hand_images/test/other_r_fft/img_119_9b.trn
+../hand_images/test/other_r_fft/img_120_10b.trn
+../hand_images/test/other_r_fft/img_120_10c.trn
+../hand_images/test/other_r_fft/img_120_11a.trn
+../hand_images/test/other_r_fft/img_120_11b.trn
+../hand_images/test/other_r_fft/img_120_1a.trn
+../hand_images/test/other_r_fft/img_120_1b.trn
+../hand_images/test/other_r_fft/img_120_2a.trn
+../hand_images/test/other_r_fft/img_120_2b.trn
+../hand_images/test/other_r_fft/img_120_3b.trn
+../hand_images/test/other_r_fft/img_120_6a.trn
+../hand_images/test/other_r_fft/img_120_7a.trn
+../hand_images/test/other_r_fft/img_120_8a.trn
+../hand_images/test/other_r_fft/img_120_8b.trn
+../hand_images/test/other_r_fft/img_120_8c.trn
+../hand_images/test/other_r_fft/img_120_9a.trn
+../hand_images/test/other_r_fft/img_120_9b.trn
+../hand_images/test/other_r_fft/img_121_10a.trn
+../hand_images/test/other_r_fft/img_122_7a.trn
+../hand_images/test/other_r_fft/img_123_0a.trn
+../hand_images/test/other_r_fft/img_123_0b.trn
+../hand_images/test/other_r_fft/img_123_10a.trn
+../hand_images/test/other_r_fft/img_123_10b.trn
+../hand_images/test/other_r_fft/img_123_1a.trn
+../hand_images/test/other_r_fft/img_123_2a.trn
+../hand_images/test/other_r_fft/img_123_5a.trn
+../hand_images/test/other_r_fft/img_123_5b.trn
+../hand_images/test/other_r_fft/img_123_7a.trn
+../hand_images/test/other_r_fft/img_123_8c.trn
+../hand_images/test/other_r_fft/img_123_9c.trn
+../hand_images/test/other_r_fft/img_123_9d.trn
+../hand_images/test/other_r_fft/img_124_10a.trn
+../hand_images/test/other_r_fft/img_124_1a.trn
+../hand_images/test/other_r_fft/img_125_10a.trn
+../hand_images/test/other_r_fft/img_125_10b.trn
+../hand_images/test/other_r_fft/img_125_11a.trn
+../hand_images/test/other_r_fft/img_125_11b.trn
+../hand_images/test/other_r_fft/img_125_1a.trn
+../hand_images/test/other_r_fft/img_125_4a.trn
+../hand_images/test/other_r_fft/img_125_5a.trn
+../hand_images/test/other_r_fft/img_125_5b.trn
+../hand_images/test/other_r_fft/img_125_8a.trn
+../hand_images/test/other_r_fft/img_125_9a.trn
+../hand_images/test/other_r_fft/img_126_0a.trn
+../hand_images/test/other_r_fft/img_126_0b.trn
+../hand_images/test/other_r_fft/img_126_10a.trn
+../hand_images/test/other_r_fft/img_126_1a.trn
+../hand_images/test/other_r_fft/img_126_1b.trn
+../hand_images/test/other_r_fft/img_126_2a.trn
+../hand_images/test/other_r_fft/img_126_3a.trn
+../hand_images/test/other_r_fft/img_126_3b.trn
+../hand_images/test/other_r_fft/img_126_4a.trn
+../hand_images/test/other_r_fft/img_126_4b.trn
+../hand_images/test/other_r_fft/img_126_5a.trn
+../hand_images/test/other_r_fft/img_126_5b.trn
+../hand_images/test/other_r_fft/img_126_6a.trn
+../hand_images/test/other_r_fft/img_126_7b.trn
+../hand_images/test/other_r_fft/img_127_11a.trn
+../hand_images/test/other_r_fft/img_127_1a.trn
+../hand_images/test/other_r_fft/img_127_1b.trn
+../hand_images/test/other_r_fft/img_127_3a.trn
+../hand_images/test/other_r_fft/img_127_3b.trn
+../hand_images/test/other_r_fft/img_127_6a.trn
+../hand_images/test/other_r_fft/img_127_7a.trn
+../hand_images/test/other_r_fft/img_127_8a.trn
+../hand_images/test/other_r_fft/img_128_0a.trn
+../hand_images/test/other_r_fft/img_128_0c.trn
+../hand_images/test/other_r_fft/img_128_10a.trn
+../hand_images/test/other_r_fft/img_128_11a.trn
+../hand_images/test/other_r_fft/img_128_1a.trn
+../hand_images/test/other_r_fft/img_128_2a.trn
+../hand_images/test/other_r_fft/img_128_3a.trn
+../hand_images/test/other_r_fft/img_128_3b.trn
+../hand_images/test/other_r_fft/img_128_4c.trn
+../hand_images/test/other_r_fft/img_128_5a.trn
+../hand_images/test/other_r_fft/img_128_6a.trn
+../hand_images/test/other_r_fft/img_128_7a.trn
+../hand_images/test/other_r_fft/img_128_7e.trn
+../hand_images/test/other_r_fft/img_128_8a.trn
+../hand_images/test/other_r_fft/img_128_9a.trn
+../hand_images/test/other_r_fft/img_129_0a.trn
+../hand_images/test/other_r_fft/img_129_10c.trn
+../hand_images/test/other_r_fft/img_129_1a.trn
+../hand_images/test/other_r_fft/img_129_2a.trn
+../hand_images/test/other_r_fft/img_129_2b.trn
+../hand_images/test/other_r_fft/img_129_2d.trn
+../hand_images/test/other_r_fft/img_129_3a.trn
+../hand_images/test/other_r_fft/img_129_4a.trn
+../hand_images/test/other_r_fft/img_130_0a.trn
+../hand_images/test/other_r_fft/img_130_10a.trn
+../hand_images/test/other_r_fft/img_130_10b.trn
+../hand_images/test/other_r_fft/img_130_11a.trn
+../hand_images/test/other_r_fft/img_130_1a.trn
+../hand_images/test/other_r_fft/img_130_2a.trn
+../hand_images/test/other_r_fft/img_130_2b.trn
+../hand_images/test/other_r_fft/img_130_3a.trn
+../hand_images/test/other_r_fft/img_130_3b.trn
+../hand_images/test/other_r_fft/img_130_4a.trn
+../hand_images/test/other_r_fft/img_130_6a.trn
+../hand_images/test/other_r_fft/img_130_6b.trn
+../hand_images/test/other_r_fft/img_130_7a.trn
+../hand_images/test/other_r_fft/img_130_8a.trn
+../hand_images/test/other_r_fft/img_130_8b.trn
+../hand_images/test/other_r_fft/img_130_9a.trn
+../hand_images/test/other_r_fft/img_131_0a.trn
+../hand_images/test/other_r_fft/img_131_2b.trn
+../hand_images/test/other_r_fft/img_131_3a.trn
+../hand_images/test/other_r_fft/img_131_4a.trn
+../hand_images/test/other_r_fft/img_131_8a.trn
+../hand_images/test/other_r_fft/img_131_9a.trn
+../hand_images/test/other_r_fft/img_70_10a.trn
+../hand_images/test/other_r_fft/img_70_10b.trn
+../hand_images/test/other_r_fft/img_70_10c.trn
+../hand_images/test/other_r_fft/img_70_11b.trn
+../hand_images/test/other_r_fft/img_70_3a.trn
+../hand_images/test/other_r_fft/img_70_5a.trn
+../hand_images/test/other_r_fft/img_70_6a.trn
+../hand_images/test/other_r_fft/img_70_7a.trn
+../hand_images/test/other_r_fft/img_70_8a.trn
+../hand_images/test/other_r_fft/img_70_8b.trn
+../hand_images/test/other_r_fft/img_70_9a.trn
+../hand_images/test/other_r_fft/img_71_10c.trn
+../hand_images/test/other_r_fft/img_71_11a.trn
+../hand_images/test/other_r_fft/img_71_11c.trn
+../hand_images/test/other_r_fft/img_71_1a.trn
+../hand_images/test/other_r_fft/img_71_4a.trn
+../hand_images/test/other_r_fft/img_71_5a.trn
+../hand_images/test/other_r_fft/img_71_5b.trn
+../hand_images/test/other_r_fft/img_71_6a.trn
+../hand_images/test/other_r_fft/img_71_7a.trn
+../hand_images/test/other_r_fft/img_71_7b.trn
+../hand_images/test/other_r_fft/img_71_8a.trn
+../hand_images/test/other_r_fft/img_71_8b.trn
+../hand_images/test/other_r_fft/img_71_9a.trn
+../hand_images/test/other_r_fft/img_72_0a.trn
+../hand_images/test/other_r_fft/img_72_10b.trn
+../hand_images/test/other_r_fft/img_72_10c.trn
+../hand_images/test/other_r_fft/img_72_7b.trn
+../hand_images/test/other_r_fft/img_72_8b.trn
+../hand_images/test/other_r_fft/img_72_9b.trn
+../hand_images/test/other_r_fft/img_72_9c.trn
+../hand_images/test/other_r_fft/img_73_0a.trn
+../hand_images/test/other_r_fft/img_73_11b.trn
+../hand_images/test/other_r_fft/img_73_11c.trn
+../hand_images/test/other_r_fft/img_73_1a.trn
+../hand_images/test/other_r_fft/img_120_3a.trn
+../hand_images/test/other_r_fft/img_121_0a.trn
+../hand_images/test/other_r_fft/img_123_4a.trn
+../hand_images/test/other_r_fft/img_124_9a.trn
+../hand_images/test/other_r_fft/img_125_6a.trn
+../hand_images/test/other_r_fft/img_126_2b.trn
+../hand_images/test/other_r_fft/img_127_10a.trn
+../hand_images/test/other_r_fft/img_127_9a.trn
+../hand_images/test/other_r_fft/img_128_4a.trn
+../hand_images/test/other_r_fft/img_129_10a.trn
+../hand_images/test/other_r_fft/img_130_0b.trn
+../hand_images/test/other_r_fft/img_130_3c.trn
+../hand_images/test/other_r_fft/img_131_2a.trn
+../hand_images/test/other_r_fft/img_70_11a.trn
+../hand_images/test/other_r_fft/img_71_10a.trn
+../hand_images/test/other_r_fft/img_71_6b.trn
+../hand_images/test/other_r_fft/img_73_2c.trn
+../hand_images/test/other_r_fft/img_73_2d.trn
+../hand_images/test/other_r_fft/img_73_3a.trn
+../hand_images/test/other_r_fft/img_73_3b.trn
+../hand_images/test/other_r_fft/img_73_4a.trn
+../hand_images/test/other_r_fft/img_73_6a.trn
+../hand_images/test/other_r_fft/img_73_7b.trn
+../hand_images/test/other_r_fft/img_73_7c.trn
+../hand_images/test/other_r_fft/img_73_8b.trn
+../hand_images/test/other_r_fft/img_73_9a.trn
+../hand_images/test/other_r_fft/img_73_9c.trn
+../hand_images/test/other_r_fft/img_74_0a.trn
+../hand_images/test/other_r_fft/img_74_0b.trn
+../hand_images/test/other_r_fft/img_74_0d.trn
+../hand_images/test/other_r_fft/img_74_10a.trn
+../hand_images/test/other_r_fft/img_74_11a.trn
+../hand_images/test/other_r_fft/img_74_1c.trn
+../hand_images/test/other_r_fft/img_74_1d.trn
+../hand_images/test/other_r_fft/img_74_2a.trn
+../hand_images/test/other_r_fft/img_74_2b.trn
+../hand_images/test/other_r_fft/img_74_2d.trn
+../hand_images/test/other_r_fft/img_74_3b.trn
+../hand_images/test/other_r_fft/img_74_3c.trn
+../hand_images/test/other_r_fft/img_74_5a.trn
+../hand_images/test/other_r_fft/img_74_7a.trn
+../hand_images/test/other_r_fft/img_74_7c.trn
+../hand_images/test/other_r_fft/img_74_8a.trn
+../hand_images/test/other_r_fft/img_74_9a.trn
+../hand_images/test/other_r_fft/img_74_9c.trn
+../hand_images/test/other_r_fft/img_75_10a.trn
+../hand_images/test/other_r_fft/img_75_2a.trn
+../hand_images/test/other_r_fft/img_75_2c.trn
+../hand_images/test/other_r_fft/img_75_4b.trn
+../hand_images/test/other_r_fft/img_75_5a.trn
+../hand_images/test/other_r_fft/img_75_6a.trn
+../hand_images/test/other_r_fft/img_75_7a.trn
+../hand_images/test/other_r_fft/img_75_7b.trn
+../hand_images/test/other_r_fft/img_75_8a.trn
+../hand_images/test/other_r_fft/img_75_9a.trn
+../hand_images/test/other_r_fft/img_76_10a.trn
+../hand_images/test/other_r_fft/img_76_5a.trn
+../hand_images/test/other_r_fft/img_76_6a.trn
+../hand_images/test/other_r_fft/img_76_7a.trn
+../hand_images/test/other_r_fft/img_76_8a.trn
+../hand_images/test/other_r_fft/img_76_9a.trn
+../hand_images/test/other_r_fft/img_77_0a.trn
+../hand_images/test/other_r_fft/img_77_3a.trn
+../hand_images/test/other_r_fft/img_77_4a.trn
+../hand_images/test/other_r_fft/img_79_11b.trn
+../hand_images/test/other_r_fft/img_79_9b.trn
+../hand_images/test/other_r_fft/img_80_10a.trn
+../hand_images/test/other_r_fft/img_80_10b.trn
+../hand_images/test/other_r_fft/img_80_3b.trn
+../hand_images/test/other_r_fft/img_80_5b.trn
+../hand_images/test/other_r_fft/img_80_8a.trn
+../hand_images/test/other_r_fft/img_80_8b.trn
+../hand_images/test/other_r_fft/img_80_9b.trn
+../hand_images/test/other_r_fft/img_81_10a.trn
+../hand_images/test/other_r_fft/img_81_11a.trn
+../hand_images/test/other_r_fft/img_81_4a.trn
+../hand_images/test/other_r_fft/img_81_5a.trn
+../hand_images/test/other_r_fft/img_81_5b.trn
+../hand_images/test/other_r_fft/img_81_6a.trn
+../hand_images/test/other_r_fft/img_81_7a.trn
+../hand_images/test/other_r_fft/img_81_9a.trn
+../hand_images/test/other_r_fft/img_82_0a.trn
+../hand_images/test/other_r_fft/img_82_1a.trn
+../hand_images/test/other_r_fft/img_82_2a.trn
+../hand_images/test/other_r_fft/img_82_3a.trn
+../hand_images/test/other_r_fft/img_82_4a.trn
+../hand_images/test/other_r_fft/img_82_4b.trn
+../hand_images/test/other_r_fft/img_82_5a.trn
+../hand_images/test/other_r_fft/img_82_6a.trn
+../hand_images/test/other_r_fft/img_82_7a.trn
+../hand_images/test/other_r_fft/img_82_8a.trn
+../hand_images/test/other_r_fft/img_82_8b.trn
+../hand_images/test/other_r_fft/img_84_10a.trn
+../hand_images/test/other_r_fft/img_84_3b.trn
+../hand_images/test/other_r_fft/img_84_4b.trn
+../hand_images/test/other_r_fft/img_84_7a.trn
+../hand_images/test/other_r_fft/img_86_11b.trn
+../hand_images/test/other_r_fft/img_87_0a.trn
+../hand_images/test/other_r_fft/img_87_10a.trn
+../hand_images/test/other_r_fft/img_87_10b.trn
+../hand_images/test/other_r_fft/img_87_11a.trn
+../hand_images/test/other_r_fft/img_87_11b.trn
+../hand_images/test/other_r_fft/img_87_1a.trn
+../hand_images/test/other_r_fft/img_88_0a.trn
+../hand_images/test/other_r_fft/img_88_11b.trn
+../hand_images/test/other_r_fft/img_88_1a.trn
+../hand_images/test/other_r_fft/img_88_3a.trn
+../hand_images/test/other_r_fft/img_88_4a.trn
+../hand_images/test/other_r_fft/img_88_4b.trn
+../hand_images/test/other_r_fft/img_88_5a.trn
+../hand_images/test/other_r_fft/img_88_6a.trn
+../hand_images/test/other_r_fft/img_88_7a.trn
+../hand_images/test/other_r_fft/img_89_0b.trn
+../hand_images/test/other_r_fft/img_89_2b.trn
+../hand_images/test/other_r_fft/img_89_3b.trn
+../hand_images/test/other_r_fft/img_89_4b.trn
+../hand_images/test/other_r_fft/img_89_5b.trn
+../hand_images/test/other_r_fft/img_89_6b.trn
+../hand_images/test/other_r_fft/img_89_7b.trn
+../hand_images/test/other_r_fft/img_89_9b.trn
+../hand_images/test/other_r_fft/img_90_11a.trn
+../hand_images/test/other_r_fft/img_90_3b.trn
+../hand_images/test/other_r_fft/img_90_8a.trn
+../hand_images/test/other_r_fft/img_90_8b.trn
+../hand_images/test/other_r_fft/img_90_9a.trn
+../hand_images/test/other_r_fft/img_90_9b.trn
+../hand_images/test/other_r_fft/img_91_5a.trn
+../hand_images/test/other_r_fft/img_91_5b.trn
+../hand_images/test/other_r_fft/img_91_8a.trn
+../hand_images/test/other_r_fft/img_91_9a.trn
+../hand_images/test/other_r_fft/img_91_9b.trn
+../hand_images/test/other_r_fft/img_93_6a.trn
+../hand_images/test/other_r_fft/img_93_7a.trn
+../hand_images/test/other_r_fft/img_93_8a.trn
+../hand_images/test/other_r_fft/img_94_2a.trn
+../hand_images/test/other_r_fft/img_94_3a.trn
+../hand_images/test/other_r_fft/img_96_0a.trn
+../hand_images/test/other_r_fft/img_96_1a.trn
+../hand_images/test/other_r_fft/img_96_2a.trn
+../hand_images/test/other_r_fft/img_96_3a.trn
+../hand_images/test/other_r_fft/img_96_4a.trn
+../hand_images/test/other_r_fft/img_97_10a.trn
+../hand_images/test/other_r_fft/img_97_11a.trn
+../hand_images/test/other_r_fft/img_97_5a.trn
+../hand_images/test/other_r_fft/img_97_7a.trn
+../hand_images/test/other_r_fft/img_97_7b.trn
+../hand_images/test/other_r_fft/img_97_8a.trn
+../hand_images/test/other_r_fft/img_97_9a.trn
+../hand_images/test/other_r_fft/img_97_9b.trn
+../hand_images/test/other_r_fft/img_98_0a.trn
+../hand_images/test/other_r_fft/img_98_1a.trn
+../hand_images/test/other_r_fft/img_98_2a.trn
+../hand_images/test/other_r_fft/img_73_2a.trn
+../hand_images/test/other_r_fft/img_73_8a.trn
+../hand_images/test/other_r_fft/img_74_1b.trn
+../hand_images/test/other_r_fft/img_74_6a.trn
+../hand_images/test/other_r_fft/img_75_4a.trn
+../hand_images/test/other_r_fft/img_76_10b.trn
+../hand_images/test/other_r_fft/img_79_10b.trn
+../hand_images/test/other_r_fft/img_80_9a.trn
+../hand_images/test/other_r_fft/img_81_8a.trn
+../hand_images/test/other_r_fft/img_82_5b.trn
+../hand_images/test/other_r_fft/img_86_11a.trn
+../hand_images/test/other_r_fft/img_88_10b.trn
+../hand_images/test/other_r_fft/img_88_8a.trn
+../hand_images/test/other_r_fft/img_90_10a.trn
+../hand_images/test/other_r_fft/img_91_7a.trn
+../hand_images/test/other_r_fft/img_94_4a.trn
+../hand_images/test/other_r_fft/img_97_6a.trn
+../hand_images/test/other_r_fft/img_98_3a.trn
+../hand_images/test/other_r_fft/img_98_4a.trn
+../hand_images/test/other_r_fft/img_99_0a.trn
+../hand_images/test/other_r_fft/img_99_10a.trn
+../hand_images/test/other_r_fft/img_99_11a.trn
+../hand_images/test/other_r_fft/img_99_11b.trn
+../hand_images/test/other_r_fft/img_99_11c.trn
+../hand_images/test/other_r_fft/img_99_1a.trn
+../hand_images/test/other_r_fft/img_99_2a.trn
+../hand_images/test/other_r_fft/img_99_6a.trn
+../hand_images/test/other_r_fft/img_99_8a.trn
+0: 1 0 (0.00368926)
+0.496318
+1: 1 0 (0.0026492)
+0.497354
+2: 1 0 (0.0443649)
+0.456619
+3: 1 1 (0.670112)
+0.054413
+4: 1 0 (0.0138274)
+0.486268
+5: 1 1 (0.990161)
+4.84047e-05
+6: 1 1 (0.500438)
+0.124781
+7: 1 1 (0.846668)
+0.0117553
+8: 1 1 (0.886193)
+0.00647605
+9: 1 1 (0.858618)
+0.00999445
+10: 1 0 (0.398369)
+0.18098
+11: 1 1 (0.768163)
+0.0268743
+12: 1 0 (0.266357)
+0.269116
+13: 1 1 (0.642242)
+0.0639955
+14: 1 1 (0.799403)
+0.0201196
+15: 1 1 (0.85249)
+0.0108796
+16: 1 1 (0.757966)
+0.0292903
+17: 1 1 (0.948933)
+0.00130392
+18: 1 1 (0.886346)
+0.00645867
+19: 1 1 (0.877333)
+0.00752358
+20: 1 1 (0.944732)
+0.00152727
+21: 1 1 (0.531487)
+0.109752
+22: 1 1 (0.994913)
+1.29374e-05
+23: 1 1 (0.975074)
+0.000310642
+24: 1 1 (0.854235)
+0.0106237
+25: 1 1 (0.910104)
+0.00404065
+26: 1 1 (0.981009)
+0.00018032
+27: 1 1 (0.934787)
+0.00212635
+28: 1 1 (0.973875)
+0.000341254
+29: 1 1 (0.807976)
+0.0184366
+30: 1 1 (0.862839)
+0.00940652
+31: 1 1 (0.773686)
+0.0256089
+32: 1 1 (0.581856)
+0.0874222
+33: 1 0 (0.357736)
+0.206252
+34: 1 1 (0.956866)
+0.000930252
+35: 1 1 (0.954057)
+0.00105537
+36: 1 1 (0.899466)
+0.00505356
+37: 1 1 (0.857152)
+0.0102028
+38: 1 0 (0.0602865)
+0.441531
+39: 1 1 (0.780566)
+0.0240756
+40: 1 0 (0.367798)
+0.19984
+41: 1 0 (0.000898813)
+0.499102
+42: 1 0 (0.0724747)
+0.430152
+43: 1 0 (0.00345009)
+0.496556
+44: 1 0 (0.163108)
+0.350194
+45: 1 0 (0.166672)
+0.347218
+46: 1 0 (0.00361318)
+0.496393
+47: 1 0 (0.000293102)
+0.499707
+48: 1 0 (0.00268941)
+0.497314
+49: 1 1 (0.956177)
+0.000960241
+50: 1 1 (0.857613)
+0.010137
+51: 1 1 (0.852051)
+0.0109445
+52: 1 1 (0.637858)
+0.0655734
+53: 1 1 (0.768657)
+0.0267599
+54: 1 1 (0.711067)
+0.0417412
+55: 1 1 (0.902163)
+0.004786
+56: 1 1 (0.936546)
+0.00201322
+57: 1 0 (0.0267552)
+0.473603
+58: 1 1 (0.684462)
+0.0497822
+59: 1 1 (0.936076)
+0.00204313
+60: 1 1 (0.898875)
+0.00511316
+61: 1 1 (0.882275)
+0.00692957
+62: 1 1 (0.927218)
+0.00264861
+63: 1 1 (0.832039)
+0.0141054
+64: 1 1 (0.526936)
+0.111895
+65: 1 1 (0.625024)
+0.0703034
+66: 1 0 (0.363968)
+0.202268
+67: 1 0 (0.00933606)
+0.490708
+68: 1 0 (0.135688)
+0.373518
+69: 1 0 (0.246961)
+0.283534
+70: 1 0 (0.066228)
+0.435965
+71: 1 1 (0.830756)
+0.0143217
+72: 1 1 (0.94392)
+0.00157248
+73: 1 1 (0.899864)
+0.00501361
+74: 1 1 (0.99252)
+2.79767e-05
+75: 1 1 (0.832037)
+0.0141058
+76: 1 1 (0.95449)
+0.00103559
+77: 1 1 (0.96627)
+0.000568849
+78: 1 0 (0.0383606)
+0.462375
+79: 1 1 (0.97421)
+0.000332558
+80: 1 1 (0.800687)
+0.0198629
+81: 1 1 (0.86876)
+0.00861202
+82: 1 0 (0.133854)
+0.375104
+83: 1 0 (0.440648)
+0.156437
+84: 1 1 (0.823459)
+0.0155834
+85: 1 0 (0.263789)
+0.271003
+86: 1 0 (0.30118)
+0.244174
+87: 1 0 (0.339771)
+0.217951
+88: 1 1 (0.542031)
+0.104868
+89: 1 0 (0.0791932)
+0.423943
+90: 1 1 (0.810222)
+0.0180079
+91: 1 0 (0.479372)
+0.135527
+92: 1 0 (0.0883376)
+0.415564
+93: 1 1 (0.524781)
+0.112917
+94: 1 0 (0.0344945)
+0.4661
+95: 1 0 (0.00497006)
+0.495042
+96: 1 0 (0.000996352)
+0.499004
+97: 1 0 (0.135763)
+0.373453
+98: 1 0 (0.000800185)
+0.4992
+99: 1 0 (0.000447262)
+0.499553
+100: 1 0 (0.000409197)
+0.499591
+101: 1 0 (0.000426768)
+0.499573
+102: 1 0 (0.0215028)
+0.478728
+103: 1 0 (0.00123477)
+0.498766
+104: 1 0 (0.000477187)
+0.499523
+105: 1 0 (0.0478338)
+0.45331
+106: 1 0 (0.00154635)
+0.498455
+107: 1 0 (0.000914739)
+0.499086
+108: 1 0 (0.000748934)
+0.499251
+109: 1 0 (0.0954076)
+0.409144
+110: 1 0 (0.0114189)
+0.488646
+111: 1 0 (0.00368356)
+0.496323
+112: 1 0 (0.0138111)
+0.486284
+113: 1 0 (0.0155928)
+0.484529
+114: 1 0 (0.0351631)
+0.465455
+115: 1 0 (0.154313)
+0.357593
+116: 1 0 (0.0179474)
+0.482214
+117: 1 0 (0.195296)
+0.323774
+118: 1 0 (0.115542)
+0.391133
+119: 1 0 (0.177522)
+0.338235
+120: 1 0 (0.00527074)
+0.494743
+121: 1 0 (0.00406905)
+0.495939
+122: 1 0 (0.0765518)
+0.426378
+123: 1 0 (0.0154966)
+0.484623
+124: 1 0 (0.0131416)
+0.486945
+125: 1 0 (0.24448)
+0.285405
+126: 1 0 (0.0262002)
+0.474143
+127: 1 0 (0.199884)
+0.320092
+128: 1 0 (0.268758)
+0.267358
+129: 1 0 (0.00453337)
+0.495477
+130: 1 1 (0.902601)
+0.00474329
+131: 1 0 (0.0803359)
+0.422891
+132: 1 0 (0.00067925)
+0.499321
+133: 1 0 (0.00164006)
+0.498361
+134: 1 0 (0.00130887)
+0.498692
+135: 1 0 (0.00477492)
+0.495236
+136: 1 0 (0.000612576)
+0.499388
+137: 1 0 (0.00278345)
+0.49722
+138: 1 0 (0.00030208)
+0.499698
+139: 1 0 (0.000380515)
+0.49962
+140: 1 0 (0.000470074)
+0.49953
+141: 1 0 (0.0207374)
+0.479478
+142: 1 0 (0.0067661)
+0.493257
+143: 1 0 (0.000307093)
+0.499693
+144: 1 0 (0.000285974)
+0.499714
+145: 1 0 (0.000367877)
+0.499632
+146: 1 0 (0.000720626)
+0.49928
+147: 1 0 (0.0472546)
+0.453862
+148: 1 0 (0.0780101)
+0.425033
+149: 1 0 (0.00017663)
+0.499823
+150: 1 0 (0.0003626)
+0.499637
+151: 1 0 (0.000775394)
+0.499225
+152: 1 0 (0.000574076)
+0.499426
+153: 1 0 (0.00776829)
+0.492262
+154: 1 0 (0.000174041)
+0.499826
+155: 1 0 (0.00151458)
+0.498487
+156: 1 0 (0.000624202)
+0.499376
+157: 1 0 (0.000549214)
+0.499451
+158: 1 0 (0.000716488)
+0.499284
+159: 1 0 (0.000329169)
+0.499671
+160: 1 0 (0.000822074)
+0.499178
+161: 1 0 (0.00126046)
+0.49874
+162: 1 0 (0.00112124)
+0.498879
+163: 1 0 (0.000750417)
+0.49925
+164: 1 0 (0.00220225)
+0.4978
+165: 1 0 (0.00415784)
+0.495851
+166: 1 0 (0.0201193)
+0.480083
+167: 1 0 (0.00911029)
+0.490931
+168: 0 0 (0.32251)
+0.0520062
+169: 0 0 (0.000238863)
+2.85277e-08
+170: 0 0 (0.000182679)
+1.66858e-08
+171: 0 0 (0.00018819)
+1.77077e-08
+172: 0 0 (0.000185134)
+1.71373e-08
+173: 0 0 (0.000200882)
+2.01769e-08
+174: 0 0 (0.000201895)
+2.03808e-08
+175: 0 0 (0.000181668)
+1.65016e-08
+176: 0 0 (0.000174523)
+1.52291e-08
+177: 0 0 (0.000180428)
+1.62771e-08
+178: 0 0 (0.000296225)
+4.38747e-08
+179: 0 0 (0.00018378)
+1.68875e-08
+180: 0 0 (0.00135996)
+9.24743e-07
+181: 0 0 (0.000280541)
+3.93515e-08
+182: 0 0 (0.000210927)
+2.22452e-08
+183: 0 0 (0.000286091)
+4.09241e-08
+184: 0 1 (0.826745)
+0.341754
+185: 0 0 (0.000607757)
+1.84684e-07
+186: 0 0 (0.000245789)
+3.02061e-08
+187: 0 0 (0.000211853)
+2.24409e-08
+188: 0 0 (0.000175011)
+1.53144e-08
+189: 0 0 (0.000183581)
+1.6851e-08
+190: 0 0 (0.000241142)
+2.90748e-08
+191: 0 0 (0.000179378)
+1.60882e-08
+192: 0 0 (0.000262926)
+3.45649e-08
+193: 0 0 (0.000182173)
+1.65935e-08
+194: 0 0 (0.000184952)
+1.71037e-08
+195: 0 0 (0.000227547)
+2.58888e-08
+196: 0 0 (0.000190991)
+1.82389e-08
+197: 0 0 (0.159361)
+0.012698
+198: 0 0 (0.000218518)
+2.3875e-08
+199: 0 0 (0.00721696)
+2.60423e-05
+200: 0 0 (0.0345242)
+0.00059596
+201: 0 0 (0.169881)
+0.0144298
+202: 0 1 (0.560209)
+0.156917
+203: 0 0 (0.000182174)
+1.65937e-08
+204: 0 0 (0.00018885)
+1.78322e-08
+205: 0 0 (0.000181081)
+1.63952e-08
+206: 0 0 (0.000189411)
+1.79382e-08
+207: 0 0 (0.000192674)
+1.85616e-08
+208: 0 1 (0.687952)
+0.236639
+209: 0 0 (0.245643)
+0.0301702
+210: 0 0 (0.372209)
+0.0692697
+211: 0 0 (0.0689434)
+0.00237659
+212: 0 1 (0.955565)
+0.456552
+213: 0 0 (0.00018796)
+1.76645e-08
+214: 0 0 (0.000862041)
+3.71558e-07
+215: 0 0 (0.000450391)
+1.01426e-07
+216: 0 0 (0.000175533)
+1.54059e-08
+217: 0 0 (0.000260784)
+3.40041e-08
+218: 0 0 (0.000225981)
+2.55338e-08
+219: 0 0 (0.00017946)
+1.61029e-08
+220: 0 0 (0.000180361)
+1.6265e-08
+221: 0 0 (0.000307309)
+4.72193e-08
+222: 0 0 (0.000176987)
+1.56622e-08
+223: 0 0 (0.000183309)
+1.68011e-08
+224: 0 0 (0.000180243)
+1.62438e-08
+225: 0 0 (0.000190957)
+1.82323e-08
+226: 0 0 (0.120794)
+0.0072956
+227: 0 0 (0.000313718)
+4.92095e-08
+228: 0 1 (0.517529)
+0.133918
+229: 0 1 (0.803467)
+0.32278
+230: 0 1 (0.979742)
+0.479947
+231: 0 0 (0.000196111)
+1.92297e-08
+232: 0 1 (0.581952)
+0.169334
+233: 0 0 (0.000254164)
+3.22997e-08
+234: 0 0 (0.000216878)
+2.35179e-08
+235: 0 0 (0.000182758)
+1.67003e-08
+236: 0 0 (0.000186929)
+1.74712e-08
+237: 0 1 (0.981794)
+0.48196
+238: 0 0 (0.00020892)
+2.18239e-08
+239: 0 1 (0.893917)
+0.399544
+240: 0 1 (0.619404)
+0.191831
+241: 0 0 (0.00018493)
+1.70995e-08
+242: 0 1 (0.873607)
+0.381594
+243: 0 0 (0.000258065)
+3.32989e-08
+244: 0 1 (0.779976)
+0.304181
+245: 0 1 (0.799989)
+0.319991
+246: 0 0 (0.415261)
+0.0862208
+247: 0 0 (0.00183867)
+1.69036e-06
+248: 0 1 (0.551515)
+0.152084
+249: 0 0 (0.276355)
+0.0381861
+250: 0 1 (0.760697)
+0.28933
+251: 0 0 (0.134949)
+0.00910555
+252: 0 0 (0.312208)
+0.0487368
+253: 0 1 (0.88208)
+0.389032
+254: 0 1 (0.701462)
+0.246025
+255: 0 1 (0.686766)
+0.235824
+256: 0 1 (0.81403)
+0.331323
+257: 0 0 (0.000301014)
+4.53046e-08
+258: 0 1 (0.927952)
+0.430547
+259: 0 0 (0.000405924)
+8.23872e-08
+260: 0 0 (0.0415017)
+0.000861197
+261: 0 0 (0.000192526)
+1.85331e-08
+262: 0 0 (0.000391198)
+7.6518e-08
+263: 0 0 (0.000330539)
+5.46279e-08
+264: 0 0 (0.000741506)
+2.74915e-07
+265: 0 0 (0.00224615)
+2.52259e-06
+266: 0 0 (0.000617303)
+1.90531e-07
+267: 0 0 (0.0236453)
+0.000279551
+268: 0 0 (0.00271499)
+3.68558e-06
+269: 0 0 (0.00173784)
+1.51005e-06
+270: 0 0 (0.000192432)
+1.85151e-08
+271: 0 0 (0.000178879)
+1.59988e-08
+272: 0 0 (0.460126)
+0.105858
+273: 0 0 (0.0508818)
+0.00129448
+274: 0 0 (0.00573113)
+1.64229e-05
+275: 0 1 (0.861487)
+0.37108
+276: 0 0 (0.021683)
+0.000235077
+277: 0 0 (0.104226)
+0.00543149
+278: 0 0 (0.496441)
+0.123227
+279: 0 0 (0.000178249)
+1.58864e-08
+280: 0 0 (0.000181679)
+1.65036e-08
+281: 0 0 (0.000470823)
+1.10837e-07
+282: 0 0 (0.000448496)
+1.00575e-07
+283: 0 0 (0.000257135)
+3.30591e-08
+284: 0 0 (0.000186389)
+1.73704e-08
+285: 0 0 (0.00191863)
+1.84057e-06
+286: 0 0 (0.000189824)
+1.80166e-08
+287: 0 0 (0.0242153)
+0.00029319
+288: 0 0 (0.00354602)
+6.28713e-06
+289: 0 0 (0.000193118)
+1.86473e-08
+290: 0 0 (0.144634)
+0.0104595
+291: 0 0 (0.397736)
+0.0790972
+292: 0 0 (0.000410854)
+8.44004e-08
+293: 0 0 (0.000190469)
+1.81393e-08
+294: 0 0 (0.0929907)
+0.00432363
+295: 0 0 (0.00134756)
+9.07954e-07
+296: 0 0 (0.00154204)
+1.18895e-06
+297: 0 0 (0.000490614)
+1.20351e-07
+298: 0 0 (0.000179801)
+1.61642e-08
+299: 0 0 (0.000243676)
+2.96889e-08
+300: 0 0 (0.000336007)
+5.64502e-08
+301: 0 0 (0.000285693)
+4.08103e-08
+302: 0 0 (0.000416107)
+8.65724e-08
+303: 0 0 (0.000329932)
+5.44274e-08
+304: 0 0 (0.00790028)
+3.12072e-05
+305: 0 0 (0.000673258)
+2.26638e-07
+306: 0 0 (0.000682071)
+2.32611e-07
+307: 0 0 (0.000263638)
+3.47525e-08
+308: 0 0 (0.00165503)
+1.36955e-06
+309: 0 0 (0.000178493)
+1.59298e-08
+310: 0 0 (0.00901843)
+4.0666e-05
+311: 0 0 (0.000234418)
+2.74759e-08
+312: 0 0 (0.00240309)
+2.88741e-06
+313: 0 0 (0.00019439)
+1.88938e-08
+314: 0 0 (0.021605)
+0.000233387
+315: 0 0 (0.0556246)
+0.00154705
+316: 0 0 (0.424276)
+0.0900049
+317: 0 0 (0.000205285)
+2.10709e-08
+318: 0 0 (0.000529831)
+1.40361e-07
+319: 0 0 (0.000264053)
+3.48619e-08
+320: 0 0 (0.000933856)
+4.36044e-07
+321: 0 0 (0.000272349)
+3.70871e-08
+322: 0 1 (0.752503)
+0.28313
+323: 0 0 (0.000182885)
+1.67234e-08
+324: 0 0 (0.00058603)
+1.71716e-07
+325: 0 0 (0.000197018)
+1.9408e-08
+326: 0 0 (0.000550041)
+1.51273e-07
+327: 0 0 (0.000190338)
+1.81143e-08
+328: 0 0 (0.00155084)
+1.20256e-06
+329: 0 0 (0.0025876)
+3.34784e-06
+330: 0 0 (0.00376177)
+7.07547e-06
+331: 0 0 (0.013391)
+8.96592e-05
+332: 0 0 (0.190841)
+0.0182102
+333: 0 0 (0.229671)
+0.0263743
+334: 0 0 (0.000359882)
+6.47574e-08
+335: 0 0 (0.000183596)
+1.68537e-08
+336: 0 0 (0.0515816)
+0.00133033
+337: 0 0 (0.000182568)
+1.66655e-08
+338: 0 0 (0.000226582)
+2.56696e-08
+339: 0 0 (0.000199088)
+1.98181e-08
+340: 0 1 (0.953742)
+0.454812
+341: 0 0 (0.000178949)
+1.60113e-08
+342: 0 0 (0.0508529)
+0.00129301
+343: 0 0 (0.00123615)
+7.64033e-07
+344: 0 0 (0.0510958)
+0.00130539
+345: 0 0 (0.123858)
+0.00767039
+346: 0 0 (0.0794353)
+0.00315498
+347: 0 0 (0.0001833)
+1.67994e-08
+348: 0 0 (0.000212314)
+2.25387e-08
+349: 0 0 (0.000178919)
+1.6006e-08
+350: 0 0 (0.00018362)
+1.68581e-08
+351: 0 0 (0.00018025)
+1.62451e-08
+352: 0 0 (0.397009)
+0.078808
+353: 0 0 (0.000270453)
+3.65724e-08
+354: 0 0 (0.0296111)
+0.000438408
+355: 0 0 (0.000221118)
+2.44467e-08
+356: 0 0 (0.000177874)
+1.58196e-08
+357: 0 0 (0.000178719)
+1.59702e-08
+358: 0 0 (0.0201731)
+0.000203477
+359: 0 0 (0.00023348)
+2.72565e-08
+360: 0 0 (0.123647)
+0.00764429
+361: 0 0 (0.0025438)
+3.23546e-06
+362: 0 1 (0.539865)
+0.145727
+363: 0 0 (0.0949541)
+0.00450814
+364: 0 0 (0.000795716)
+3.16582e-07
+365: 0 0 (0.000448792)
+1.00707e-07
+366: 0 1 (0.95351)
+0.45459
+367: 0 0 (0.0150749)
+0.000113626
+368: 0 0 (0.00030573)
+4.67354e-08
+369: 0 0 (0.00884921)
+3.91543e-05
+370: 0 0 (0.0397829)
+0.000791341
+371: 0 0 (0.000256724)
+3.29536e-08
+372: 0 1 (0.736673)
+0.271344
+373: 0 0 (0.0114471)
+6.55178e-05
+374: 0 0 (0.015655)
+0.000122539
+375: 0 0 (0.000335408)
+5.62492e-08
+376: 0 0 (0.000215656)
+2.32537e-08
+377: 0 0 (0.000191136)
+1.82664e-08
+378: 0 0 (0.000447595)
+1.00171e-07
+379: 0 0 (0.00027418)
+3.75873e-08
+380: 0 0 (0.000219755)
+2.41462e-08
+381: 0 0 (0.00163357)
+1.33427e-06
+382: 0 0 (0.000181133)
+1.64046e-08
+383: 0 0 (0.000387113)
+7.49282e-08
+384: 0 0 (0.000221028)
+2.44267e-08
+385: 0 0 (0.000375924)
+7.06594e-08
+386: 0 0 (0.000213286)
+2.27455e-08
+387: 0 0 (0.0357828)
+0.000640205
+388: 0 0 (0.000344239)
+5.92504e-08
+389: 0 0 (0.000576218)
+1.66013e-07
+390: 0 0 (0.00301482)
+4.54456e-06
+391: 0 0 (0.000325173)
+5.28688e-08
+392: 0 0 (0.000248056)
+3.07659e-08
+393: 0 0 (0.00679259)
+2.30696e-05
+394: 0 0 (0.000182351)
+1.6626e-08
+395: 0 0 (0.00209843)
+2.20171e-06
+396: 0 0 (0.00025674)
+3.29577e-08
+397: 0 0 (0.00349832)
+6.11913e-06
+398: 0 0 (0.00022445)
+2.51888e-08
+399: 0 0 (0.0428169)
+0.000916644
+400: 0 0 (0.00441351)
+9.73956e-06
+401: 0 0 (0.000595728)
+1.77446e-07
+402: 0 0 (0.000201934)
+2.03887e-08
+403: 0 0 (0.000193573)
+1.87353e-08
+404: 0 0 (0.000591717)
+1.75065e-07
+405: 0 0 (0.000284123)
+4.03629e-08
+406: 0 0 (0.000184194)
+1.69638e-08
+407: 0 0 (0.000591036)
+1.74662e-07
+408: 0 0 (0.000251074)
+3.15191e-08
+409: 0 1 (0.943832)
+0.445409
+410: 0 0 (0.000318193)
+5.06234e-08
+411: 0 0 (0.000184166)
+1.69585e-08
+412: 0 0 (0.000466867)
+1.08982e-07
+413: 0 0 (0.336559)
+0.0566358
+414: 0 1 (0.85244)
+0.363327
+415: 0 0 (0.000186609)
+1.74115e-08
+416: 0 0 (0.0011377)
+6.4718e-07
+417: 0 0 (0.0342364)
+0.000586067
+418: 0 1 (0.653919)
+0.213805
+419: 0 0 (0.313772)
+0.0492264
+420: 0 0 (0.0360749)
+0.000650698
+421: 0 0 (0.000200254)
+2.00508e-08
+422: 0 0 (0.00179182)
+1.60531e-06
+423: 0 0 (0.000198173)
+1.96363e-08
+424: 0 0 (0.00569131)
+1.61955e-05
+425: 0 0 (0.041693)
+0.000869155
+426: 0 0 (0.000192282)
+1.84862e-08
+427: 0 0 (0.000221371)
+2.45026e-08
+428: 0 0 (0.000660938)
+2.1842e-07
+429: 0 0 (0.00200287)
+2.00574e-06
+430: 0 0 (0.000870233)
+3.78653e-07
+431: 0 0 (0.000388818)
+7.55899e-08
+432: 0 0 (0.000631799)
+1.99585e-07
+433: 0 0 (0.000252484)
+3.1874e-08
+434: 0 0 (0.000259495)
+3.3669e-08
+435: 0 1 (0.606218)
+0.18375
+436: 0 1 (0.812694)
+0.330236
+437: 0 0 (0.134751)
+0.00907886
+438: 0 0 (0.215332)
+0.0231839
+439: 0 0 (0.48661)
+0.118395
+440: 0 0 (0.000178654)
+1.59586e-08
+441: 0 0 (0.0995797)
+0.00495805
+442: 0 0 (0.000196868)
+1.93785e-08
+443: 0 0 (0.000190012)
+1.80522e-08
+444: 0 0 (0.00024639)
+3.03541e-08
+445: 0 0 (0.000197862)
+1.95747e-08
+446: 0 0 (0.000202344)
+2.04716e-08
+447: 0 0 (0.000310029)
+4.8059e-08
+448: 0 0 (0.000186201)
+1.73353e-08
+449: 0 0 (0.000232514)
+2.70314e-08
+450: 0 0 (0.000223014)
+2.48677e-08
+451: 0 0 (0.000808677)
+3.26979e-07
+452: 0 0 (0.000275189)
+3.78646e-08
+453: 0 0 (0.019168)
+0.000183706
+454: 0 0 (0.000196324)
+1.92715e-08
+455: 0 0 (0.00045752)
+1.04662e-07
+456: 0 0 (0.000210593)
+2.21747e-08
+457: 0 0 (0.000184474)
+1.70154e-08
+458: 0 0 (0.000206353)
+2.12907e-08
+459: 0 0 (0.000183424)
+1.68221e-08
+460: 0 0 (0.000446086)
+9.94964e-08
+461: 0 0 (0.000208024)
+2.1637e-08
+462: 0 0 (0.000196738)
+1.93529e-08
+463: 0 0 (0.000180042)
+1.62075e-08
+464: 0 0 (0.000196278)
+1.92624e-08
+465: 0 0 (0.000271329)
+3.68097e-08
+466: 0 0 (0.000642285)
+2.06265e-07
+467: 0 0 (0.0186565)
+0.000174033
+468: 0 1 (0.861097)
+0.370744
+469: 0 1 (0.557197)
+0.155234
+470: 0 0 (0.34813)
+0.0605971
+471: 0 0 (0.000230341)
+2.65284e-08
+472: 0 0 (0.000319549)
+5.10556e-08
+473: 0 0 (0.00344332)
+5.92824e-06
+474: 0 0 (0.000435114)
+9.46621e-08
+475: 0 0 (0.000195368)
+1.90844e-08
+476: 0 0 (0.000445449)
+9.92123e-08
+477: 0 0 (0.182435)
+0.0166413
+478: 0 0 (0.000250233)
+3.13083e-08
+479: 0 0 (0.0397128)
+0.000788554
+480: 0 0 (0.000223678)
+2.50159e-08
+481: 0 0 (0.00601045)
+1.80627e-05
+482: 0 0 (0.000222855)
+2.48322e-08
+483: 0 0 (0.000197303)
+1.94642e-08
+484: 0 0 (0.000404166)
+8.16752e-08
+485: 0 0 (0.000231824)
+2.68711e-08
+486: 0 0 (0.403475)
+0.0813962
+487: 0 0 (0.000178252)
+1.58869e-08
+488: 0 0 (0.000235821)
+2.78057e-08
+489: 0 0 (0.000593042)
+1.7585e-07
+490: 0 0 (0.000171269)
+1.46665e-08
+491: 0 0 (0.000182632)
+1.66772e-08
+492: 0 0 (0.0112938)
+6.37747e-05
+493: 0 0 (0.000182624)
+1.66758e-08
+494: 0 0 (0.000196233)
+1.92538e-08
+495: 0 0 (0.000209124)
+2.18664e-08
+496: 0 0 (0.000223675)
+2.50152e-08
+497: 0 0 (0.000177075)
+1.56778e-08
+498: 0 0 (0.000175177)
+1.53434e-08
+499: 0 0 (0.000197098)
+1.94238e-08
+500: 0 0 (0.000177459)
+1.57458e-08
+501: 0 0 (0.0177814)
+0.00015809
+502: 0 0 (0.0002636)
+3.47425e-08
+503: 0 0 (0.000307403)
+4.72482e-08
+504: 0 0 (0.000232166)
+2.69505e-08
+505: 0 0 (0.000220988)
+2.44178e-08
+506: 0 0 (0.000185014)
+1.71151e-08
+507: 0 0 (0.000186396)
+1.73718e-08
+508: 0 0 (0.000235736)
+2.77857e-08
+509: 0 0 (0.000201459)
+2.0293e-08
+510: 0 0 (0.0275885)
+0.000380564
+511: 0 0 (0.00022667)
+2.56898e-08
+512: 0 0 (0.000205713)
+2.11588e-08
+513: 0 0 (0.000293899)
+4.31884e-08
+514: 0 0 (0.00018268)
+1.6686e-08
+515: 0 0 (0.00019853)
+1.9707e-08
+516: 0 0 (0.271123)
+0.0367539
+517: 0 0 (0.00018043)
+1.62775e-08
+518: 0 0 (0.00161996)
+1.31213e-06
+519: 0 0 (0.000189395)
+1.79352e-08
+520: 0 0 (0.000177143)
+1.56898e-08
+521: 0 0 (0.000233132)
+2.71752e-08
+522: 0 0 (0.000690754)
+2.3857e-07
+523: 0 0 (0.00369783)
+6.83696e-06
+524: 0 0 (0.0011289)
+6.37213e-07
+525: 0 0 (0.000865657)
+3.74681e-07
+526: 0 0 (0.000493267)
+1.21656e-07
+527: 0 0 (0.000243582)
+2.96662e-08
+528: 0 0 (0.000208162)
+2.16657e-08
+529: 0 0 (0.000240918)
+2.90207e-08
+530: 0 0 (0.000188778)
+1.78186e-08
+531: 0 0 (0.000201711)
+2.03436e-08
+532: 0 0 (0.000238966)
+2.85524e-08
+533: 0 0 (0.000201431)
+2.02872e-08
+534: 0 0 (0.000218918)
+2.39625e-08
+535: 0 0 (0.000211599)
+2.2387e-08
+536: 0 0 (0.000197783)
+1.95591e-08
+537: 0 0 (0.000294077)
+4.32405e-08
+538: 0 0 (0.000231001)
+2.66807e-08
+539: 0 0 (0.00166251)
+1.38197e-06
+540: 0 0 (0.0888255)
+0.00394498
+541: 0 0 (0.000194416)
+1.88989e-08
+542: 0 0 (0.000405648)
+8.22752e-08
+543: 0 0 (0.000314562)
+4.94747e-08
+544: 0 0 (0.0151395)
+0.000114602
+545: 0 0 (0.0116094)
+6.73894e-05
+546: 0 0 (0.0400657)
+0.000802631
+547: 0 0 (0.0152943)
+0.000116959
+548: 0 1 (0.696041)
+0.242236
+549: 0 0 (0.052759)
+0.00139176
+550: 0 0 (0.0466666)
+0.00108889
+551: 0 0 (0.34136)
+0.0582634
+552: 0 0 (0.00018006)
+1.62109e-08
+553: 0 0 (0.000270744)
+3.66512e-08
+554: 0 0 (0.000410343)
+8.41907e-08
+555: 0 0 (0.00327999)
+5.37916e-06
+556: 0 0 (0.000259747)
+3.37342e-08
+557: 0 0 (0.0418697)
+0.000876538
+558: 0 0 (0.000233845)
+2.73418e-08
+559: 0 0 (0.000184931)
+1.70997e-08
+560: 0 0 (0.000191209)
+1.82805e-08
+561: 0 0 (0.00274114)
+3.75691e-06
+562: 0 0 (0.0162382)
+0.00013184
+563: 0 0 (0.203392)
+0.0206842
+564: 0 0 (0.000429892)
+9.24036e-08
+565: 0 0 (0.00196219)
+1.9251e-06
+566: 0 0 (0.00022374)
+2.50297e-08
+567: 0 0 (0.00138781)
+9.63005e-07
+568: 0 0 (0.158565)
+0.0125715
+569: 0 0 (0.000941245)
+4.42971e-07
+570: 0 0 (0.000774063)
+2.99586e-07
+571: 0 0 (0.000625956)
+1.9591e-07
+572: 0 1 (0.94041)
+0.442185
+573: 0 1 (0.706406)
+0.249505
+574: 0 0 (0.000208381)
+2.17112e-08
+575: 0 0 (0.0574069)
+0.00164777
+576: 0 0 (0.0403269)
+0.000813127
+577: 0 0 (0.400288)
+0.0801154
+578: 0 0 (0.000244802)
+2.99639e-08
+579: 0 0 (0.00040352)
+8.1414e-08
+580: 0 0 (0.000341182)
+5.82025e-08
+581: 0 0 (0.000201825)
+2.03666e-08
+582: 0 0 (0.000175579)
+1.5414e-08
+583: 0 0 (0.000209651)
+2.19768e-08
+584: 0 0 (0.000235609)
+2.77558e-08
+585: 0 0 (0.000195776)
+1.91642e-08
+586: 0 1 (0.513782)
+0.131986
+587: 0 0 (0.000191381)
+1.83133e-08
+588: 0 0 (0.0610321)
+0.00186246
+589: 0 0 (0.000371681)
+6.90734e-08
+590: 0 1 (0.861885)
+0.371423
+591: 0 0 (0.000935446)
+4.3753e-07
+592: 0 0 (0.000226466)
+2.56435e-08
+593: 0 0 (0.000201676)
+2.03365e-08
+594: 0 0 (0.00617634)
+1.90736e-05
+595: 0 0 (0.000290322)
+4.21436e-08
+596: 0 0 (0.000199463)
+1.98928e-08
+597: 0 0 (0.000208746)
+2.17875e-08
+598: 0 0 (0.00107744)
+5.8044e-07
+599: 0 0 (0.0012349)
+7.62488e-07
+600: 0 0 (0.000388192)
+7.53466e-08
+601: 0 0 (0.000403432)
+8.13787e-08
+602: 0 0 (0.000185676)
+1.72378e-08
+603: 0 0 (0.000300214)
+4.50641e-08
+604: 0 0 (0.000250539)
+3.13848e-08
+605: 0 0 (0.000299219)
+4.4766e-08
+606: 0 0 (0.00247565)
+3.06441e-06
+607: 0 0 (0.20692)
+0.021408
+608: 0 0 (0.0408883)
+0.000835928
+609: 0 0 (0.0341672)
+0.000583699
+610: 0 0 (0.43742)
+0.0956682
+611: 0 0 (0.00635028)
+2.0163e-05
+612: 0 0 (0.160457)
+0.0128733
+613: 0 0 (0.00778592)
+3.03103e-05
+614: 0 0 (0.053104)
+0.00141002
+615: 0 0 (0.272954)
+0.0372519
+616: 0 0 (0.0125236)
+7.842e-05
+617: 0 1 (0.644891)
+0.207942
+618: 0 0 (0.00018407)
+1.69408e-08
+619: 0 0 (0.00425994)
+9.07354e-06
+620: 0 0 (0.000304462)
+4.63487e-08
+621: 0 0 (0.000181845)
+1.65338e-08
+622: 0 0 (0.000250661)
+3.14154e-08
+623: 0 0 (0.000174832)
+1.52832e-08
+624: 0 0 (0.000293367)
+4.3032e-08
+625: 0 1 (0.957977)
+0.45886
+626: 0 0 (0.00532404)
+1.41727e-05
+627: 0 0 (0.000195455)
+1.91014e-08
+628: 0 0 (0.000178328)
+1.59004e-08
+629: 0 0 (0.000192206)
+1.84716e-08
+630: 0 0 (0.0845384)
+0.00357337
+631: 0 0 (0.0154923)
+0.000120005
+632: 0 0 (0.0516948)
+0.00133618
+633: 0 0 (0.00022451)
+2.52023e-08
+634: 0 0 (0.0985864)
+0.00485964
+635: 0 0 (0.00473918)
+1.12299e-05
+636: 0 0 (0.454018)
+0.103066
+637: 0 0 (0.146182)
+0.0106847
+638: 0 0 (0.000258267)
+3.3351e-08
+639: 0 0 (0.000187957)
+1.76639e-08
+640: 0 0 (0.000180715)
+1.6329e-08
+641: 0 0 (0.00238105)
+2.83469e-06
+642: 0 0 (0.00188089)
+1.76888e-06
+643: 0 0 (0.136472)
+0.00931231
+644: 0 0 (0.00159489)
+1.27184e-06
+645: 0 0 (0.000286043)
+4.09104e-08
+Final error:62.1601
+Good: 500 of 646 77.3994%
+1
