@@ -17,22 +17,28 @@
 
 #include "distributedrecurrentnetwork.h"
 #include "distributedrecurrentlayer.h"
+#include "recurrentlayer.h"
 
 using namespace NeuralNET;
 
-DistributedRecurrentNetwork::DistributedRecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned firstLayerW, unsigned firstLayerH, unsigned dimensionW, unsigned dimensionH, float alpha)
-    :RecurrentNetwork(0)
+DistributedRecurrentNetwork::DistributedRecurrentNetwork(unsigned layerCount, unsigned sizes[], unsigned firstLayerW, unsigned firstLayerH, unsigned dimensionW, unsigned dimensionH, float alpha)    
 {
     layers.resize(layerCount);
     for(unsigned i = 0; i< layers.size();i++)
     {
       if(i==0)
       {
-        layers[i] = new DistributedRecurrentLayer(sizes[i]/(firstLayerW*firstLayerH),firstLayerW,firstLayerH , dimensionW, dimensionH, alpha);
+//          if(i==recurrentLayerIndex)
+              layers[i] = new DistributedRecurrentLayer(sizes[i]/(firstLayerW*firstLayerH),firstLayerW,firstLayerH , dimensionW, dimensionH, alpha);
+//          else
+//              layers[i] = new DistributedNeuralLayer(sizes[i]/(firstLayerW*firstLayerH),firstLayerW,firstLayerH , dimensionW, dimensionH, alpha);
       }
       else
       {
-        layers[i] = new NeuralLayer(sizes[i], sizes[i-1], alpha);
+//          if(i==recurrentLayerIndex)
+              layers[i] = new RecurrentLayer(sizes[i], sizes[i-1], alpha);
+//          else
+//              layers[i] = new NeuralLayer(sizes[i], sizes[i-1], alpha);
       }
     }
 }

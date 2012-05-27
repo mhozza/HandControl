@@ -10,8 +10,8 @@
 #include <cstdio>
 #include <sys/types.h>
 #include <dirent.h>
+#include <ctime>
 #include <map>
-
 
 using namespace std;
 using namespace NeuralNET;
@@ -21,9 +21,17 @@ using namespace NeuralNET;
 #define N (N_SIDE * N_SIDE)
 #define HIDDEN_N_SIDE 4
 #define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
-#define HIDDEN_N2 11
+//#define HIDDEN_N 60
+#define HIDDEN_N2 7
 #define OUT_N 1
-#define MAX_EPOCHE 400
+#define MAX_EPOCHE 100
+
+double diffclock(clock_t clock1,clock_t clock2)
+{
+    double diffticks=clock1-clock2;
+    double diffms=(diffticks*10000.0)/CLOCKS_PER_SEC;
+    return diffms;
+}
 
 struct IndexInfo
 {
@@ -82,7 +90,7 @@ vector<string> listDirectory(string path)
      while ((ep = readdir (dp)))
      {
        string s = ep->d_name;
-       if(s=="." || s == ".." || s=="nu") continue;
+       if(s[0]=='.' || s=="nu") continue;
        files.push_back(path+s);
      }
      closedir(dp);
@@ -161,12 +169,15 @@ string hands_path = "", nonhands_path = "";
 string infile = "vahy", outfile;
 vector<string> hands, others;
 
-int recurrentTrain(unsigned sizes[])
+int recurrentTrain(unsigned sizes[], int type = 1)
 {
     vector<vector<vector<pair<vector<float>,vector<int > > > > > tests;//tests[seqIndex][frame][part]
 
-   //RecurrentNetwork *net = new RecurrentNetwork(2,sizes,N,alpha);
-   RecurrentNetwork *net = new DistributedRecurrentNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);   
+    RecurrentNetwork *net = NULL;
+    if(type==0)
+        net = new RecurrentNetwork(2,sizes,N,alpha);
+    else
+        net = new DistributedRecurrentNetwork(2,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
 
    //nacitaj   
    net->loadWeights(infile);   
@@ -204,7 +215,8 @@ int recurrentTrain(unsigned sizes[])
 
    float E = 100;
    int epoche = 0;
-   int good = 0;
+   int good = 0, hgood = 0;
+   clock_t begin=clock();
    while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
      epoche++;
@@ -229,17 +241,24 @@ int recurrentTrain(unsigned sizes[])
                  if(verbose)
                      cout << (c>0.5) << " (" << c  << ")" << endl;
 
-
                  float e = 0;
+
+                 if(abs(tests[i][j][k].second[0] - c)<0.5)
+                 {
+                   good++;
+                   if(tests[i][j][k].second[0]==1) hgood++;
+                 }
+
                  if(mode==0)
                      e = net->train(tests[i][j][k].first,tests[i][j][k].second);
                  else
                  {
-                     if(abs(tests[i][j][k].second[0] - c)<0.5) good++;
-                     e = getError(c,tests[i][j][k].second[0]);
-                     cout << e << endl;
+                   e = getError(c,tests[i][j][k].second[0]);
+                   cout << e << endl;
                  }
-                 if(tests[i][j][k].second[0]==1)
+
+                 //if(tests[i][j][k].second[0]==1)
+                 if(c>0.5)
                  {
                      net->update();                     
                  }
@@ -248,25 +267,33 @@ int recurrentTrain(unsigned sizes[])
          }
          net->reset();
      }
-     cout << "Final error:" << E << endl;
-     if(mode>0)
-     {
-         cout << "Good: " << good << " of " << hands.size()+others.size() << " "
-              << (100.0*good)/(hands.size()+others.size()) << "%" << endl;
-     }
+     cout << "Final error:" << E/(hands.size()+others.size())  << endl;
+     cout << "Good: " << good << " of " << hands.size()+others.size() << " "
+          << (100.0*good)/(hands.size()+others.size()) << "%" << endl;
+     cout << "Good hands: " << hgood << " of " << hands.size() << " "
+          << (100.0*hgood)/(hands.size()) << "%" << endl;
+     cout << "Good other: " << good-hgood << " of " << others.size() << " "
+          << (100.0*(good-hgood))/(others.size()) << "%" << endl;
+
      if(stop) break;
    }
+   clock_t end=clock();
    if(verbose) cout << epoche << endl;
+   cerr << "Time elapsed: " << double(diffclock(end,begin)) << " ms"<< endl;
    if(mode == 0) net->saveWeights(outfile);
    return 0;
 }
 
-int normalTrain(unsigned sizes[])
+int normalTrain(unsigned sizes[], int type = 1)
 {
    vector<pair<vector<float>,vector<int > > > tests;
 
-   //NeuralNetwork *net = new NeuralNetwork(2,sizes,N,alpha);
-   NeuralNetwork *net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
+   NeuralNetwork *net = NULL;
+   if(type==0)
+       net = new NeuralNetwork(2,sizes,N,alpha);
+   else
+       net = new DistributedNeuralNetwork(2,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
+
    //nacitaj
    net->loadWeights(infile);
    for(unsigned i = 0;i<hands.size();i++)
@@ -280,7 +307,8 @@ int normalTrain(unsigned sizes[])
 
    float E = 100;
    int epoche = 0;
-   int good = 0;
+   int good = 0, hgood = 0;
+   clock_t begin=clock();
    while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
    {
      epoche++;
@@ -307,22 +335,33 @@ int normalTrain(unsigned sizes[])
          e = net->train(tests[i].first,tests[i].second);
        else
        {
-         if(abs(tests[i].second[0] - c)<0.5) good++;
+         if(abs(tests[i].second[0] - c)<0.5)
+         {
+           good++;
+           if(tests[i].second[0]==1)
+             hgood++;
+         }
          e = getError(c,tests[i].second[0]);
          cout << e << endl;
        }
 
        E += e;
      }
-     cout << "Final error:" << E << endl;
+     cout << "Final error:" << E/tests.size() << endl;
      if(mode>0)
      {
        cout << "Good: " << good << " of " << tests.size() << " "
             << (100.0*good)/tests.size() << "%" << endl;
+       cout << "Good hands: " << hgood << " of " << hands.size() << " "
+            << (100.0*hgood)/(hands.size()) << "%" << endl;
+       cout << "Good other: " << good-hgood << " of " << others.size() << " "
+            << (100.0*(good-hgood))/(others.size()) << "%" << endl;
      }
      if(stop) break;
    }
+   clock_t end=clock();
    if(verbose)cout << epoche << endl;
+   cout << "Time elapsed: " << double(diffclock(end,begin)) << " ms"<< endl;
    if(mode == 0) net->saveWeights(outfile);
    return 0;
 }
@@ -370,15 +409,28 @@ int main(int argc, char *argv[])
         hands = listDirectory(hands_path);
         others = listDirectory(nonhands_path);
 
-        //unsigned sizes[] = {HIDDEN_N, OUT_N};
-        unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+        int type = 1;
+        unsigned sizes[] = {HIDDEN_N, OUT_N};
+        //unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+
+        if(ch=='c')
+        {
+            cin >> ch;
+            FOR(i,(int)(sizeof(sizes)/sizeof(unsigned))-1)
+            {
+                cin >> sizes[i];
+                cerr << sizes[i] << endl;
+            }
+            if(type == 1)
+                sizes[0]*=HIDDEN_N_SIDE*HIDDEN_N_SIDE;
+        }
         if(ch == 'r')
         {
-            return recurrentTrain(sizes);
+            return recurrentTrain(sizes,type);
         }
         if(ch == 'n')
         {
-            return normalTrain(sizes);
+            return normalTrain(sizes,type);
         }
     }
 
