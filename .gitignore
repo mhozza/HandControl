@@ -9,7 +9,7 @@ HandControl
 NeuralNet/NeuralNet*
 NeuralNet/*.weights
 NeuralNet/NeuralNet_*
-RestoreFFT/RestoreFFT
+CreateFFT/RestoreFFT
 ui_*
 NeuralNet/list_*.sh
 NeuralNet/oldarch/*
