@@ -6,8 +6,11 @@ ScreenShots/*
 *.user*
 moc_*
 HandControl
-NeuralNet/NeuralNet
+NeuralNet/NeuralNet*
 NeuralNet/*.weights
 NeuralNet/NeuralNet_*
 RestoreFFT/RestoreFFT
 ui_*
+NeuralNet/list_*.sh
+NeuralNet/oldarch/*
+NeuralNet/*.log
