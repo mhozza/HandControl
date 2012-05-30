@@ -13,7 +13,7 @@ namespace NeuralNET
     void setWeights(vector<vector<float> >);    
     vector<float> getDelta(vector<float> output, vector<int> target);
     virtual void trainDelta(vector<float> input,vector<float> delta);
-    float derivativeFunction(float x, int i);
+    float derivativeFunction(float x, unsigned i);
     void setMomentum(float);
     void setW0(float);
   protected:

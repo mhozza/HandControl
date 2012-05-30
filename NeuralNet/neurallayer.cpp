@@ -109,8 +109,9 @@ float NeuralLayer::getError(vector<float> output,vector<int> target)
   return error;
 }
 
-float NeuralLayer::derivativeFunction(float x, int i = 0)
+float NeuralLayer::derivativeFunction(float x, unsigned i = 0)
 {
+  if(i>=neurons.size()) i = 0;
   return neurons[i]->derivativeFunction(x);
 }
 

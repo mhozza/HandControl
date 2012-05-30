@@ -7,8 +7,8 @@ using namespace NeuralNET;
 
 float ContinuousPerceptron::derivativeFunction(float x)
 {
-  //return x*(1-x);
-  return pow(MATH_E,x)/pow((pow(MATH_E,x)+1),2);
+  return x*(1-x);
+  //return pow(MATH_E,x)/pow((pow(MATH_E,x)+1),2);
 }
 
 float ContinuousPerceptron::activationFunction(const vector<float>* input)

@@ -83,6 +83,7 @@ DIST          = /usr/share/qt4/mkspecs/common/unix.conf \
 		/usr/share/qt4/mkspecs/features/default_pre.prf \
 		/usr/share/qt4/mkspecs/features/release.prf \
 		/usr/share/qt4/mkspecs/features/default_post.prf \
+		/usr/share/qt4/mkspecs/features/declarative_debug.prf \
 		/usr/share/qt4/mkspecs/features/unix/gdb_dwarf_index.prf \
 		/usr/share/qt4/mkspecs/features/warn_on.prf \
 		/usr/share/qt4/mkspecs/features/qt.prf \
@@ -124,6 +125,7 @@ all: Makefile $(TARGET)
 
 $(TARGET):  $(OBJECTS)  
 	$(LINK) $(LFLAGS) -o $(TARGET) $(OBJECTS) $(OBJCOMP) $(LIBS)
+	{ test -n "$(DESTDIR)" && DESTDIR="$(DESTDIR)" || DESTDIR=.; } && test $$(gdb --version | sed -e 's,[^0-9]\+\([0-9]\)\.\([0-9]\).*,\1\2,;q') -gt 72 && gdb --nx --batch --quiet -ex 'set confirm off' -ex "save gdb-index $$DESTDIR" -ex quit '$(TARGET)' && test -f $(TARGET).gdb-index && objcopy --add-section '.gdb_index=$(TARGET).gdb-index' --set-section-flags '.gdb_index=readonly' '$(TARGET)' '$(TARGET)' && rm -f $(TARGET).gdb-index || true
 
 Makefile: NeuralNet.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/share/qt4/mkspecs/common/unix.conf \
 		/usr/share/qt4/mkspecs/common/linux.conf \
@@ -139,6 +141,7 @@ Makefile: NeuralNet.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/share/
 		/usr/share/qt4/mkspecs/features/default_pre.prf \
 		/usr/share/qt4/mkspecs/features/release.prf \
 		/usr/share/qt4/mkspecs/features/default_post.prf \
+		/usr/share/qt4/mkspecs/features/declarative_debug.prf \
 		/usr/share/qt4/mkspecs/features/unix/gdb_dwarf_index.prf \
 		/usr/share/qt4/mkspecs/features/warn_on.prf \
 		/usr/share/qt4/mkspecs/features/qt.prf \
@@ -166,6 +169,7 @@ Makefile: NeuralNet.pro  /usr/share/qt4/mkspecs/linux-g++/qmake.conf /usr/share/
 /usr/share/qt4/mkspecs/features/default_pre.prf:
 /usr/share/qt4/mkspecs/features/release.prf:
 /usr/share/qt4/mkspecs/features/default_post.prf:
+/usr/share/qt4/mkspecs/features/declarative_debug.prf:
 /usr/share/qt4/mkspecs/features/unix/gdb_dwarf_index.prf:
 /usr/share/qt4/mkspecs/features/warn_on.prf:
 /usr/share/qt4/mkspecs/features/qt.prf:
