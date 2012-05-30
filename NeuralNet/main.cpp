@@ -21,11 +21,11 @@ using namespace NeuralNET;
 #define N_SIDE 128
 #define N (N_SIDE * N_SIDE)
 #define HIDDEN_N_SIDE 4
-#define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*3
+#define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*11
 //#define HIDDEN_N 60
 #define HIDDEN_N2 7
 #define OUT_N 1
-#define MAX_EPOCHE 100
+#define MAX_EPOCHE 400
 
 double diffclock(clock_t clock1,clock_t clock2)
 {
@@ -170,7 +170,7 @@ string hands_path = "", nonhands_path = "";
 string infile = "vahy", outfile;
 vector<string> hands, others;
 
-int recurrentTrain(unsigned sizes[], int type = 1)
+int recurrentTrain(unsigned sizes[], int maxepoche, int type = 1)
 {
     vector<vector<vector<pair<vector<float>,vector<int > > > > > tests;//tests[seqIndex][frame][part]
 
@@ -218,7 +218,7 @@ int recurrentTrain(unsigned sizes[], int type = 1)
    int epoche = 0;
    int good = 0, hgood = 0;
    clock_t begin=clock();
-   while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
+   while(epoche<maxepoche && (mode==0 || epoche<1))
    {
      good = 0, hgood = 0;
      epoche++;
@@ -286,7 +286,7 @@ int recurrentTrain(unsigned sizes[], int type = 1)
    return 0;
 }
 
-int normalTrain(unsigned sizes[], int type = 1)
+int normalTrain(unsigned sizes[], int maxepoche, int type = 1)
 {
    vector<pair<vector<float>,vector<int > > > tests;
 
@@ -294,7 +294,7 @@ int normalTrain(unsigned sizes[], int type = 1)
    if(type==0)
        net = new NeuralNetwork(2,sizes,N,alpha);
    else
-       net = new DistributedNeuralNetwork(2,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
+       net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE,N_SIDE,alpha);
 
    //nacitaj
    net->loadWeights(infile);
@@ -311,7 +311,7 @@ int normalTrain(unsigned sizes[], int type = 1)
    int epoche = 0;
    int good = 0, hgood = 0;
    clock_t begin=clock();
-   while(epoche<MAX_EPOCHE && (mode==0 || epoche<1))
+   while(epoche<maxepoche && (mode==0 || epoche<1))
    {
      good = 0, hgood = 0;
      epoche++;
@@ -371,72 +371,85 @@ int normalTrain(unsigned sizes[], int type = 1)
 
 int main(int argc, char *argv[])
 {
-    srand(time(NULL)+42);
-    signal(SIGINT, ctrlc);
-    if(argc>0)
+  int maxepoche = MAX_EPOCHE;
+  srand(time(NULL)+42);
+  signal(SIGINT, ctrlc);
+  if(argc>0)
+  {
+    char ch = *(argv[1]);
+
+    if(argc>2) maxepoche = atoi(argv[2]);
+    if(maxepoche>0)
     {
-        char ch = *(argv[1]);
-
-        if(argc>2) mode = atoi(argv[2]);
-        if(argc>3) verbose = atoi(argv[3]);
-        if(argc>4) datatype = atoi(argv[4]);
-        if(datatype==3)
-        {
-            datatype =1;
-            invert = true;
-        }
-
-        if(argc>5) hands_path = argv[5];
-        if(argc>6) nonhands_path = argv[6];
-        if(argc>7) infile = argv[7];
-        outfile = infile;
-        if(argc>8) outfile = argv[8];
-
-        if(mode==0)
-        {
-          if(hands_path=="")
-            hands_path = "../hand_images/hands";
-          if(nonhands_path=="")
-            nonhands_path = "../hand_images/other";
-        }
-        else
-        {
-         // hands_path = "../hand_images/hands";
-         // nonhands_path = "../hand_images/other";
-         if(hands_path=="")
-           hands_path = "../hand_images/test/hands";
-         if(nonhands_path=="")
-           nonhands_path = "../hand_images/test/other";
-        }
-
-        hands = listDirectory(hands_path);
-        others = listDirectory(nonhands_path);
-
-        int type = 1;
-        unsigned sizes[] = {HIDDEN_N, OUT_N};
-        //unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
-
-        if(ch=='c')
-        {
-            cin >> ch;
-            FOR(i,(int)(sizeof(sizes)/sizeof(unsigned))-1)
-            {
-                cin >> sizes[i];
-                cerr << sizes[i] << endl;
-            }
-            if(type == 1)
-                sizes[0]*=HIDDEN_N_SIDE*HIDDEN_N_SIDE;
-        }
-        if(ch == 'r')
-        {
-            return recurrentTrain(sizes,type);
-        }
-        if(ch == 'n')
-        {
-            return normalTrain(sizes,type);
-        }
+      cerr << "Training " << maxepoche << " epoches." << endl;
+      mode = 0;
+    }
+    else
+    {
+      cerr << "Testing." << endl;
+      maxepoche = 1;
+      mode = 1;
     }
 
-    cerr << "Invalid arguments" << endl;
-    return 1;
+    if(argc>3) verbose = atoi(argv[3]);
+    if(argc>4) datatype = atoi(argv[4]);
+    if(datatype==3)
+    {
+      datatype =1;
+      invert = true;
+    }
+
+    if(argc>5) hands_path = argv[5];
+    if(argc>6) nonhands_path = argv[6];
+    if(argc>7) infile = argv[7];
+    outfile = infile;
+    if(argc>8) outfile = argv[8];
+
+    if(mode==0)
+    {
+      if(hands_path=="")
+        hands_path = "../hand_images/hands";
+      if(nonhands_path=="")
+        nonhands_path = "../hand_images/other";
+    }
+    else
+    {
+      // hands_path = "../hand_images/hands";
+      // nonhands_path = "../hand_images/other";
+      if(hands_path=="")
+        hands_path = "../hand_images/test/hands";
+      if(nonhands_path=="")
+        nonhands_path = "../hand_images/test/other";
+    }
+
+    hands = listDirectory(hands_path);
+    others = listDirectory(nonhands_path);
+
+    int type = 1;
+    //unsigned sizes[] = {HIDDEN_N, OUT_N};
+    unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+
+    if(ch=='c')
+    {
+      cin >> ch;
+      FOR(i,(int)(sizeof(sizes)/sizeof(unsigned))-1)
+      {
+        cin >> sizes[i];
+        cerr << sizes[i] << endl;
+      }
+      if(type == 1)
+        sizes[0]*=HIDDEN_N_SIDE*HIDDEN_N_SIDE;
+    }
+    if(ch == 'r')
+    {
+      return recurrentTrain(sizes, maxepoche,type);
+    }
+    if(ch == 'n')
+    {
+      return normalTrain(sizes, maxepoche,type);
+    }
+  }
+
+  cerr << "Invalid arguments" << endl;
+  return 1;
 }
