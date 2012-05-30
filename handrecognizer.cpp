@@ -19,11 +19,17 @@ int subtract(QPoint a, QPoint b)
 
 HandRecognizer::HandRecognizer()
 {
-  index = 1248;
-  unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
-  net = new DistributedNeuralNetwork(3,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE, N_SIDE,0);
-  //net = new NeuralNetwork(2,sizes,N,0);
+  //index = 1248;
+  unsigned sizes[] = {HIDDEN_N, OUT_N};
+  //unsigned sizes[] = {HIDDEN_N, HIDDEN_N2, OUT_N};
+#ifdef USE_RECURRENT
+  net = new DistributedRecurrentNetwork(2,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE, N_SIDE,0);
+  net->loadWeights("classifier.r.dat");
+#else
+  net = new DistributedNeuralNetwork(2,sizes,HIDDEN_N_SIDE, HIDDEN_N_SIDE, N_SIDE, N_SIDE,0);
   net->loadWeights("classifier.dat");
+#endif
+
 }
 
 bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
@@ -84,11 +90,15 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     fftw_complex *in = NULL;
     fftw_complex *out = NULL;
     fftw_plan p;
-    in = imgScaled->toComplexArray();
+    in = imgScaled->toComplexArray();    
+    fftLock.lock();
     out = (fftw_complex*) fftw_malloc(sizeof(fftw_complex) * N);
     p = fftw_plan_dft_2d(imgScaled->width(), imgScaled->height(), in, out, FFTW_FORWARD ,FFTW_ESTIMATE | FFTW_DESTROY_INPUT);
-    fftw_execute(p); // repeat as needed
+    fftLock.unlock();
+    fftw_execute(p);
+    fftLock.lock();
     fftw_destroy_plan(p);
+    fftLock.unlock();
     delete in;
 
    
@@ -127,6 +137,12 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 
     //rozpoznanie ruky:    
     hand = net->classify1(input);
+#ifdef USE_RECURRENT
+    if(hand>0.5)
+    {
+      net->update();
+    }
+#endif
 
     if(isSimilarRect(r,handRect)) hand += 0.3;
 
@@ -178,10 +194,18 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     //imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),20)->saveImage(index,fname2.str());
 
 #endif    
+    fftLock.lock();
     fftw_free(out);
+    fftLock.unlock();
     delete imgRefScaled;
     delete imgScaled;
     delete imgColorScaled;
   }    
 }
 
+void HandRecognizer::reset()
+{
+#ifdef USE_RECURRENT
+  net->reset();
+#endif
+}

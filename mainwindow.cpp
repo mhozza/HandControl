@@ -170,6 +170,7 @@ void MainWindow::getImage()
                   if(noHandFrames>=NO_HAND_FRAMES)
                   {                    
                     gestureRecognizer->resetGesture();
+                    handRecognizer->reset();
                   }
                 }
                 gestureRecognizer->drawPoints(&p);
