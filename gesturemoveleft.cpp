@@ -4,7 +4,8 @@
 
 void GestureMoveLeft::action()
 {  
-  sendInput(0xff08);//backspace
+  //sendInput(0xff08);//backspace
+  sendInput(0x0020);//space
   cout << "move left" << endl;
 }
 

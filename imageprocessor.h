@@ -81,7 +81,7 @@ public:
     bool useKalmanFilter;
     ImageProcessor(int width, int height, HandRecognizer * handRecognizer);
     ~ImageProcessor();
-    GrayScaleImage processImage(const GrayScaleImage &image, const ColorImage &colorimg);
+    GrayScaleImage processImage(const GrayScaleImage &image);
     inline bool imageChanged(){return imgChanged;}
 };
 

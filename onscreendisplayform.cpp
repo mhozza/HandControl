@@ -24,8 +24,9 @@ OnScreenDisplayForm::~OnScreenDisplayForm()
 
 void OnScreenDisplayForm::showEvent(QShowEvent *)
 {
-  QRect r = this->frameGeometry();
-  r.moveCenter(QApplication::desktop()->availableGeometry().center());
+  //QRect r = this->frameGeometry();
+  QRect r(0,0,0,0);
+  //r.moveCenter(QApplication::desktop()->availableGeometry().center());
   this->move(r.topLeft());
   hideTimer.start();
 }

@@ -215,7 +215,8 @@ ImageProcessor::ImageProcessor(int width, int height, HandRecognizer*  handRecog
   kf = NULL;
 }
 
-GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const ColorImage &colorimg)
+//GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const ColorImage &colorimg)
+GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image)
 {  
   img = image;
   sum = 0;  
@@ -261,7 +262,7 @@ GrayScaleImage ImageProcessor::processImage(const GrayScaleImage &image, const C
 
   for(int i=0;i<n-1 || i<1;i++)
   {
-    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (GrayScaleImage*) &image, (ColorImage*) &colorimg));
+    threads.push_back(QtConcurrent::run(handRecognizer,&HandRecognizer::processRects, &rectQueue, expandedImg, (GrayScaleImage*) &image));
   }
 
   for(unsigned y = 0;y<expandedImg->height();y++)

@@ -6,7 +6,8 @@
 class GestureMoveLeft : public Gesture
 {  
 public:
-  GestureMoveLeft(): Gesture("Move Left"){}
+  //GestureMoveLeft(): Gesture("Move Left"){}
+  GestureMoveLeft(): Gesture("Next"){}
   bool check(vector<QPoint> points);
   void action();
 };

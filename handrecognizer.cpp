@@ -51,7 +51,7 @@ bool HandRecognizer::isSimilarRect(QRect r1, QRect r2)
   return false;
 }
 
-void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img, ColorImage * imgcolor)
+void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage * imgRef, GrayScaleImage * img)
 {
   resetHand();  
   while(true)
@@ -77,12 +77,8 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
 
     //crop and scale image
     GrayScaleImage* imgRefScaled = (GrayScaleImage*)imgRef->copy(r);
-    GrayScaleImage* imgScaled = (GrayScaleImage*)img->copy(r);
-    ColorImage* imgColorScaled = (ColorImage*)imgcolor->copy(r);
-    //imgScaled->mask(imgRefScaled,true);
-    ColorImage * handMask = (ColorImage*)imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),8);
-    imgScaled->mask(handMask->toGrayScale());
-    delete handMask;    
+    GrayScaleImage* imgScaled = (GrayScaleImage*)img->copy(r);    
+    imgScaled->mask(imgRefScaled,true);
 
     imgScaled->scale(SCALE_SIZE,SCALE_SIZE);
 
@@ -101,7 +97,7 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
     fftLock.unlock();
     delete in;
 
-   
+
     float hand = 0;
 
     //vygenerovanie vector<float> vstupu pre net
@@ -119,26 +115,14 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
           continue;
         }
         //input[i] = imgScaled.pixel(x,y);
-        input[i] = 1/(1+Utils::cabs(out[x+y*SCALE_SIZE]));
-
-        /*if(imgRefScaled.pixel(x,y)==c)
-        {
-          if(imgScaled.pixel(x,y)!=Qt::white)
-            input[i] = 1;
-          else
-            input[i] = 0;
-        }
-        else
-        {
-          input[i] = 0;
-        }*/
+        input[i] = 1/(1+Utils::cabs(out[x+y*SCALE_SIZE]));       
       }
     }
 
     //rozpoznanie ruky:    
     hand = net->classify1(input);
 #ifdef USE_RECURRENT
-    if(hand>0.5)
+    if(hand>HAND_TRESHOLD)
     {
       net->update();
     }
@@ -152,54 +136,11 @@ void HandRecognizer::processRects(queue<pair<QRect,uint> > * q, GrayScaleImage *
       handRect = r;
     }
 
-
-#ifdef SAVE_HAND
-    saveImageBuffer.push_back(imgScaled->saveImageToString());
-
-    if(saveImageBuffer.size()>=SAVEIMAGE_BUFFER_SIZE)
-    {
-        for(unsigned i = 0;i<saveImageBuffer.size();i++)
-        {
-            //zapis do suboru
-            stringstream fname,fname2,fname3;
-            //index = 0;
-            fname << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn";
-            fname2 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".pbm";
-            fname3 << "hand_images/"<< ((hand>0.5) ? "hand" : "other") << "_" << index << ".trn.pbm";
-            index++;
-            ofstream ofs(fname2.str().c_str());
-            ofs << saveImageBuffer[i];
-            ofs.close();
-        }
-    }
-/*
-    ofstream ofs(fname.str().c_str());
-    for(unsigned y = 0;y < SCALE_SIZE; y++)
-    {
-      for(unsigned x = 0;x < SCALE_SIZE; x++)
-      {
-        i++;
-        if(x>=imgRefScaled->width() || y >=imgRefScaled->height()) {
-            ofs << 0 << " ";
-          continue;
-        }
-        //input[i] = imgScaled.pixel(x,y);
-        ofs << 1/(1+Utils::cabs(out[x+y*SCALE_SIZE])) << " ";
-      }
-      ofs << endl;
-    }*/
-    //imgScaled->saveImage(index,fname2.str());
-    /*imgScaled->setImageFromComplexArray(out,SCALE_SIZE,SCALE_SIZE);
-    imgScaled->saveImage(index,fname3.str());*/
-    //imgColorScaled->getAdaptiveFloodFillSelectionMask(0.5*r.width(),0.6*r.height(),20)->saveImage(index,fname2.str());
-
-#endif    
     fftLock.lock();
     fftw_free(out);
     fftLock.unlock();
     delete imgRefScaled;
-    delete imgScaled;
-    delete imgColorScaled;
+    delete imgScaled;    
   }    
 }
 
