@@ -1,3 +1,3 @@
 #!/bin/bash
-echo "n $1" | ./NeuralNet2u c 0 1 0 ../hand_images/hands_r_fft ../hand_images/other_r_fft train_nn2u_$1.weights
+echo "n $1" | ./NeuralNet c $2 1 0 ../hand_images/hands_fft ../hand_images/other_fft train_nn2u_$1.weights
 
