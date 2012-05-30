@@ -23,7 +23,7 @@ using namespace NeuralNET;
 #define HIDDEN_N_SIDE 4
 #define HIDDEN_N HIDDEN_N_SIDE*HIDDEN_N_SIDE*11
 #define HIDDEN_N2 7
-#define HAND_TRESHOLD 0.85
+#define HAND_TRESHOLD 0.9
 #define SAVEIMAGE_BUFFER_SIZE 300
 #define USE_RECURRENT
 

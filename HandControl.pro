@@ -84,3 +84,6 @@ FORMS += mainwindow.ui \
 LIBS += -lv4l2 -lXtst -lfftw3 -lX11
 
 OTHER_FILES +=
+
+RESOURCES += \
+    resource.qrc
